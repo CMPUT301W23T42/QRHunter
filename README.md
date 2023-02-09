@@ -1,2 +1,2 @@
 # QRHunter
-A QR based mobile game.
+A QR code scanning based mobile game.
