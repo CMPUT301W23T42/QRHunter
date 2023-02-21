@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">QRHunter</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="profile_title">Profile</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="username">User Name:</string>
+    <string name="full_name">Full Name:</string>
+    <string name="email">Email:</string>
+    <string name="phone">Phone:</string>
+    <string name="example_user_name">JDoe101</string>
+    <string name="example_name">John Doe</string>
+    <string name="example_email">jdoe@ualberta.ca</string>
+    <string name="example_phone">403 555 6666</string>
+</resources>
