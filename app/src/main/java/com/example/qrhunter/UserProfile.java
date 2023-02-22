@@ -1,25 +1,19 @@
 package com.example.qrhunter;
 
-import android.provider.Settings;
+import android.util.Log;
 
-public class Profile {
-    private final String userID;
+import java.util.Observable;
+
+public class UserProfile {
     private String userName;
     private String fullName;
     private String email;
     private String phone;
 
-    public Profile() {
-        this.userID = Settings.Secure.ANDROID_ID;
-    }
+    private AttributeChangeListener listener;
 
-    public Profile(String userName, String fullName, String email, String phone) {
-        this.userID = Settings.Secure.ANDROID_ID;
-
-        this.userName = userName;
-        this.fullName = fullName;
-        this.email = email;
-        this.phone = phone;
+    public UserProfile(AttributeChangeListener listener) {
+        this.listener = listener;
     }
 
     /*
@@ -27,6 +21,7 @@ public class Profile {
      */
     public void setUserName(String userName) {
         this.userName = userName;
+        listener.onChange();
     }
 
     /*
@@ -34,6 +29,7 @@ public class Profile {
      */
     public void setFullName(String fullName) {
         this.fullName = fullName;
+        listener.onChange();
     }
 
     /*
@@ -41,6 +37,7 @@ public class Profile {
      */
     public void setEmail(String email) {
         this.email = email;
+        listener.onChange();
     }
 
     /*
@@ -48,6 +45,8 @@ public class Profile {
      */
     public void setPhone(String phone) {
         this.phone = phone;
+        listener.onChange();
+        Log.d("Listener", "Called");
     }
 
     /*
@@ -56,7 +55,7 @@ public class Profile {
      * String
      */
     public String getUserName() {
-        return userID;
+        return userName;
     }
 
     /*
@@ -84,6 +83,14 @@ public class Profile {
      */
     public String getPhone() {
         return phone;
+    }
+
+    public void setListener(AttributeChangeListener listener) {
+        this.listener = listener;
+    }
+
+    public interface AttributeChangeListener {
+        void onChange();
     }
 }
 

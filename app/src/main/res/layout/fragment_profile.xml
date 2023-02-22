@@ -54,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:paddingTop="15dp"
             android:src="@drawable/edit_icon"
             android:background="@null"/>
         <Space
@@ -81,15 +82,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="40dp"
-            android:paddingEnd="20dp"/>
+            android:paddingEnd="20dp"
+            android:layout_weight="2"/>
         <TextView
             android:id="@+id/name_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            android:paddingEnd="20dp"
+            android:layout_weight="1"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,15 +105,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="40dp"
-            android:paddingEnd="20dp"/>
+            android:paddingEnd="20dp"
+            android:layout_weight="2"/>
         <TextView
             android:id="@+id/email_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            android:paddingEnd="20dp"
+            android:layout_weight="1"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,15 +128,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="40dp"
-            android:paddingEnd="20dp"/>
+            android:paddingEnd="20dp"
+            android:layout_weight="2"/>
         <TextView
             android:id="@+id/phone_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            android:paddingEnd="20dp"
+            android:layout_weight="1"/>
     </LinearLayout>
     <Space
         android:layout_width="match_parent"
