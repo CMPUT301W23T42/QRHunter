@@ -33,9 +33,9 @@ public class SameQRCodeAdapter extends ArrayAdapter<QRCode> {
         TextView sameQRDate = view.findViewById(R.id.same_QR_code_date);
         TextView sameQROwner = view.findViewById(R.id.same_QR_code_owner);
 
-        sameQRName.setText(qrCode.getName());
-        sameQRDate.setText(qrCode.getDate().toString());
-        sameQROwner.setText(qrCode.getOwner());
+        sameQRName.setText("QRName:"+qrCode.getName());
+        sameQRDate.setText("Date:"+qrCode.getDate().toString());
+        sameQROwner.setText("Taken by:"+qrCode.getOwner());
 
         return view;
     }

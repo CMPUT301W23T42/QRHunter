@@ -80,12 +80,14 @@
     <ListView
         android:id="@+id/comment_listview"
         android:layout_width="match_parent"
-        android:layout_height="200dp" >
+        android:layout_height="150sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp">
 
     </ListView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/add_comment_button"
         android:layout_width="52dp"
         android:layout_height="wrap_content"
         android:ellipsize="none"
@@ -102,5 +104,7 @@
     <ListView
         android:id="@+id/same_QR_code_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp" />
 </LinearLayout>
