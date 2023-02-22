@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import com.example.qrhunter.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,13 +25,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 public class LoginFragment extends Fragment {
-    final String TAG = "Sample";
-    EditText usernameEdit;
-    EditText nameEdit;
-    EditText emailEdit;
-    EditText phoneEdit;
-    Button signUpButton;
-    FirebaseFirestore db;
+    private final String TAG = "Sample";
+    private EditText usernameEdit;
+    private EditText nameEdit;
+    private EditText emailEdit;
+    private EditText phoneEdit;
+    private Button signUpButton;
 
 
     @Nullable
@@ -46,52 +44,41 @@ public class LoginFragment extends Fragment {
         nameEdit = view.findViewById(R.id.name_edit);
         emailEdit = view.findViewById(R.id.email_edit);
         phoneEdit = view.findViewById(R.id.phone_edit);
-        signUpButton = view.findViewById(R.id.sign_up_button);
+        Button signUpButton = view.findViewById(R.id.sign_up_button);
 
         TabLayout tabLayout = getActivity().findViewById(R.id.tab_layout);
 
-        db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("Users");
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String ID = Settings.Secure.ANDROID_ID;
+        signUpButton.setOnClickListener(v -> {
+            final String ID = Settings.Secure.ANDROID_ID;
 
-                final String userName = usernameEdit.getText().toString();
-                final String name = nameEdit.getText().toString();
-                final String email = emailEdit.getText().toString();
-                final String phone = phoneEdit.getText().toString();
+            final String userName = usernameEdit.getText().toString();
+            final String name = nameEdit.getText().toString();
+            final String email = emailEdit.getText().toString();
+            final String phone = phoneEdit.getText().toString();
 
-                HashMap<String, String> data = new HashMap<>();
+            HashMap<String, String> data = new HashMap<>();
 
-                if (!userName.isEmpty() && !name.isEmpty()
-                        && !email.isEmpty() && phone.length()>9) {
-                    data.put("User Name", userName);
-                    data.put("Name", name);
-                    data.put("Email", email);
-                    data.put("Phone", phone);
+            if (!userName.isEmpty() && !name.isEmpty()
+                    && !email.isEmpty() && phone.length()>9) {
+                data.put("UserName", userName);
+                data.put("Name", name);
+                data.put("Email", email);
+                data.put("Phone", phone);
 
-                    collectionReference
-                            .document(ID)
-                            .set(data)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d(TAG, "Data has been added successfully!");
-                                    ViewPager2 viewPager = (ViewPager2) getActivity().
-                                            findViewById(R.id.view_pager);
-                                    viewPager.setCurrentItem(1);
-                                    tabLayout.setVisibility(View.VISIBLE);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, "Data could not be added!" + e.toString());
-                                }
-                            });
-                }
+                collectionReference
+                        .document(ID)
+                        .set(data)
+                        .addOnSuccessListener(unused -> {
+                            Log.d(TAG, "Data has been added successfully!");
+                            ViewPager2 viewPager = getActivity().
+                                    findViewById(R.id.view_pager);
+                            viewPager.setCurrentItem(0);
+                            tabLayout.setVisibility(View.VISIBLE);
+                        })
+                        .addOnFailureListener(e -> Log.d(TAG, "Data could not be added!" + e));
             }
         });
 
