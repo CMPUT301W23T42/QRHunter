@@ -14,7 +14,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -30,39 +29,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/QR_name"
+                android:id="@+id/QR_profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/QR_score"
+                android:id="@+id/QR_profile_score"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/QR_date"
+                android:id="@+id/QR_profile_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/QR_owner"
+                android:id="@+id/QR_profile_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/location_Button"
+                android:id="@+id/QR_profile_location_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Location"
