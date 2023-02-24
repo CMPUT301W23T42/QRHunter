@@ -1,5 +1,6 @@
 package com.example.qrhunter;
 
+import android.location.Location;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -91,19 +92,33 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_profile);
+        db = FirebaseFirestore.getInstance();
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-
+        // add the name and information of the chosen QR code
         qrName = findViewById(R.id.QR_profile_name);
         qrOwner = findViewById(R.id.QR_profile_owner);
         qrScore = findViewById(R.id.QR_profile_score);
         qrDate = findViewById(R.id.QR_profile_date);
-        qrName.setText("Name:"+"Hello");
-        qrOwner.setText("Owner:"+"Bob");
-        qrScore.setText("Score:"+"12");
-        qrDate.setText("Date:"+"2022-12-12");
+        DocumentReference QRReference = db.collection("CodeList").document(String.valueOf(QR_id));
+        QRReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    Map<String, Object> QRData = document.getData();
+                    qrName.setText("Name:"+QRData.get("name").toString());
+                    qrOwner.setText("Owner:"+QRData.get("owner").toString());
+                    qrScore.setText("Score:"+QRData.get("score").toString());
+                    qrDate.setText("Date:"+QRData.get("date").toString());
+                }
+            }
+        });
 
-        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        db = FirebaseFirestore.getInstance();
+
+
+
+
 //        DocumentReference QRCodeCommentReference = db.collection("Comments").document(String.valueOf(QR_id));
 //        QRCodeCommentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 //            @Override
@@ -128,6 +143,11 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
 
 
 
+
+
+
+
+        // deal with the same QR code scanned by other player.
         QRCode qrCode = new QRCode("hunter","2022-12-12","bob",1,null);
         qrDataList = new ArrayList<>();
         qrDataList.add(qrCode);
@@ -136,6 +156,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         sameQRList.setAdapter(sameQRAdapter);
 
 
+        // show qr comments and deal with add comment fragment.
         qrCommentDataList = new ArrayList<>();
         qrCommentList = findViewById(R.id.comment_listview);
         qrCommentAdapter = new QRCommentAdapter(this,qrCommentDataList);
@@ -150,6 +171,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         });
 
 
+        // update the list when new comment is added.
         db.collection("Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

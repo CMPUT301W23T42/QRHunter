@@ -36,35 +36,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/QR_profile_score"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/QR_profile_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/QR_profile_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/QR_profile_location_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Location"
-                android:textSize="16sp" />
+                android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
 
