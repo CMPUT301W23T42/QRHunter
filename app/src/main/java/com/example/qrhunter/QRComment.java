@@ -1,6 +1,6 @@
 package com.example.qrhunter;
 
-public class QRComment {
+public class QRComment{
     private String comment;
     private String date;
     private String user;
@@ -22,4 +22,6 @@ public class QRComment {
     public String getUser() {
         return user;
     }
+
+
 }
