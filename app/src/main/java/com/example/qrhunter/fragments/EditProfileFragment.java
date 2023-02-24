@@ -12,20 +12,18 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.qrhunter.R;
 import com.example.qrhunter.UserInfo;
 import com.example.qrhunter.UserProfile;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
 public class EditProfileFragment extends Fragment implements UserInfo {
+    private onCompleteListener listener;
+
     private UserProfile profile;
     private final String ID = Settings.Secure.ANDROID_ID;
     private final String TAG = "Edit Profile Fragment";
@@ -34,8 +32,6 @@ public class EditProfileFragment extends Fragment implements UserInfo {
     private EditText editFullName;
     private EditText editEmail;
     private EditText editPhone;
-    private ViewPager2 viewPager;
-    private TabLayout tabLayout;
 
     public EditProfileFragment(UserProfile profile) {
         this.profile = profile;
@@ -46,8 +42,6 @@ public class EditProfileFragment extends Fragment implements UserInfo {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewPager = getActivity().findViewById(R.id.view_pager);
-        tabLayout = getActivity().findViewById(R.id.tab_layout);
         view = inflater.inflate(R.layout.fragment_profile_edit, container, false);
 
         editUserName = view.findViewById(R.id.user_name_edit);
@@ -83,18 +77,15 @@ public class EditProfileFragment extends Fragment implements UserInfo {
                         .set(data)
                         .addOnSuccessListener(unused -> {
                             Log.d(TAG, "Data has been added successfully!");
-
-                            tabLayout.setVisibility(View.VISIBLE);
-                            viewPager.setCurrentItem(3);
+                            onChange();
                         })
                         .addOnFailureListener(e -> {
                             Log.d(TAG, "Data could not be added!" + e);
-                            tabLayout.setVisibility(View.VISIBLE);
                         });
             }
         });
 
-        cancelProfileEdit.setOnClickListener(v -> viewPager.setCurrentItem(3));
+        cancelProfileEdit.setOnClickListener(v -> listener.onComplete());
         return view;
     }
 
@@ -112,6 +103,13 @@ public class EditProfileFragment extends Fragment implements UserInfo {
             editEmail.setText(profile.getEmail());
             editPhone.setText(profile.getPhone());
         }
+    }
+    public void setOnCompleteListener(onCompleteListener listener) {
+        this.listener = listener;
+    }
+
+    public interface onCompleteListener {
+        void onComplete();
     }
 }
 

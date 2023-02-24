@@ -1,18 +1,15 @@
 package com.example.qrhunter.fragments;
 
-import android.media.Image;
 import android.os.Bundle;
 
 import com.example.qrhunter.UserInfo;
 import com.example.qrhunter.UserProfile;
 import com.example.qrhunter.R;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.firestore.auth.User;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,8 +19,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment implements UserInfo {
+    private onEditProfileListener listener;
     private final String TAG = "Profile Fragment";
-    private String ID;
     private UserProfile profile;
 
     private View view = null;
@@ -31,18 +28,10 @@ public class ProfileFragment extends Fragment implements UserInfo {
     private TextView fullNameText;
     private TextView emailText;
     private TextView phoneText;
-    private ViewPager2 viewPager;
 
 
     public ProfileFragment(UserProfile profile) {
         this.profile = profile;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        TabLayout tabLayout = getActivity().findViewById(R.id.tab_layout);
-        tabLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -58,30 +47,35 @@ public class ProfileFragment extends Fragment implements UserInfo {
 
         onChange();
 
-        editButton.setOnClickListener(v -> {
-            viewPager = getActivity().findViewById(R.id.view_pager);
-            viewPager.setCurrentItem(4);
-        });
+        editButton.setOnClickListener(v -> listener.onEditProfile());
 
         return view;
     }
 
     @Override
     public void setProfile(UserProfile profile) {
-        Log.i(TAG, "Running setProfile");
+        Log.d(TAG, "Running setProfile");
         this.profile = profile;
         onChange();
     }
 
     @Override
     public void onChange() {
-        Log.i(TAG, "Running onChange");
+        Log.d(TAG, "Running onChange");
         if (view != null) {
             userNameText.setText(profile.getUserName());
             fullNameText.setText(profile.getFullName());
             emailText.setText(profile.getEmail());
             phoneText.setText(profile.getPhone());
-            Log.i(TAG, "onChange complete");
+            Log.d(TAG, "onChange complete");
         }
+    }
+
+    public void setOnEditProfileListener(onEditProfileListener listener) {
+        this.listener = listener;
+    }
+
+    public interface onEditProfileListener {
+        void onEditProfile();
     }
 }

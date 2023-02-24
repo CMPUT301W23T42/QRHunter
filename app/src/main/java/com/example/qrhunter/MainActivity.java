@@ -4,10 +4,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 
+import androidx.activity.result.ActivityResultCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.qrhunter.fragments.LoginFragment;
@@ -29,8 +34,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "Main";
     private UserProfile profile;
-    private ViewPager2 viewPager;
     private TabManager tabManager;
+    private TabLayout tabLayout;
 
     private FirebaseFirestore db;
     DocumentReference docRef;
@@ -40,24 +45,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        profile = new UserProfile();
         final String ID = Settings.Secure.ANDROID_ID;
 
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("Users");
-
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
-        viewPager.setCurrentItem(5);
-        tabManager = new TabManager(this);
-        viewPager.setAdapter(tabManager);
-
         docRef = collectionReference.document(ID);
+
+        tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setVisibility(View.GONE);
+        tabManager = new TabManager(this);
+        tabLayout.selectTab(tabLayout.getTabAt(0));
+
+        getProfile(docRef);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                tabManager.switchFragment(position);
+                Log.d(TAG, "Tab Selected: " + position);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) { }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) { }
+        });
+    }
+
+    private void getProfile(DocumentReference docRef) {
+        profile = new UserProfile();
+
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document != null && document.exists()) {
-                    Log.i(TAG, "Getting firebase profile");
+                    Log.d(TAG, "Getting firebase profile");
                     Map<String, Object> data = document.getData();
 
                     profile.setUserName(data.get("UserName").toString());
@@ -66,14 +89,17 @@ public class MainActivity extends AppCompatActivity {
                     profile.setPhone(data.get("Phone").toString());
 
                     tabManager.setProfile(profile);
+                    Log.d(TAG, "result: " + data);
 
-                    viewPager.setCurrentItem(0);
+                    tabManager.switchFragment(0);
+                    tabLayout.setVisibility(View.VISIBLE);
                 } else {
-                    Log.i(TAG, "Failed");
-                    viewPager.setCurrentItem(5);
+                    Log.d(TAG, "Failed");
+                    tabManager.switchFragment(5);
                 }
             }
         });
+
         docRef.addSnapshotListener(MetadataChanges.INCLUDE, (value, error) -> {
             Log.d(TAG, "Snapshot Listener running");
             if (error != null) {
@@ -96,21 +122,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                Log.d("TabManager", "Tab Position " + position);
-                viewPager.setCurrentItem(position);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) { }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) { }
-        });
-
     }
-
 }

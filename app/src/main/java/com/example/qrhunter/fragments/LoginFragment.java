@@ -73,9 +73,9 @@ public class LoginFragment extends Fragment {
                         .set(data)
                         .addOnSuccessListener(unused -> {
                             Log.d(TAG, "Data has been added successfully!");
-                            ViewPager2 viewPager = getActivity().
-                                    findViewById(R.id.view_pager);
-                            viewPager.setCurrentItem(0);
+                            //ViewPager2 viewPager = getActivity().
+                                    //findViewById(R.id.view_pager);
+                            //viewPager.setCurrentItem(0);
                             tabLayout.setVisibility(View.VISIBLE);
                         })
                         .addOnFailureListener(e -> Log.d(TAG, "Data could not be added!" + e));
