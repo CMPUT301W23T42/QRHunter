@@ -1,12 +1,15 @@
 package com.example.qrhunter.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationRequest;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -37,6 +40,7 @@ import com.google.firebase.firestore.AggregateQuerySnapshot;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -87,10 +91,10 @@ public class ScannerFragment extends Fragment {
         countQuery.get(AggregateSource.SERVER).addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     AggregateQuerySnapshot snapshot = task.getResult();
                     System.out.println(snapshot.getCount());
-                    index = (int)snapshot.getCount();
+                    index = (int) snapshot.getCount();
                     System.out.println(index);
                 }
             }
@@ -111,6 +115,7 @@ public class ScannerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         scanCode();
+        askPermission();
     }
 
     public void scanCode() {
@@ -126,38 +131,37 @@ public class ScannerFragment extends Fragment {
     private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
 
         if (result.getContents() != null) {
-            Location location = getLocation();
-            System.out.println(location);
+            GeoPoint geoPoint = getLocation();
+            System.out.println(geoPoint);
             String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
             int score = score_algorithm(result.getContents());
 
-
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm");
             String date = simpleDateFormat.format(new Date());
-            Map<String,Object> QRInfo = new HashMap<>();
-            QRInfo.put("name",codeName);
-            QRInfo.put("date",date);
+            Map<String, Object> QRInfo = new HashMap<>();
+            QRInfo.put("name", codeName);
+            QRInfo.put("date", date);
             QRInfo.put("hash", hash);
-            QRInfo.put("owner",owner);
-            QRInfo.put("location",location);
-            QRInfo.put("score",score);
-            QRInfo.put("id",index+1);
+            QRInfo.put("owner", owner);
+            QRInfo.put("location", geoPoint);
+            QRInfo.put("score", score);
+//            QRInfo.put("id",index+1);
             CollectionReference CodeList = db.collection("CodeList");
-            CodeList.document(String.valueOf(index+1))
-                    .set(QRInfo)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d(TAG,"Document successfully written.");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG,"Error writing document"+e);
-                        }
-                    });
-
+            CodeList.add(QRInfo);
+//            CodeList.document(String.valueOf(index+1))
+//                    .set(QRInfo)
+//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void unused) {
+//                            Log.d(TAG,"Document successfully written.");
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Log.w(TAG,"Error writing document"+e);
+//                        }
+//                    });
 
 
 //            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -178,29 +182,47 @@ public class ScannerFragment extends Fragment {
     });
 
 
-    private Location getLocation() {
+    private void askPermission() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, 100);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         }
+    }
 
-        Location location = null;
+    @Nullable
+    private GeoPoint getLocation() {
+        //      Location location = null;
         LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         if (locationManager == null) {
             return null;
         }
+        Location location = null;
+
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000L, 0f, new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                }
+            });
+        }
         List<String> providers = locationManager.getProviders(true);
         for (String provider : providers) {
-
-
-            Location l = locationManager.getLastKnownLocation(provider);
-            if(l == null){
+            @SuppressLint("MissingPermission") Location l = locationManager.getLastKnownLocation(provider);
+            if (l == null){
                 continue;
             }
-            if (location == null || l.getAccuracy()<location.getAccuracy()){
+            if (location == null||location.getAccuracy() < l.getAccuracy()){
                 location = l;
             }
         }
-        return location;
+        if (location!= null){
+            int lat = (int) (location.getLatitude());
+            int lng = (int) (location.getLongitude());
+            GeoPoint geoPoint = new GeoPoint(lat,lng);
+            return geoPoint;
+        }else{
+            return null;
+        }
     }
 
 
