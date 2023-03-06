@@ -136,8 +136,9 @@ public class ScannerFragment extends Fragment {
             String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
             int score = score_algorithm(result.getContents());
 
-            simpleDateFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm");
+            simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date = simpleDateFormat.format(new Date());
+            System.out.println(date);
             Map<String, Object> QRInfo = new HashMap<>();
             QRInfo.put("name", codeName);
             QRInfo.put("date", date);
