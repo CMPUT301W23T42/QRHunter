@@ -1,7 +1,12 @@
 package com.example.qrhunter.fragments;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -9,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -18,16 +24,40 @@ import android.view.ViewGroup;
 
 import com.example.qrhunter.CaptureAct;
 
+import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
+import com.google.firebase.firestore.AggregateQuery;
+import com.google.firebase.firestore.AggregateQuerySnapshot;
+import com.google.firebase.firestore.AggregateSource;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ScannerFragment extends Fragment {
     private final String TAG = "Scanner Fragment";
     private onCameraClose listener;
+
+    private String codeName = "SuperShark";
+    FirebaseFirestore db;
+    FusedLocationProviderClient client;
+    SimpleDateFormat simpleDateFormat;
+    String owner = "Roy";
+    int index = 0;
 
     public ScannerFragment() {
         // Required empty public constructor
@@ -50,6 +80,22 @@ public class ScannerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+
+        db = FirebaseFirestore.getInstance();
+        Query query = db.collection("CodeList");
+        AggregateQuery countQuery = query.count();
+        countQuery.get(AggregateSource.SERVER).addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    AggregateQuerySnapshot snapshot = task.getResult();
+                    System.out.println(snapshot.getCount());
+                    index = (int)snapshot.getCount();
+                    System.out.println(index);
+                }
+            }
+        });
+
 
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
@@ -76,27 +122,91 @@ public class ScannerFragment extends Fragment {
         barLauncher.launch(options);
     }
 
+
     private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
 
         if (result.getContents() != null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Result");
-            Log.d(TAG, "Alert builder instantiated");
-            String message = result.getContents().concat("\n");
-            message = message.concat(Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString().concat("\n"));
-            message = message.concat(Integer.toString(score_algorithm(result.getContents())));
-            builder.setMessage(message);
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    listener.onCameraClose();
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            Location location = getLocation();
+            System.out.println(location);
+            String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
+            int score = score_algorithm(result.getContents());
+
+
+            simpleDateFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm");
+            String date = simpleDateFormat.format(new Date());
+            Map<String,Object> QRInfo = new HashMap<>();
+            QRInfo.put("name",codeName);
+            QRInfo.put("date",date);
+            QRInfo.put("hash", hash);
+            QRInfo.put("owner",owner);
+            QRInfo.put("location",location);
+            QRInfo.put("score",score);
+            QRInfo.put("id",index+1);
+            CollectionReference CodeList = db.collection("CodeList");
+            CodeList.document(String.valueOf(index+1))
+                    .set(QRInfo)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d(TAG,"Document successfully written.");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG,"Error writing document"+e);
+                        }
+                    });
+
+
+
+//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//            builder.setTitle("Result");
+//            Log.d(TAG, "Alert builder instantiated");
+//            String message = result.getContents().concat("\n");
+//            message = message.concat(Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString().concat("\n"));
+//            message = message.concat(Integer.toString(score_algorithm(result.getContents())));
+//            builder.setMessage(message);
+//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    listener.onCameraClose();
+//                    dialog.dismiss();
+//                }
+//            }).show();
         }
     });
+
+
+    private Location getLocation() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, 100);
+        }
+
+        Location location = null;
+        LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null) {
+            return null;
+        }
+        List<String> providers = locationManager.getProviders(true);
+        for (String provider : providers) {
+
+
+            Location l = locationManager.getLastKnownLocation(provider);
+            if(l == null){
+                continue;
+            }
+            if (location == null || l.getAccuracy()<location.getAccuracy()){
+                location = l;
+            }
+        }
+        return location;
+    }
+
+
+
+
+
 
     public int score_algorithm(String string) {
         String SHA = Hashing.sha256().hashString(string, StandardCharsets.UTF_8).toString();
