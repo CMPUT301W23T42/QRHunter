@@ -216,9 +216,7 @@ public class ScannerFragment extends Fragment {
             }
         }
         if (location!= null){
-            int lat = (int) (location.getLatitude());
-            int lng = (int) (location.getLongitude());
-            GeoPoint geoPoint = new GeoPoint(lat,lng);
+            GeoPoint geoPoint = new GeoPoint(location.getLatitude(),location.getLongitude());
             return geoPoint;
         }else{
             return null;
