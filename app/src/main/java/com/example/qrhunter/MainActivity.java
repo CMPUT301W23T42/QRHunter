@@ -17,10 +17,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.qrhunter.fragments.LoginFragment;
 import com.example.qrhunter.fragments.ProfileFragment;
+import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.MetadataChanges;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setVisibility(View.GONE);
         tabManager = new TabManager(this);
         tabLayout.selectTab(tabLayout.getTabAt(0));
-
         getProfile(docRef);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

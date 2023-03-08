@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.example.qrhunter.CaptureAct;
 
 import com.example.qrhunter.R;
+import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.google.common.hash.Hashing;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -83,8 +84,12 @@ public class ScannerFragment extends Fragment {
             builder.setTitle("Result");
             Log.d(TAG, "Alert builder instantiated");
             String message = result.getContents().concat("\n");
+            QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
+            String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
             message = message.concat(Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString().concat("\n"));
-            message = message.concat(Integer.toString(score_algorithm(result.getContents())));
+            message = message.concat(Integer.toString(score_algorithm(result.getContents()))).concat("\n");
+            String name = nameGenerator.createQRName(hash);
+            message = message.concat(name);
             builder.setMessage(message);
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
