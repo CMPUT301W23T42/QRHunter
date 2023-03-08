@@ -29,11 +29,15 @@ import com.example.qrhunter.CaptureAct;
 
 import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.R;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+import com.example.qrhunter.generators.QrCodeNameGenerator;
+
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.AggregateQuery;
 import com.google.firebase.firestore.AggregateQuerySnapshot;
@@ -131,6 +135,7 @@ public class ScannerFragment extends Fragment {
     private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
 
         if (result.getContents() != null) {
+
             GeoPoint geoPoint = getLocation();
             System.out.println(geoPoint);
             String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
@@ -201,6 +206,7 @@ public class ScannerFragment extends Fragment {
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000L, 0f, new LocationListener() {
+
                 @Override
                 public void onLocationChanged(@NonNull Location location) {
                 }
