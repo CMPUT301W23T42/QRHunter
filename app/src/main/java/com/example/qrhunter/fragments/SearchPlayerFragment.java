@@ -9,14 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.qrhunter.CustomAdapter;
+import com.example.qrhunter.SearchAdapter;
 import com.example.qrhunter.R;
 import com.example.qrhunter.UserListItem;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,7 +24,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 
@@ -35,7 +33,8 @@ public class SearchPlayerFragment extends Fragment {
     final CollectionReference collectionReference = db.collection("Users");
     ListView playerListView;
     ArrayList<UserListItem> usernames;
-    CustomAdapter usernamesArrayAdapter;
+    EditText searchEditText;
+    SearchAdapter usernamesArrayAdapter;
 
     public SearchPlayerFragment() {
         // Required empty public constructor
@@ -50,6 +49,8 @@ public class SearchPlayerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         playerListView = view.findViewById(R.id.player_list_list_view);
+        searchEditText = view.findViewById(R.id.search_profile_edit_text);
+
 
         usernames = new ArrayList<UserListItem>();
 
@@ -65,8 +66,26 @@ public class SearchPlayerFragment extends Fragment {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
 
-                usernamesArrayAdapter = new CustomAdapter(getContext(), usernames);
+                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
                 playerListView.setAdapter(usernamesArrayAdapter);
+            }
+        });
+
+        // Add a text change listener to the search EditText to filter the list
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (usernamesArrayAdapter != null) {
+                    usernamesArrayAdapter.getFilter().filter(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
 
@@ -74,3 +93,7 @@ public class SearchPlayerFragment extends Fragment {
     }
 
 }
+
+
+
+
