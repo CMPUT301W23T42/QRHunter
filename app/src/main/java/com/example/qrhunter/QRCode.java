@@ -4,7 +4,7 @@ import android.location.Location;
 
 import java.util.Date;
 
-public class QRCode {
+public class QRCode implements Comparable<QRCode>{
     private String date;
     private String hash;
     private String name;
@@ -49,5 +49,10 @@ public class QRCode {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(QRCode qrCode) {
+        return this.score - qrCode.getScore();
     }
 }

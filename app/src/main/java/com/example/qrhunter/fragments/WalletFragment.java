@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.qrhunter.CustomList;
@@ -30,10 +31,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class WalletFragment extends Fragment {
 
+    RadioButton descendingSort, ascendingSort;
     ListView qrList;
     ArrayAdapter<QRCode> qrAdapter;
     ArrayList<QRCode> qrDataList;
@@ -47,6 +52,9 @@ public class WalletFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wallet, container, false);
+
+        descendingSort = view.findViewById(R.id.rb_descending);
+        ascendingSort = view.findViewById(R.id.rb_ascending);
 
         totalScanned = view.findViewById(R.id.tv_total_scanned);
         totalPoints = view.findViewById(R.id.tv_total_points);
@@ -100,6 +108,20 @@ public class WalletFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //Open QR profile fragment
+            }
+        });
+
+        descendingSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.sort(qrDataList);
+            }
+        });
+
+        ascendingSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.reverse(qrDataList);
             }
         });
 
