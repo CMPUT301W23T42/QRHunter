@@ -1,5 +1,6 @@
 package com.example.qrhunter.fragments;
 
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,11 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WalletFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class WalletFragment extends Fragment {
 
     ListView qrList;
@@ -69,11 +66,18 @@ public class WalletFragment extends Fragment {
                 qrDataList.clear();
 
                 for (QueryDocumentSnapshot doc: value) {
-                    String ownerName = (String) doc.getData().get("owner")
+                    String ownerName = (String) doc.getData().get("owner");
                     if (ownerName.equals("Roy")) {
                         Log.d(TAG, "Show list of QR codes");
+                        String id = doc.getId();
+                        String date = (String) doc.getData().get("date");
                         String hash = (String) doc.getData().get("hash");
-                        qrDataList.add(new QRCode(hash));
+                        Location location = (Location) doc.getData().get("location");
+                        String name = (String) doc.getData().get("name");
+                        String owner = (String) doc.getData().get("owner");
+                        int score = (int) doc.getData().get("score");
+
+                        qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
                     }
                 }
                 qrAdapter.notifyDataSetChanged();
@@ -86,7 +90,7 @@ public class WalletFragment extends Fragment {
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String id = qrAdapter.getItem(i).getID();
+                String id = qrAdapter.getItem(i).getId();
                 deleteData(id);
                 return true;
             }
@@ -122,7 +126,7 @@ public class WalletFragment extends Fragment {
     private int countPoints() {
         int points = 0;
         for (int i = 0; i < qrDataList.size(); i++) {
-            points += qrDataList.indexOf(i).getPoints();
+            points += qrDataList.get(i).getScore();
         }
         return points;
     }

@@ -5,57 +5,49 @@ import android.location.Location;
 import java.util.Date;
 
 public class QRCode {
-    private String name;
     private String date;
-    private String owner;
-    private int id;
+    private String hash;
+    private String name;
     private Location location;
+    private String owner;
+    private int score;
+    private String id;
 
-    public QRCode(String name, String date, String owner, int id, Location location) {
-        this.name = name;
+    public QRCode(String date, String hash, String name, Location location, String owner, int score, String id) {
         this.date = date;
-        this.owner = owner;
-        this.id = id;
-        this.location = location;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+        this.hash = hash;
         this.name = name;
+        this.location = location;
+        this.owner = owner;
+        this.score = score;
+        this.id = id;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String  date) {
-        this.date = date;
+    public String getHash() {
+        return hash;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
     public Location getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public String getOwner() {
+        return owner;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getId() {
+        return id;
     }
 }
