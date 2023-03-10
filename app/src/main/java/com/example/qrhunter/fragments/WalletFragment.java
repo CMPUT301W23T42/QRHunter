@@ -122,6 +122,7 @@ public class WalletFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Collections.sort(qrDataList);
+                qrAdapter.notifyDataSetChanged();
             }
         });
 
@@ -129,6 +130,7 @@ public class WalletFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Collections.reverse(qrDataList);
+                qrAdapter.notifyDataSetChanged();
             }
         });
 
