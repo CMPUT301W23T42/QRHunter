@@ -2,18 +2,20 @@ package com.example.qrhunter;
 
 import android.location.Location;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.Date;
 
 public class QRCode implements Comparable<QRCode>{
     private String date;
     private String hash;
     private String name;
-    private Location location;
+    private GeoPoint location;
     private String owner;
     private int score;
     private String id;
 
-    public QRCode(String date, String hash, String name, Location location, String owner, int score, String id) {
+    public QRCode(String date, String hash, String name, GeoPoint location, String owner, int score, String id) {
         this.date = date;
         this.hash = hash;
         this.name = name;
@@ -35,7 +37,7 @@ public class QRCode implements Comparable<QRCode>{
         return name;
     }
 
-    public Location getLocation() {
+    public GeoPoint getLocation() {
         return location;
     }
 

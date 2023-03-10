@@ -29,6 +29,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -65,7 +66,7 @@ public class WalletFragment extends Fragment {
         qrDataList = new ArrayList<>();
         qrAdapter = new CustomList(this.getActivity(), qrDataList);
 
-
+        db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("CodeList");
 
         // Add Floating Action Button work
@@ -85,20 +86,20 @@ public class WalletFragment extends Fragment {
                         String id = doc.getId();
                         String date = (String) doc.getData().get("date");
                         String hash = (String) doc.getData().get("hash");
-                        Location location = (Location) doc.getData().get("location");
+                        GeoPoint location = (GeoPoint) doc.getData().get("location");
                         String name = (String) doc.getData().get("name");
                         String owner = (String) doc.getData().get("owner");
-                        String score = (String) doc.getData().get("score");
+                        Long score = (Long) doc.getData().get("score");
 
-                        qrDataList.add(new QRCode(date, hash, name, location, owner, Integer.parseInt(score), id));
+                        qrDataList.add(new QRCode(date, hash, name, location, owner, Math.toIntExact(score), id));
                     }
                 }
                 qrAdapter.notifyDataSetChanged();
             }
         });
 
-        totalPoints.setText(countPoints());
-        totalScanned.setText(qrDataList.size());
+//        totalPoints.setText(countPoints());
+//        totalScanned.setText(qrDataList.size());
 
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
