@@ -65,6 +65,7 @@ public class WalletFragment extends Fragment {
         qrDataList = new ArrayList<>();
         qrAdapter = new CustomList(this.getActivity(), qrDataList);
 
+
         CollectionReference collectionReference = db.collection("CodeList");
 
         // Add Floating Action Button work
@@ -75,8 +76,10 @@ public class WalletFragment extends Fragment {
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 qrDataList.clear();
 
+                assert value != null;
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
+                    assert ownerName != null;
                     if (ownerName.equals("Roy")) {
                         Log.d(TAG, "Show list of QR codes");
                         String id = doc.getId();
@@ -85,9 +88,9 @@ public class WalletFragment extends Fragment {
                         Location location = (Location) doc.getData().get("location");
                         String name = (String) doc.getData().get("name");
                         String owner = (String) doc.getData().get("owner");
-                        int score = (int) doc.getData().get("score");
+                        String score = (String) doc.getData().get("score");
 
-                        qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
+                        qrDataList.add(new QRCode(date, hash, name, location, owner, Integer.parseInt(score), id));
                     }
                 }
                 qrAdapter.notifyDataSetChanged();
