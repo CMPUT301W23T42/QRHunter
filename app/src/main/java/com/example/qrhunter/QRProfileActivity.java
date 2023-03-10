@@ -148,7 +148,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
 
 
         // deal with the same QR code scanned by other player.
-        QRCode qrCode = new QRCode("hunter","2022-12-12","bob",1,null);
+        QRCode qrCode = new QRCode("2022-12-12","2ca0a77816f6dce72e5c147cc2225cf1392362abaff9d70c7d40de1298de9006","hunter",null,"Roy", 60, "kkAR0oZisLLwigCNibMV");
         qrDataList = new ArrayList<>();
         qrDataList.add(qrCode);
         sameQRList = findViewById(R.id.same_QR_code_listview);

@@ -15,6 +15,7 @@ import com.example.qrhunter.fragments.HomeFragment;
 import com.example.qrhunter.fragments.LoginFragment;
 import com.example.qrhunter.fragments.ProfileFragment;
 import com.example.qrhunter.fragments.ScannerFragment;
+import com.example.qrhunter.fragments.WalletFragment;
 import com.example.qrhunter.fragments.SearchPlayerFragment;
 
 public class TabManager implements UserInfo {
@@ -82,7 +83,7 @@ public class TabManager implements UserInfo {
                 break;
 
             default:
-                currentFragment = new HomeFragment();
+                currentFragment = new WalletFragment();
                 break;
         }
         replaceFragment(currentFragment);
