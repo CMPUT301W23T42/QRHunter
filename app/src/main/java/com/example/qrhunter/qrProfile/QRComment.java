@@ -1,5 +1,8 @@
-package com.example.qrhunter;
+package com.example.qrhunter.qrProfile;
 
+/**
+ * This class defines a QR code comment
+ */
 public class QRComment{
     private String comment;
     private String date;

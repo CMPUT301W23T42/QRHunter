@@ -1,7 +1,6 @@
 package com.example.qrhunter.fragments;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,14 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.qrhunter.CustomList;
 import com.example.qrhunter.QRCode;
-import com.example.qrhunter.QRProfileActivity;
+import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.example.qrhunter.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,9 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 
 
 public class WalletFragment extends Fragment {

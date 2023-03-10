@@ -6,6 +6,9 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Date;
 
+/**
+ * This class defines a QR code.
+ */
 public class QRCode implements Comparable<QRCode>{
     private String date;
     private String hash;

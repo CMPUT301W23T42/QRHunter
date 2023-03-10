@@ -1,12 +1,11 @@
-package com.example.qrhunter;
+package com.example.qrhunter.qrProfile;
 
 import android.content.Intent;
-import android.location.Location;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,21 +13,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrhunter.MainActivity;
+import com.example.qrhunter.QRCode;
+import com.example.qrhunter.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class QRProfileActivity extends AppCompatActivity implements AddCommentFragment.AddCommentDialogListener{
+public class QRProfileActivity extends AppCompatActivity implements AddCommentFragment.AddCommentDialogListener {
 
     ListView sameQRList;
     SameQRCodeAdapter sameQRAdapter;
@@ -55,6 +53,8 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
     TextView qrDate;
     Button qrLocation;
 
+    ImageView returnButton;
+
     FirebaseFirestore db;
     SimpleDateFormat simpleDateFormat;
 
@@ -66,6 +66,11 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
     private String user_name;
 
 
+    /**
+     * Add comment to the database
+     * @param comment
+     * comment the user input.
+     */
     @Override
     public void addComment(String comment) {
         db = FirebaseFirestore.getInstance();
@@ -110,7 +115,14 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
 
         db = FirebaseFirestore.getInstance();
 
-
+        returnButton = findViewById(R.id.returnButtonImage);
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(QRProfileActivity.this, MainActivity.class);
+                startActivity(intent1);
+            }
+        });
 
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -119,6 +131,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         qrOwner = findViewById(R.id.QR_profile_owner);
         qrScore = findViewById(R.id.QR_profile_score);
         qrDate = findViewById(R.id.QR_profile_date);
+
         DocumentReference QRReference = db.collection("CodeList").document(String.valueOf(QR_id));
         QRReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
