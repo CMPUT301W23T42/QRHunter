@@ -1,5 +1,6 @@
 package com.example.qrhunter.fragments;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.qrhunter.CustomList;
 import com.example.qrhunter.QRCode;
+import com.example.qrhunter.QRProfileActivity;
 import com.example.qrhunter.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -107,7 +109,10 @@ public class WalletFragment extends Fragment {
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Open QR profile fragment
+                Intent intent = new Intent(getActivity(), QRProfileActivity.class);
+                intent.putExtra("DOC_ID", qrDataList.get(i).getId());
+                intent.putExtra("OWNER_NAME", qrDataList.get(i).getOwner());
+                startActivity(intent);
             }
         });
 
