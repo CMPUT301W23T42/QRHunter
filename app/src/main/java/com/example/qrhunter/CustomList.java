@@ -39,8 +39,8 @@ public class CustomList extends ArrayAdapter<QRCode> {
         TextView qrName = view.findViewById(R.id.tv_qr_name);
         TextView qrPoints = view.findViewById(R.id.tv_wallet_points);
 
-//        qrName.setText(code.getName());
-//        qrPoints.setText(code.getScore());
+        qrName.setText(code.getName());
+        qrPoints.setText(Integer.toString(code.getScore()));
         // image stuff
 
         return view;

@@ -70,9 +70,6 @@ public class WalletFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("CodeList");
 
-        // Add Floating Action Button work
-        // Image Stuff
-
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -99,8 +96,8 @@ public class WalletFragment extends Fragment {
             }
         });
 
-//        totalPoints.setText(countPoints());
-//        totalScanned.setText(qrDataList.size());
+        totalPoints.setText(Integer.toString(countPoints()));
+        totalScanned.setText(Integer.toString(qrDataList.size()));
 
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
