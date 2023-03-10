@@ -236,7 +236,9 @@ public class ScannerFragment extends Fragment {
 
 
     public int score_algorithm(String string) {
-        String SHA = Hashing.sha256().hashString(string, StandardCharsets.UTF_8).toString();
+        String SHA = Hashing.sha256().hashString("BFG5DGW54", StandardCharsets.UTF_8).toString();
+        System.out.print(SHA);
+        //SHA = "61606b9663e7b844c189d7b30444e76ecb46b45bad279b0bebf1a23eef236f49";
         int score = 0;
         int i = 0;
         while (i < SHA.length()-1) {
@@ -256,6 +258,8 @@ public class ScannerFragment extends Fragment {
             }
             i += j;
         }
+        System.out.print("QR CODE SCORE:");
+        System.out.print(score);
         return score;
     }
 

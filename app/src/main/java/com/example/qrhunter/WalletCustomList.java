@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.qrhunter.generators.QrCodeImageGenerator;
+import com.example.qrhunter.generators.QrCodeNameGenerator;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,9 @@ public class WalletCustomList extends ArrayAdapter<QRCode> {
         ImageView qrFrame = view.findViewById(R.id.qr_wallet_frame);
         ImageView qrRest = view.findViewById(R.id.qr_wallet_rest);
         ImageView qrSquare = view.findViewById(R.id.qr_wallet_square);
-        qrName.setText(code.getName());
+        QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
+
+        qrName.setText(nameGenerator.createQRName(code.getHash()));
         qrPoints.setText(Integer.toString(code.getScore()));
 
         QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();

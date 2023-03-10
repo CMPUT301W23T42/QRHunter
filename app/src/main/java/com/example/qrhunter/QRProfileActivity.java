@@ -62,10 +62,9 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
     FirebaseFirestore db;
     SimpleDateFormat simpleDateFormat;
 
-    private int QR_id = 1;
+    private String QR_id;
     private String TAG = "Comment";
     private String user_name = "Roy";
-
     @Override
     public void addComment(String comment) {
         db = FirebaseFirestore.getInstance();
@@ -101,6 +100,10 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         db = FirebaseFirestore.getInstance();
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.getString("DOC_ID") != null) {
+            this.QR_id = bundle.getString("DOC_ID");
+        }
         // add the name and information of the chosen QR code
         qrName = findViewById(R.id.QR_profile_name);
         qrOwner = findViewById(R.id.QR_profile_owner);
@@ -109,7 +112,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         qrFrame = findViewById(R.id.qr_profile_frame);
         qrRest = findViewById(R.id.qr_profile_rest);
         qrSquare = findViewById(R.id.qr_profile_square);
-        DocumentReference QRReference = db.collection("CodeList").document(String.valueOf(QR_id));
+        DocumentReference QRReference = db.collection("CodeList").document(QR_id);
         QRReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

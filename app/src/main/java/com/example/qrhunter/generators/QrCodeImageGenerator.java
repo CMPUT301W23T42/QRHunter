@@ -12,11 +12,9 @@ import com.example.qrhunter.R;
  * This class handles QRCode image generation
  */
 public class QrCodeImageGenerator extends AppCompatActivity implements QrCodeRepresentative{
-    protected int [] drawablesInts = {
-            R.drawable.frame_black, R.drawable.frame_red, R.drawable.frame_green, R.drawable.frame_blue,
-            R.drawable.rest_black, R.drawable.rest_red, R.drawable.rest_green, R.drawable.rest_blue,
-            R.drawable.square_black, R.drawable.square_red, R.drawable.square_green, R.drawable.square_blue
-    };
+    protected  int [] drawableFrames = {R.drawable.frame_black, R.drawable.frame_red, R.drawable.frame_green, R.drawable.frame_blue};
+    protected  int [] drawableRests = {R.drawable.rest_black, R.drawable.rest_red, R.drawable.rest_green, R.drawable.rest_blue};
+    protected int [] drawableSquares = {R.drawable.square_black, R.drawable.square_red, R.drawable.square_green, R.drawable.square_blue};
     protected final int imageNumber = 3;
 
     /***
@@ -34,22 +32,20 @@ public class QrCodeImageGenerator extends AppCompatActivity implements QrCodeRep
      */
     public void setQRCodeImage(String hex_string, ImageView imgFrame, ImageView imgRest, ImageView imgSquare) {
         String bit_string = hex_to_bit(hex_string);
-        System.out.print(bit_string);
 
         for (int i = 0; i < imageNumber; i++) {
             char firstChar = bit_string.charAt(2*i);
             char secondChar = bit_string.charAt(2*i+1);
-            int index = 4 * i + Character.getNumericValue(firstChar) + 2*Character.getNumericValue(secondChar);
-            System.out.print(index); System.out.print("\n");
+            int index = Character.getNumericValue(firstChar) + 2*Character.getNumericValue(secondChar);
             switch (i) {
                 case 0:
-                    imgFrame.setImageResource(drawablesInts[index]);
+                    imgFrame.setImageResource(drawableFrames[index]);
                     break;
                 case 1:
-                    imgRest.setImageResource(drawablesInts[index]);
+                    imgRest.setImageResource(drawableRests[index]);
                     break;
                 case 2:
-                    imgSquare.setImageResource(drawablesInts[index]);
+                    imgSquare.setImageResource(drawableSquares[index]);
                     break;
             }
 
