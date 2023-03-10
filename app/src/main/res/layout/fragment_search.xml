@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_background">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="@string/search_player"
+        android:textColor="@color/white"
+        android:fontFamily="@font/rajdhani_bold"
+        android:textSize="30sp"
+        android:textStyle="bold">
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <EditText
+            android:id="@+id/search_profile_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:drawableLeft="@drawable/search_icon"
+            android:inputType="textPersonName"
+            android:hint="Search Player"
+            android:background="@drawable/search_player_edit_text_style"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Leaderboard: "
+            android:textSize="30sp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rajdhani_bold">
+        </TextView>
+
+        <ListView
+            android:id="@+id/player_list_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+    </LinearLayout>
+
+</LinearLayout>
