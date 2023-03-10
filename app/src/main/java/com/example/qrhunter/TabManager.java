@@ -15,6 +15,7 @@ import com.example.qrhunter.fragments.HomeFragment;
 import com.example.qrhunter.fragments.LoginFragment;
 import com.example.qrhunter.fragments.ProfileFragment;
 import com.example.qrhunter.fragments.ScannerFragment;
+import com.example.qrhunter.fragments.SearchPlayerFragment;
 
 public class TabManager implements UserInfo {
     private final String TAG = "Tab Manager";
@@ -57,6 +58,12 @@ public class TabManager implements UserInfo {
                     }
                 });
                 currentFragment = profileFragment;
+                break;
+
+            case 3:
+                SearchPlayerFragment searchPlayerFragment = new SearchPlayerFragment();
+
+                currentFragment = searchPlayerFragment;
                 break;
 
             case 6:
