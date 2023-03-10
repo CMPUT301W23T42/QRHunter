@@ -1,5 +1,6 @@
 package com.example.qrhunter;
 
+import android.content.Intent;
 import android.location.Location;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,9 +58,13 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
     FirebaseFirestore db;
     SimpleDateFormat simpleDateFormat;
 
-    private int QR_id = 1;
-    private String TAG = "Comment";
-    private String user_name = "Roy";
+
+    private String QR_id;
+
+
+    private String TAG = "QRProfile";
+    private String user_name;
+
 
     @Override
     public void addComment(String comment) {
@@ -71,8 +77,10 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         data.put("user_name",user_name);
         int size = qrCommentDataList.size();
         String commentName = "c" + String.valueOf(size+1);
+        Map<String,Map> commentInfo = new HashMap<>();
+        commentInfo.put(commentName,data);
         QRCodeCommentReference
-                .update(commentName,data)
+                .set(commentInfo, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -92,7 +100,18 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_profile);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        QR_id = bundle.getString("DOC_ID");
+        user_name = bundle.getString("OWNER_NAME");
+        System.out.println(QR_id);
+        System.out.println(user_name);
+
         db = FirebaseFirestore.getInstance();
+
+
+
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         // add the name and information of the chosen QR code
@@ -172,31 +191,61 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
 
 
         // update the list when new comment is added.
-        db.collection("Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("Comments").document(QR_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                qrCommentDataList.clear();
-                for(QueryDocumentSnapshot doc:value){
-                    Collection<Object> docAll = doc.getData().values();
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value.getData() != null){
+                    qrCommentDataList.clear();
+                    Collection<Object> docAll = value.getData().values();
 
                     System.out.println(docAll);
                     for(Object commentData: docAll){
                         Map<String,String> comment = (Map<String, String>) commentData;
-                       qrCommentDataList.add(new QRComment(comment.get("comment"),comment.get("date"),comment.get("user_name")));
+                        qrCommentDataList.add(new QRComment(comment.get("comment"),comment.get("date"),comment.get("user_name")));
                     }
 
+
+                    Collections.sort(qrCommentDataList, new Comparator<QRComment>() {
+                        @Override
+                        public int compare(QRComment o1, QRComment o2) {
+                            return -o1.getDate().compareTo(o2.getDate());
+                        }
+                    });
+
+                    qrCommentAdapter.notifyDataSetChanged();
                 }
 
-                Collections.sort(qrCommentDataList, new Comparator<QRComment>() {
-                    @Override
-                    public int compare(QRComment o1, QRComment o2) {
-                        return -o1.getDate().compareTo(o2.getDate());
-                    }
-                });
-
-                qrCommentAdapter.notifyDataSetChanged();
             }
         });
+
+
+
+
+//                addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                qrCommentDataList.clear();
+//                for(QueryDocumentSnapshot doc:value){
+//                    Collection<Object> docAll = doc.getData().values();
+//
+//                    System.out.println(docAll);
+//                    for(Object commentData: docAll){
+//                        Map<String,String> comment = (Map<String, String>) commentData;
+//                       qrCommentDataList.add(new QRComment(comment.get("comment"),comment.get("date"),comment.get("user_name")));
+//                    }
+//
+//                }
+//
+//                Collections.sort(qrCommentDataList, new Comparator<QRComment>() {
+//                    @Override
+//                    public int compare(QRComment o1, QRComment o2) {
+//                        return -o1.getDate().compareTo(o2.getDate());
+//                    }
+//                });
+//
+//                qrCommentAdapter.notifyDataSetChanged();
+//            }
+//        });
 
 
     }

@@ -60,7 +60,7 @@ public class ScannerFragment extends Fragment {
     private final String TAG = "Scanner Fragment";
     private onCameraClose listener;
 
-    private String codeName = "SuperShark";
+
     FirebaseFirestore db;
     FusedLocationProviderClient client;
     SimpleDateFormat simpleDateFormat;
@@ -144,6 +144,9 @@ public class ScannerFragment extends Fragment {
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date = simpleDateFormat.format(new Date());
             System.out.println(date);
+
+            QrCodeNameGenerator qrCodeNameGenerator = new QrCodeNameGenerator();
+            String codeName = qrCodeNameGenerator.createQRName(hash);
             Map<String, Object> QRInfo = new HashMap<>();
             QRInfo.put("name", codeName);
             QRInfo.put("date", date);
