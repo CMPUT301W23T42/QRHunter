@@ -4,9 +4,10 @@ import android.location.Location;
 
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.Comparator;
 import java.util.Date;
 
-public class QRCode implements Comparable<QRCode>{
+public class QRCode {
     private String date;
     private String hash;
     private String name;
@@ -53,8 +54,17 @@ public class QRCode implements Comparable<QRCode>{
         return id;
     }
 
-    @Override
-    public int compareTo(QRCode qrCode) {
-        return this.score - qrCode.getScore();
-    }
+    public static Comparator<QRCode> ascendingOrder = new Comparator<QRCode>() {
+        @Override
+        public int compare(QRCode qrCode, QRCode t1) {
+            return qrCode.getScore() - t1.getScore();
+        }
+    };
+
+    public static Comparator<QRCode> descendingOrder = new Comparator<QRCode>() {
+        @Override
+        public int compare(QRCode qrCode, QRCode t1) {
+            return t1.getScore() - qrCode.getScore();
+        }
+    };
 }
