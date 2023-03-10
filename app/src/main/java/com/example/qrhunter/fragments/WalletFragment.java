@@ -13,8 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.qrhunter.WalletCustomList;
@@ -36,7 +41,7 @@ import java.util.Collections;
 
 
 public class WalletFragment extends Fragment {
-
+    RadioGroup radioGroup;
     RadioButton descendingSort, ascendingSort;
     ListView qrList;
     ArrayAdapter<QRCode> qrAdapter;
@@ -54,6 +59,7 @@ public class WalletFragment extends Fragment {
 
         descendingSort = view.findViewById(R.id.rb_descending);
         ascendingSort = view.findViewById(R.id.rb_ascending);
+        radioGroup = view.findViewById(R.id.rg_sort);
 
         totalScanned = view.findViewById(R.id.tv_total_scanned);
         totalPoints = view.findViewById(R.id.tv_total_points);
@@ -89,11 +95,23 @@ public class WalletFragment extends Fragment {
                     }
                 }
                 qrAdapter.notifyDataSetChanged();
+                totalPoints.setText(Integer.toString(countPoints()));
+                totalScanned.setText(Integer.toString(qrDataList.size()));
             }
         });
 
-        totalPoints.setText(Integer.toString(countPoints()));
-        totalScanned.setText(Integer.toString(qrDataList.size()));
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (i == R.id.rb_ascending) {
+                    Collections.sort(qrDataList, QRCode.ascendingOrder);
+                    qrAdapter.notifyDataSetChanged();
+                } else if (i == R.id.rb_descending) {
+                    Collections.sort(qrDataList, QRCode.descendingOrder);
+                    qrAdapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -111,22 +129,6 @@ public class WalletFragment extends Fragment {
                 intent.putExtra("DOC_ID", qrDataList.get(i).getId());
                 intent.putExtra("OWNER_NAME", qrDataList.get(i).getOwner());
                 startActivity(intent);
-            }
-        });
-
-        descendingSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Collections.sort(qrDataList);
-                qrAdapter.notifyDataSetChanged();
-            }
-        });
-
-        ascendingSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Collections.reverse(qrDataList);
-                qrAdapter.notifyDataSetChanged();
             }
         });
 
@@ -157,4 +159,5 @@ public class WalletFragment extends Fragment {
         }
         return points;
     }
+
 }
