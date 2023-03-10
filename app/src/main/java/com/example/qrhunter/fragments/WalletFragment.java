@@ -65,6 +65,7 @@ public class WalletFragment extends Fragment {
         qrList = view.findViewById(R.id.qr_list);
         qrDataList = new ArrayList<>();
         qrAdapter = new CustomList(this.getActivity(), qrDataList);
+        qrList.setAdapter(qrAdapter);
 
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("CodeList");
