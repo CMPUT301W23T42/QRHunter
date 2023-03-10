@@ -161,5 +161,4 @@ public class WalletFragment extends Fragment {
         return points;
     }
 
-
 }
