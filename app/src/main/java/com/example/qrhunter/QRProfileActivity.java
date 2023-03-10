@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.qrhunter.generators.QrCodeImageGenerator;
+import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,6 +54,9 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
     TextView qrScore;
     TextView qrOwner;
     TextView qrDate;
+    ImageView qrFrame;
+    ImageView qrRest;
+    ImageView qrSquare;
     Button qrLocation;
 
     FirebaseFirestore db;
@@ -100,6 +106,9 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         qrOwner = findViewById(R.id.QR_profile_owner);
         qrScore = findViewById(R.id.QR_profile_score);
         qrDate = findViewById(R.id.QR_profile_date);
+        qrFrame = findViewById(R.id.qr_profile_frame);
+        qrRest = findViewById(R.id.qr_profile_rest);
+        qrSquare = findViewById(R.id.qr_profile_square);
         DocumentReference QRReference = db.collection("CodeList").document(String.valueOf(QR_id));
         QRReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -107,10 +116,15 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
                 if (task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                     Map<String, Object> QRData = document.getData();
-                    qrName.setText("Name:"+QRData.get("name").toString());
+                    String hash = QRData.get("hash").toString();
+                    QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
+                    QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
+                    imageGenerator.setQRCodeImage(hash, qrFrame, qrRest, qrSquare);
+                    qrName.setText(nameGenerator.createQRName(hash));
                     qrOwner.setText("Owner:"+QRData.get("owner").toString());
                     qrScore.setText("Score:"+QRData.get("score").toString());
                     qrDate.setText("Date:"+QRData.get("date").toString());
+
                 }
             }
         });
