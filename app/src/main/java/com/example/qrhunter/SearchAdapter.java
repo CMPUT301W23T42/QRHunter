@@ -32,9 +32,9 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;
 
-        if(convertView == null){
+        if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.player_list_items, parent, false);
-        }else{
+        } else {
             view = convertView;
         }
 
@@ -46,10 +46,18 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
 
             usernameTextView.setText(userListItem.getUsername());
             scoreTextView.setText(String.valueOf(userListItem.getScore()));
-        }
-        return view;
+        } else {
+            // Set text views to empty strings for empty items
+            usernameTextView = view.findViewById(R.id.player_username_text_view);
+            scoreTextView = view.findViewById(R.id.player_score_text_view);
 
+            usernameTextView.setText("");
+            scoreTextView.setText("");
+        }
+
+        return view;
     }
+
 
     @Override
     public Filter getFilter() {
@@ -83,6 +91,7 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
             return results;
         }
 
+
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             filteredUsernames.clear();
@@ -93,6 +102,7 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
         }
 
     }
+
 }
 
 
