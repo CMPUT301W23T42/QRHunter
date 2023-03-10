@@ -11,20 +11,32 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            >
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/qr_profile_frame"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                tools:srcCompat="@tools:sample/avatars" />
-        </LinearLayout>
+                android:src="@drawable/square_null" />
+            <ImageView
+                android:id="@+id/qr_profile_rest"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/rest_null" />
+            <ImageView
+                android:id="@+id/qr_profile_square"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/square_null" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
