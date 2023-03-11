@@ -65,7 +65,7 @@ public class ScannerFragment extends Fragment {
     FirebaseFirestore db;
     FusedLocationProviderClient client;
     SimpleDateFormat simpleDateFormat;
-    String owner = "Mary Ramirez";
+    String owner = "Roy";
     int index = 0;
 
     public ScannerFragment() {
@@ -140,7 +140,7 @@ public class ScannerFragment extends Fragment {
             GeoPoint geoPoint = getLocation();
             System.out.println(geoPoint);
             String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
-            int score = score_algorithm(hash);
+            int score = score_algorithm(result.getContents());
 
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date = simpleDateFormat.format(new Date());
@@ -249,7 +249,7 @@ public class ScannerFragment extends Fragment {
 
 
     public int score_algorithm(String string) {
-        String SHA = Hashing.sha256().hashString("BFG5DGW54", StandardCharsets.UTF_8).toString();
+        String SHA = Hashing.sha256().hashString(string, StandardCharsets.UTF_8).toString();
         System.out.print(SHA);
         //SHA = "61606b9663e7b844c189d7b30444e76ecb46b45bad279b0bebf1a23eef236f49";
         int score = 0;
