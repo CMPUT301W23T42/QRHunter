@@ -1,4 +1,4 @@
-package com.example.qrhunter;
+package com.example.qrhunter.qrProfile;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qrhunter.R;
+import com.example.qrhunter.qrProfile.QRComment;
+
 import java.util.ArrayList;
 
+/**
+ * This class defines an adapter for QR comments.
+ */
 public class QRCommentAdapter extends ArrayAdapter<QRComment> {
     public QRCommentAdapter(Context context, ArrayList<QRComment> qrComments) {
         super(context, 0, qrComments);

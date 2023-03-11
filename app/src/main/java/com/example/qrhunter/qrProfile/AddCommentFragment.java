@@ -1,4 +1,4 @@
-package com.example.qrhunter;
+package com.example.qrhunter.qrProfile;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.qrhunter.R;
+
+/**
+ * This class defines a fragment used to add comments
+ */
 public class AddCommentFragment extends DialogFragment {
     interface AddCommentDialogListener{
         public void addComment(String comment);

@@ -60,7 +60,7 @@ public class ScannerFragment extends Fragment {
     private final String TAG = "Scanner Fragment";
     private onCameraClose listener;
 
-    private String codeName = "SuperShark";
+
     FirebaseFirestore db;
     FusedLocationProviderClient client;
     SimpleDateFormat simpleDateFormat;
@@ -144,6 +144,9 @@ public class ScannerFragment extends Fragment {
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date = simpleDateFormat.format(new Date());
             System.out.println(date);
+
+            QrCodeNameGenerator qrCodeNameGenerator = new QrCodeNameGenerator();
+            String codeName = qrCodeNameGenerator.createQRName(hash);
             Map<String, Object> QRInfo = new HashMap<>();
             QRInfo.put("name", codeName);
             QRInfo.put("date", date);
@@ -188,12 +191,20 @@ public class ScannerFragment extends Fragment {
     });
 
 
+    /**
+     * This method checks if app has permission for location access and ask if doesn't.
+     */
     private void askPermission() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         }
     }
 
+    /**
+     * This method get the current location of the user.
+     * @return
+     * Return the geopoint of current location
+     */
     @Nullable
     private GeoPoint getLocation() {
         //      Location location = null;
