@@ -21,12 +21,12 @@
             android:layout_height="50dp"
             android:src="@drawable/square_null"
             />
+
         <ImageView
             android:id="@+id/qr_wallet_rest"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/rest_null"
-            />
+            android:src="@drawable/rest_null" />
 
     </RelativeLayout>
     <LinearLayout
