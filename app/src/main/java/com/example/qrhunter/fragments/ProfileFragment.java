@@ -29,7 +29,10 @@ public class ProfileFragment extends Fragment implements UserInfo {
     private TextView emailText;
     private TextView phoneText;
 
-
+    /*
+     * Profile fragment initializer
+     * @param profile UserProfile object representing a user profile
+     */
     public ProfileFragment(UserProfile profile) {
         this.profile = profile;
     }
@@ -52,6 +55,10 @@ public class ProfileFragment extends Fragment implements UserInfo {
         return view;
     }
 
+    /*
+     * Set the profile attribute of object
+     * @param   profile UserProfile object representing the user profile
+     */
     @Override
     public void setProfile(UserProfile profile) {
         Log.d(TAG, "Running setProfile");
@@ -59,6 +66,9 @@ public class ProfileFragment extends Fragment implements UserInfo {
         onChange();
     }
 
+    /*
+     * Updates view elements on any changes to object
+     */
     @Override
     public void onChange() {
         Log.d(TAG, "Running onChange");
@@ -71,6 +81,10 @@ public class ProfileFragment extends Fragment implements UserInfo {
         }
     }
 
+    /*
+     * Sets listener attribute of profile fragment object
+     * @param   listener    represents an onEditProfileListener
+     */
     public void setOnEditProfileListener(onEditProfileListener listener) {
         this.listener = listener;
     }

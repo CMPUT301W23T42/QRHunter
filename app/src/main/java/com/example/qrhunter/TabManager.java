@@ -25,10 +25,18 @@ public class TabManager implements UserInfo {
     private FragmentManager fragmentManager;
     private Fragment currentFragment;
 
+    /*
+     * TabManager initializer
+     * @param fragmentActivity  object representing main activity
+     */
     public TabManager(@NonNull FragmentActivity fragmentActivity) {
         fragmentManager = fragmentActivity.getSupportFragmentManager();
     }
 
+    /*
+     * Utilizes fragment transaction to replace fragment on display
+     * @param   fragment    fragment object to place on display
+     */
     public void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container, fragment);
@@ -36,6 +44,10 @@ public class TabManager implements UserInfo {
         transaction.commit();
     }
 
+    /*
+     * Switches main fragment display based on parameter
+     * @param   position    integer representation of fragment to display
+     */
     public void switchFragment(int position) {
         Log.d(TAG, "Running createFragment, " + position);
         switch (position) {
@@ -90,6 +102,10 @@ public class TabManager implements UserInfo {
         Log.d(TAG, "Fragment Type: " + currentFragment.getClass().toString());
     }
 
+    /*
+     * Set the profile attribute of object
+     * @param   profile UserProfile object representing the user profile
+     */
     @Override
     public void setProfile(UserProfile profile) {
         Log.d(TAG, "setProfile running");
@@ -99,6 +115,9 @@ public class TabManager implements UserInfo {
         }
     }
 
+    /*
+     * Set profile on profile fragment attribute on changes to object
+     */
     @Override
     public void onChange() {
         Log.d(TAG, "onChange running");
