@@ -140,7 +140,7 @@ public class ScannerFragment extends Fragment {
             GeoPoint geoPoint = getLocation();
             System.out.println(geoPoint);
             String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
-            int score = score_algorithm(result.getContents());
+            int score = score_algorithm(hash);
 
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date = simpleDateFormat.format(new Date());
