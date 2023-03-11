@@ -137,6 +137,8 @@
             android:layout_weight="1"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
+            android:backgroundTint="#EB3F3F"
+            android:textColor="@color/black"
             style="android:attr/buttonBarButtonStyle">
         </Button>
         <Button
@@ -147,6 +149,8 @@
             android:layout_weight="1"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
+            android:backgroundTint="#99C2FF"
+            android:textColor="@color/black"
             style="android:attr/buttonBarButtonStyle">
         </Button>
     </LinearLayout>
