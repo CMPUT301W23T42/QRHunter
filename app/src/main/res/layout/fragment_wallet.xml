@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".fragments.WalletFragment"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="0dp">
+    tools:layout_editor_absoluteY="0dp"
+    android:background="@drawable/gradient_background">
 
     <TextView
         android:id="@+id/tv_sort"
