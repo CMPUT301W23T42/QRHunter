@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -28,6 +29,7 @@ import android.view.ViewGroup;
 import com.example.qrhunter.CaptureAct;
 
 import com.example.qrhunter.MainActivity;
+import com.example.qrhunter.QrCodeOnAddDialog;
 import com.example.qrhunter.R;
 
 import com.example.qrhunter.generators.QrCodeImageGenerator;
@@ -161,6 +163,8 @@ public class ScannerFragment extends Fragment {
 //            QRInfo.put("id",index+1);
             CollectionReference CodeList = db.collection("CodeList");
             CodeList.add(QRInfo);
+            QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash);
+            qrAddDialog.show(getParentFragmentManager(),"Test" );
 //            CodeList.document(String.valueOf(index+1))
 //                    .set(QRInfo)
 //                    .addOnSuccessListener(new OnSuccessListener<Void>() {

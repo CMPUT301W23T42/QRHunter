@@ -89,7 +89,7 @@ public class WalletFragment extends Fragment {
                         GeoPoint location = (GeoPoint) doc.getData().get("location");
                         String name = (String) doc.getData().get("name");
                         String owner = (String) doc.getData().get("owner");
-                        Long score = (Long) doc.getData().get("score");
+                        Long score = Long.parseLong(String.valueOf(doc.getData().get("score")));
 
                         qrDataList.add(new QRCode(date, hash, name, location, owner, Math.toIntExact(score), id));
                     }

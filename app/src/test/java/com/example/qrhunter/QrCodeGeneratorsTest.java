@@ -8,7 +8,7 @@ import com.example.qrhunter.generators.QrCodeScoreGenerator;
 public class QrCodeGeneratorsTest {
     /**
      * Tests the hex_to_bit function of name generator
-     * Note that image generators is the same
+     * Note that image generators hex_to_bit is the identical
      */
     @Test
     public void name_hex_to_bit_test () {
