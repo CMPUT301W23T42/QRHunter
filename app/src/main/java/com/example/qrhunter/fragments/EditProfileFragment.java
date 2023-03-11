@@ -33,6 +33,10 @@ public class EditProfileFragment extends Fragment implements UserInfo {
     private EditText editEmail;
     private EditText editPhone;
 
+    /*
+     * EditProfileFragment initializer
+     * @param profile UserProfile object representing a user profile
+     */
     public EditProfileFragment(UserProfile profile) {
         this.profile = profile;
     }
@@ -89,12 +93,19 @@ public class EditProfileFragment extends Fragment implements UserInfo {
         return view;
     }
 
+    /*
+     * Set the profile attribute of object
+     * @param   profile UserProfile object representing the user profile
+     */
     @Override
     public void setProfile(UserProfile profile) {
         this.profile = profile;
         onChange();
     }
 
+    /*
+     * Updates view elements on any changes to object
+     */
     @Override
     public void onChange() {
         if (view != null) {
@@ -104,6 +115,11 @@ public class EditProfileFragment extends Fragment implements UserInfo {
             editPhone.setText(profile.getPhone());
         }
     }
+
+    /*
+     * Sets listener attribute of profile fragment object
+     * @param   listener    represents an onEditProfileListener
+     */
     public void setOnCompleteListener(onCompleteListener listener) {
         this.listener = listener;
     }
