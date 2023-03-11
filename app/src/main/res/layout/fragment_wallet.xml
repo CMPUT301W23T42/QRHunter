@@ -60,8 +60,8 @@
     <ListView
         android:id="@+id/qr_list"
         android:layout_width="409dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
         android:longClickable="true"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
         app:layout_constraintEnd_toEndOf="parent"
