@@ -9,6 +9,7 @@
     tools:layout_editor_absoluteY="0dp"
     android:background="@drawable/gradient_background">
     <TextView
+        android:id="@+id/banner"
         android:text="Wallet"
         android:textSize="30sp"
         android:textStyle="bold"
