@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.example.qrhunter.WalletCustomList;
 import com.example.qrhunter.QRCode;
-import com.example.qrhunter.QRProfileActivity;
+import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.example.qrhunter.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

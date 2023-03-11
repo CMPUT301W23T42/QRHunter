@@ -7,6 +7,9 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.Comparator;
 import java.util.Date;
 
+/**
+ * This class defines a QR code.
+ */
 public class QRCode {
     private String date;
     private String hash;
