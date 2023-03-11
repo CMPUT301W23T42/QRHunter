@@ -156,7 +156,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
                     QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
                     QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
                     imageGenerator.setQRCodeImage(hash, qrFrame, qrRest, qrSquare);
-                    qrName.setText(nameGenerator.createQRName(hash));
+                    qrName.setText(QRData.get("name").toString());
                     qrOwner.setText("Owner:"+QRData.get("owner").toString());
                     qrScore.setText("Score:"+QRData.get("score").toString());
                     qrDate.setText("Date:"+QRData.get("date").toString());

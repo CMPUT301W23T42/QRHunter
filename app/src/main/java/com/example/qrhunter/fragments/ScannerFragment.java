@@ -30,6 +30,7 @@ import com.example.qrhunter.CaptureAct;
 import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.R;
 
+import com.example.qrhunter.generators.QrCodeImageGenerator;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -64,7 +65,7 @@ public class ScannerFragment extends Fragment {
     FirebaseFirestore db;
     FusedLocationProviderClient client;
     SimpleDateFormat simpleDateFormat;
-    String owner = "Roy";
+    String owner = "Mary Ramirez";
     int index = 0;
 
     public ScannerFragment() {
@@ -145,8 +146,9 @@ public class ScannerFragment extends Fragment {
             String date = simpleDateFormat.format(new Date());
             System.out.println(date);
 
-            QrCodeNameGenerator qrCodeNameGenerator = new QrCodeNameGenerator();
-            String codeName = qrCodeNameGenerator.createQRName(hash);
+
+            QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
+            String codeName = nameGenerator.createQRName(hash);
             Map<String, Object> QRInfo = new HashMap<>();
             QRInfo.put("name", codeName);
             QRInfo.put("date", date);
