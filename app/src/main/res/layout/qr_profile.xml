@@ -38,28 +38,29 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
             android:layout_margin="10dp"
+            android:background="@color/black"
             >
 
             <ImageView
                 android:id="@+id/qr_profile_frame"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:src="@drawable/square_null" />
             <ImageView
                 android:id="@+id/qr_profile_rest"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:src="@drawable/rest_null" />
             <ImageView
                 android:id="@+id/qr_profile_square"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center"
+                android:layout_centerInParent="true"
                 android:src="@drawable/square_null" />
 
         </RelativeLayout>
