@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -26,6 +27,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class SearchPlayerFragment extends Fragment {
 
@@ -34,6 +37,8 @@ public class SearchPlayerFragment extends Fragment {
     ListView playerListView;
     ArrayList<UserListItem> usernames;
     EditText searchEditText;
+
+    Button sortButton;
     SearchAdapter usernamesArrayAdapter;
 
     public SearchPlayerFragment() {
@@ -50,7 +55,7 @@ public class SearchPlayerFragment extends Fragment {
 
         playerListView = view.findViewById(R.id.player_list_list_view);
         searchEditText = view.findViewById(R.id.search_profile_edit_text);
-
+        sortButton = view.findViewById(R.id.sort_by_scores_button);
 
         usernames = new ArrayList<UserListItem>();
 
@@ -89,6 +94,24 @@ public class SearchPlayerFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
+
+        // Set a click listener for the sort button
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Sort the usernames ArrayList by score
+                Collections.sort(usernames, new Comparator<UserListItem>() {
+                    @Override
+                    public int compare(UserListItem o1, UserListItem o2) {
+                        return Integer.compare(o2.getScore(), o1.getScore());
+                    }
+                });
+
+                // Set the updated list to the adapter
+                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
+                playerListView.setAdapter(usernamesArrayAdapter);
             }
         });
 
