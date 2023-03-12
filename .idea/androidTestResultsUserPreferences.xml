@@ -35,8 +35,40 @@
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="Duration" value="90" />
-                  <entry key="Pixel_2_API_TiramisuPrivacySandbox" value="120" />
+
+                  <entry key="Pixel_6_API_30" value="120" />
                   <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-525496244">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_6_API_30" value="120" />
+
+                  <entry key="Pixel_2_API_TiramisuPrivacySandbox" value="120" />
+
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-938089483">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_6_Pro_API_31" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="ZY22G2NCZ8" value="120" />
+                  <entry key="motorola&#10; moto g stylus 5G (2022)" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -76,6 +108,21 @@
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_2_API_TiramisuPrivacySandbox" value="120" />
                   <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="383458323">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_6_Pro_API_31" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="ZY22G2NCZ8" value="120" />
+                  <entry key="motorola&#10; moto g stylus 5G (2022)" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

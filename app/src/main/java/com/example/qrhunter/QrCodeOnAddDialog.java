@@ -54,7 +54,7 @@ public class QrCodeOnAddDialog extends DialogFragment {
 
 
 
-        builder.setNegativeButton("Nice", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {}
         });
@@ -75,4 +75,5 @@ public class QrCodeOnAddDialog extends DialogFragment {
         });
         return builder.create();
     }
+
 }

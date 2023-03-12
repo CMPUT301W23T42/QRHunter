@@ -48,7 +48,7 @@ public class QRProfileTest {
     @Test
     public void checkQRProfileSwitch (){
         solo.assertCurrentActivity("Wrong Main Activity", MainActivity.class);
-        solo.clickInList(1);solo.clickInList(1);
+        solo.clickInList(1);
         solo.assertCurrentActivity("Wrong Profile Activity", QRProfileActivity.class);
     }
 
@@ -59,12 +59,12 @@ public class QRProfileTest {
     @Test
     public void checkQRProfileInfo (){
         solo.assertCurrentActivity("Wrong Main Activity", MainActivity.class);
-        solo.clickOnText("TestCaseUse");
+        solo.clickOnText("Fiery Massive Extremely Expensive GigaMulti-Dimensional Poly-Dodecahedron");
         solo.assertCurrentActivity("Wrong Profile Activity", QRProfileActivity.class);
-        solo.waitForText("Name:TestCaseUse", 1, 2000);
-        solo.waitForText("Date:2023-03-06 16:56", 1, 2000);
+        solo.waitForText("Fiery Massive Extremely Expensive GigaMulti-Dimensional Poly-Dodecahedron", 1, 2000);
+        solo.waitForText("Date:2023-03-10 18:20", 1, 2000);
         solo.waitForText("Owner:Roy",1,2000);
-        solo.waitForText("Score:1",1,2000);
+        solo.waitForText("Score:36",1,2000);
     }
 
     /**
@@ -73,17 +73,14 @@ public class QRProfileTest {
     @Test
     public void checkCommentAddition(){
         solo.assertCurrentActivity("Wrong Main Activity", MainActivity.class);
-        solo.clickOnText("TestCaseUse");
+        solo.clickOnText("Fiery Massive Extremely Expensive GigaMulti-Dimensional Poly-Dodecahedron");
         solo.assertCurrentActivity("Wrong Profile Activity", QRProfileActivity.class);
         solo.clickOnView(solo.getView(R.id.add_comment_button));
         solo.enterText((EditText) solo.getView(R.id.user_comment_context), "This is text comment");
         solo.clickOnButton("Add");
-        solo.waitForText("This is text comment", 1, 2000);
+        solo.waitForText("This is text comment!", 1, 2000);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String time = simpleDateFormat.format(new Date()).toString();
         solo.waitForText(time,1,2000);
     }
-
-
-
 }

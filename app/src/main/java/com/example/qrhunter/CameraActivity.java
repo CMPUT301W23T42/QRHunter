@@ -22,6 +22,7 @@ public class CameraActivity extends Activity {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
         image = findViewById(R.id.camera_image);
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

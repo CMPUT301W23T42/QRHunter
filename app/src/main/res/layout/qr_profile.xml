@@ -39,10 +39,9 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="10dp"
-            android:background="@color/black"
             >
 
             <ImageView

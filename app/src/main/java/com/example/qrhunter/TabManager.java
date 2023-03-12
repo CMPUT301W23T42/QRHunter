@@ -7,11 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.qrhunter.fragments.EditProfileFragment;
-import com.example.qrhunter.fragments.HomeFragment;
 import com.example.qrhunter.fragments.LoginFragment;
 import com.example.qrhunter.fragments.ProfileFragment;
 import com.example.qrhunter.fragments.ScannerFragment;
@@ -52,11 +49,12 @@ public class TabManager implements UserInfo {
         Log.d(TAG, "Running createFragment, " + position);
         switch (position) {
             case 2:
+                WalletFragment walletFragment = new WalletFragment();
                 ScannerFragment scannerFragment = new ScannerFragment();
                 scannerFragment.setOnCameraCloseListener(new ScannerFragment.onCameraClose() {
                     @Override
                     public void onCameraClose() {
-                        switchFragment(0);
+                        switchFragment(10000);
                     }
                 });
                 currentFragment = scannerFragment;
