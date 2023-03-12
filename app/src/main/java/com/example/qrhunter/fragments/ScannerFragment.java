@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -28,9 +29,11 @@ import android.view.ViewGroup;
 import com.example.qrhunter.CaptureAct;
 
 import com.example.qrhunter.MainActivity;
+import com.example.qrhunter.QrCodeOnAddDialog;
 import com.example.qrhunter.R;
 
 import com.example.qrhunter.generators.QrCodeImageGenerator;
+import com.example.qrhunter.generators.QrCodeScoreGenerator;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -140,7 +143,8 @@ public class ScannerFragment extends Fragment {
             GeoPoint geoPoint = getLocation();
             System.out.println(geoPoint);
             String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
-            int score = score_algorithm(result.getContents());
+            QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
+            int score = scoreGenerator.score_algorithm(hash);
 
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date = simpleDateFormat.format(new Date());
@@ -159,36 +163,8 @@ public class ScannerFragment extends Fragment {
 //            QRInfo.put("id",index+1);
             CollectionReference CodeList = db.collection("CodeList");
             CodeList.add(QRInfo);
-//            CodeList.document(String.valueOf(index+1))
-//                    .set(QRInfo)
-//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void unused) {
-//                            Log.d(TAG,"Document successfully written.");
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Log.w(TAG,"Error writing document"+e);
-//                        }
-//                    });
-
-
-//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//            builder.setTitle("Result");
-//            Log.d(TAG, "Alert builder instantiated");
-//            String message = result.getContents().concat("\n");
-//            message = message.concat(Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString().concat("\n"));
-//            message = message.concat(Integer.toString(score_algorithm(result.getContents())));
-//            builder.setMessage(message);
-//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    listener.onCameraClose();
-//                    dialog.dismiss();
-//                }
-//            }).show();
+            QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity());
+            qrAddDialog.show(getParentFragmentManager(),"Test" );
         }
     });
 
@@ -241,39 +217,6 @@ public class ScannerFragment extends Fragment {
         }else{
             return null;
         }
-    }
-
-
-
-
-
-
-    public int score_algorithm(String string) {
-        String SHA = Hashing.sha256().hashString(string, StandardCharsets.UTF_8).toString();
-        System.out.print(SHA);
-        //SHA = "61606b9663e7b844c189d7b30444e76ecb46b45bad279b0bebf1a23eef236f49";
-        int score = 0;
-        int i = 0;
-        while (i < SHA.length()-1) {
-            char fixedChar = SHA.charAt(i);
-            int j = 1;
-            while (fixedChar == SHA.charAt(i+j) && (i+j) < SHA.length()) {
-                j ++;
-            }
-            if (j > 1) {
-                int val;
-                if (fixedChar != '0') {
-                    val = Character.getNumericValue(fixedChar);
-                } else {
-                    val = 20;
-                }
-                score += Math.pow(val, j-1);
-            }
-            i += j;
-        }
-        System.out.print("QR CODE SCORE:");
-        System.out.print(score);
-        return score;
     }
 
     public void setOnCameraCloseListener(onCameraClose listener) {

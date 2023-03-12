@@ -12,10 +12,11 @@ import com.example.qrhunter.R;
  * This class handles QRCode image generation
  */
 public class QrCodeImageGenerator extends AppCompatActivity implements QrCodeRepresentative{
-    protected  int [] drawableFrames = {R.drawable.frame_black, R.drawable.frame_red, R.drawable.frame_green, R.drawable.frame_blue};
-    protected  int [] drawableRests = {R.drawable.rest_black, R.drawable.rest_red, R.drawable.rest_green, R.drawable.rest_blue};
-    protected int [] drawableSquares = {R.drawable.square_black, R.drawable.square_red, R.drawable.square_green, R.drawable.square_blue};
+    protected  int [] drawableFrames = {R.drawable.frame_black, R.drawable.frame_purple, R.drawable.frame_green, R.drawable.frame_blue};
+    protected  int [] drawableRests = {R.drawable.rest_black, R.drawable.rest_purple, R.drawable.rest_green, R.drawable.rest_blue};
+    protected int [] drawableSquares = {R.drawable.square_black, R.drawable.square_purple, R.drawable.square_green, R.drawable.square_blue};
     protected final int imageNumber = 3;
+    protected final int maxBytes = 2;
 
     /***
      * This method takes in a hex string and three ImageViews.
@@ -61,8 +62,7 @@ public class QrCodeImageGenerator extends AppCompatActivity implements QrCodeRep
     public String hex_to_bit(String hex_string) {
         String bit_string = "";
         int i = 0;
-        int maxBits = 6;
-        while(i<(maxBits-maxBits %4)/4+1) {
+        while(i<maxBytes) {
             char fixedChar = hex_string.charAt(i);
             String byteString = (Integer.toBinaryString(Character.getNumericValue(fixedChar)));
             while (byteString.length() < 4) {
