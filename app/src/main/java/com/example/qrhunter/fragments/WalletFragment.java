@@ -17,16 +17,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.WalletCustomList;
 import com.example.qrhunter.QRCode;
 import com.example.qrhunter.qrProfile.QRProfileActivity;
@@ -44,7 +39,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
 
 /**
  * This is a class for the fragment that shows the QRCodes in the database, allows us to remove a QRCode, shows the total no. scanned and total points, sorts QRCodes according to score and allows to add a QRCode.
@@ -120,6 +114,7 @@ public class WalletFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, scannerFragment);
                 fragmentTransaction.commit();
+
             }
         });
 
