@@ -163,38 +163,8 @@ public class ScannerFragment extends Fragment {
 //            QRInfo.put("id",index+1);
             CollectionReference CodeList = db.collection("CodeList");
             CodeList.add(QRInfo);
-            QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash);
+            QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity());
             qrAddDialog.show(getParentFragmentManager(),"Test" );
-//            CodeList.document(String.valueOf(index+1))
-//                    .set(QRInfo)
-//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void unused) {
-//                            Log.d(TAG,"Document successfully written.");
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Log.w(TAG,"Error writing document"+e);
-//                        }
-//                    });
-
-
-//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//            builder.setTitle("Result");
-//            Log.d(TAG, "Alert builder instantiated");
-//            String message = result.getContents().concat("\n");
-//            message = message.concat(Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString().concat("\n"));
-//            message = message.concat(Integer.toString(score_algorithm(result.getContents())));
-//            builder.setMessage(message);
-//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    listener.onCameraClose();
-//                    dialog.dismiss();
-//                }
-//            }).show();
         }
     });
 
