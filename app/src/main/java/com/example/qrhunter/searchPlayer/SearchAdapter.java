@@ -1,4 +1,4 @@
-package com.example.qrhunter;
+package com.example.qrhunter.searchPlayer;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.qrhunter.R;
 
 import java.util.ArrayList;
 

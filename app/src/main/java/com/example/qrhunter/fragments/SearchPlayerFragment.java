@@ -15,9 +15,9 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.qrhunter.SearchAdapter;
+import com.example.qrhunter.searchPlayer.SearchAdapter;
 import com.example.qrhunter.R;
-import com.example.qrhunter.UserListItem;
+import com.example.qrhunter.searchPlayer.UserListItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
