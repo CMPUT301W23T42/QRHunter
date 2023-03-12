@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.searchPlayer.SearchAdapter;
 import com.example.qrhunter.R;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class SearchPlayerFragment extends Fragment {
+public class LeaderboardFragment extends Fragment {
 
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final CollectionReference collectionReference = db.collection("Users");
@@ -41,7 +43,7 @@ public class SearchPlayerFragment extends Fragment {
     Button sortButton;
     SearchAdapter usernamesArrayAdapter;
 
-    public SearchPlayerFragment() {
+    public LeaderboardFragment() {
         // Required empty public constructor
     }
 
@@ -51,7 +53,7 @@ public class SearchPlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
         playerListView = view.findViewById(R.id.player_list_list_view);
         searchEditText = view.findViewById(R.id.search_profile_edit_text);
@@ -97,6 +99,25 @@ public class SearchPlayerFragment extends Fragment {
             }
         });
 
+        playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String username = usernames.get(i).getUsername();
+                Log.d("ans", username);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+
+                SearchedPlayerProfileFragment searchedPlayerProfileFragment = new SearchedPlayerProfileFragment();
+                searchedPlayerProfileFragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main, searchedPlayerProfileFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         // Set a click listener for the sort button
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +140,3 @@ public class SearchPlayerFragment extends Fragment {
     }
 
 }
-
-
-
-
