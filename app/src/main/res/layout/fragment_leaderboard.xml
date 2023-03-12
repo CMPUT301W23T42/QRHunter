@@ -40,12 +40,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Leaderboard: "
+            android:text="Players: "
             android:textSize="30sp"
             android:layout_marginTop="15dp"
             android:textColor="@color/white"
             android:fontFamily="@font/rajdhani_bold">
         </TextView>
+
+        <Button
+            android:id="@+id/sort_by_scores_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort By High Scores"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rajdhani_bold"
+            android:backgroundTint="@android:color/black"/>
 
         <ListView
             android:id="@+id/player_list_list_view"

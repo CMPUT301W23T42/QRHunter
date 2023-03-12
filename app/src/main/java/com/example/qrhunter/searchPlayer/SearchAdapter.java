@@ -106,5 +106,3 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
     }
 
 }
-
-
