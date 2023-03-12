@@ -1,4 +1,4 @@
-package com.example.qrhunter.fragments;
+package com.example.qrhunter;
 
 import android.app.Activity;
 import android.content.Intent;

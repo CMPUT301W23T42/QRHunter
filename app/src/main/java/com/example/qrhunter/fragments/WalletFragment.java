@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 
@@ -28,6 +31,7 @@ import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.example.qrhunter.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,6 +42,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 
 public class WalletFragment extends Fragment {
@@ -48,6 +53,8 @@ public class WalletFragment extends Fragment {
     ArrayList<QRCode> qrDataList;
     TextView totalPoints;
     TextView totalScanned;
+
+    FloatingActionButton scanButton;
     final String TAG = "Sample";
     FirebaseFirestore db;
 
@@ -68,6 +75,7 @@ public class WalletFragment extends Fragment {
         qrDataList = new ArrayList<>();
         qrAdapter = new WalletCustomList(this.getActivity(), qrDataList);
         qrList.setAdapter(qrAdapter);
+        scanButton = view.findViewById(R.id.wallet_button_scan);
 
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("CodeList");
@@ -97,6 +105,16 @@ public class WalletFragment extends Fragment {
                 qrAdapter.notifyDataSetChanged();
                 totalPoints.setText(Integer.toString(countPoints()));
                 totalScanned.setText(Integer.toString(qrDataList.size()));
+            }
+        });
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScannerFragment scannerFragment = new ScannerFragment();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, scannerFragment);
+                fragmentTransaction.commit();
             }
         });
 
@@ -150,6 +168,7 @@ public class WalletFragment extends Fragment {
                         Log.w(TAG, "Error deleting document", e);
                     }
                 });
+
     }
 
     private int countPoints() {

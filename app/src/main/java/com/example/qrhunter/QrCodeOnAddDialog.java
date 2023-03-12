@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.qrhunter.fragments.CameraActivity;
 import com.example.qrhunter.generators.QrCodeImageGenerator;
 import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.example.qrhunter.generators.QrCodeScoreGenerator;
@@ -70,7 +69,7 @@ public class QrCodeOnAddDialog extends DialogFragment {
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, CameraActivity.class);
+                Intent intent = new Intent(activity, UserInfo.CameraActivity.class);
                 activity.startActivity(intent);
             }
         });
