@@ -63,6 +63,18 @@ public class WalletFragment extends Fragment {
     FirebaseFirestore db;
 
 
+    /**
+     * Called to create the view hierarchy associated with the fragment. This method is responsible for
+     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment
+     * does not have a UI or does not need to display a view, you can return null from this method.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          The parent view that the fragment's UI should be attached to. This value may be null
+     *                           if the fragment is not being attached to a parent view.
+     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null
+     *                           if the fragment is being instantiated for the first time.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,11 +98,20 @@ public class WalletFragment extends Fragment {
         CollectionReference collectionReference = db.collection("CodeList");
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            /**
+             * This method is called when the data in the specified query snapshot changes. This includes
+             * the initial data and any subsequent changes to the documents that match the query criteria.
+             * Clears the arraylist of QRCodes and adds again from the document.
+             *
+             *
+             * @param value The query snapshot representing the updated data.
+             * @param error The error, if any, that occurred while listening for changes. If the error is null,
+             *              no errors occurred during the listening operation.
+             */
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 qrDataList.clear();
 
-                assert value != null;
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
                     assert ownerName != null;
@@ -108,7 +129,7 @@ public class WalletFragment extends Fragment {
                     }
                 }
                 qrAdapter.notifyDataSetChanged();
-                totalPoints.setText(Integer.toString(countPoints()));
+                totalPoints.setText(Integer.toString(countPoints(qrDataList)));
                 totalScanned.setText(Integer.toString(qrDataList.size()));
             }
         });
@@ -163,6 +184,7 @@ public class WalletFragment extends Fragment {
         return view;
     }
 
+
     private void deleteData(String id){
         db.collection("CodeList").document(id)
                 .delete()
@@ -181,7 +203,7 @@ public class WalletFragment extends Fragment {
 
     }
 
-    private int countPoints() {
+    private int countPoints(ArrayList<QRCode> qrDataList) {
         int points = 0;
         for (int i = 0; i < qrDataList.size(); i++) {
             points += qrDataList.get(i).getScore();
