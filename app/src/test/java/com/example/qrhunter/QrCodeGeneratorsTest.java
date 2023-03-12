@@ -18,11 +18,13 @@ public class QrCodeGeneratorsTest {
         assertEquals("00000000", nameGenerator.hex_to_bit("00"));
         assertEquals("10101011", nameGenerator.hex_to_bit("AB"));
         assertEquals("00010000", nameGenerator.hex_to_bit("10"));
+        assertEquals("00010000", nameGenerator.hex_to_bit("10"));
     }
     /**
      * Tests the score algorithm on a few examples done by hand
      * and some edge cases.
      */
+
     @Test
     public void score_algorithm_test() {
         QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
