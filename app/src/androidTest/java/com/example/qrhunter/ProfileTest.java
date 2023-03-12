@@ -31,8 +31,6 @@ import java.util.Map;
 public class ProfileTest {
     private Solo solo;
     private final String id = Settings.Secure.ANDROID_ID;
-    private Activity activity;
-    private android.app.FragmentManager manager;
 
     FirebaseFirestore db;
     CollectionReference collection;
@@ -48,8 +46,6 @@ public class ProfileTest {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
-        activity = rule.getActivity();
-        manager = activity.getFragmentManager();
 
         db = FirebaseFirestore.getInstance();
         collection = db.collection("Users");
