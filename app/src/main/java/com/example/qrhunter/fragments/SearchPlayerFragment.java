@@ -60,7 +60,10 @@ public class SearchPlayerFragment extends Fragment {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String username = document.getString("UserName");
-                        usernames.add(new UserListItem(username, 0));
+                        Long scoreLong = document.getLong("score");
+                        int score = (scoreLong != null) ? scoreLong.intValue() : 0; // Set score to 0 if the value is null
+                        usernames.add(new UserListItem(username, score));
+
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
