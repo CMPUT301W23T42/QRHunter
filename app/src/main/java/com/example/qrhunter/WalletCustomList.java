@@ -43,9 +43,7 @@ public class WalletCustomList extends ArrayAdapter<QRCode> {
         ImageView qrFrame = view.findViewById(R.id.qr_wallet_frame);
         ImageView qrRest = view.findViewById(R.id.qr_wallet_rest);
         ImageView qrSquare = view.findViewById(R.id.qr_wallet_square);
-        QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
-
-        qrName.setText(nameGenerator.createQRName(code.getHash()));
+        qrName.setText(code.getName());
         qrPoints.setText(Integer.toString(code.getScore()));
 
         QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
