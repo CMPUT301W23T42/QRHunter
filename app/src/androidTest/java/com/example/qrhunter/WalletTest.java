@@ -11,6 +11,9 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.qrhunter.fragments.ProfileFragment;
+import com.example.qrhunter.fragments.WalletFragment;
+import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -52,10 +55,32 @@ public class WalletTest {
         QRInfo.put("hash", "test hash");
         QRInfo.put("owner", "Roy");
         QRInfo.put("location", null);
-        QRInfo.put("score", 7);
+        QRInfo.put("score", 2);
         collectionReference
                 .document("test doc")
                 .set(QRInfo);
+
+        Map<String, Object> QRInfo1 = new HashMap<>();
+        QRInfo1.put("name", "test 2");
+        QRInfo1.put("date", "test date");
+        QRInfo1.put("hash", "test hash");
+        QRInfo1.put("owner", "Roy");
+        QRInfo1.put("location", null);
+        QRInfo1.put("score", 1);
+        collectionReference
+                .document("test doc1")
+                .set(QRInfo1);
+
+        Map<String, Object> QRInfo2 = new HashMap<>();
+        QRInfo2.put("name", "test 3");
+        QRInfo2.put("date", "test date");
+        QRInfo2.put("hash", "test hash");
+        QRInfo2.put("owner", "Roy");
+        QRInfo2.put("location", null);
+        QRInfo2.put("score", 1000000);
+        collectionReference
+                .document("test doc2")
+                .set(QRInfo2);
     }
 
     /**
@@ -76,15 +101,58 @@ public class WalletTest {
         // Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         assertTrue(solo.waitForText("test 1", 1, 20000));
-
     }
 
-    // make test to check if qr code in set up shows up on list
-    // make test to delete a QR code (long click on list
-    // make test to check sort
-    // make test to check click on list
-    // make test to check total points
-    // make test to check total scanned
+    /**
+     * Check item taken from the listview
+     */
+//    @Test
+//    public void checkCiyListItem() {
+//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+//        assertTrue(solo.waitForText("test 1", 1, 20000));
+//
+//    }
+
+    @Test
+    public void checkDelete() {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        assertTrue(solo.waitForText("test 1", 1, 10000));
+        solo.clickOnView(solo.getView(R.id.rb_ascending));
+        solo.clickLongInList(1);
+        solo.clickOnButton("Cancel");
+        assertTrue(solo.waitForText("test 1", 1, 10000));
+        solo.clickOnView(solo.getView(R.id.rb_ascending));
+        solo.clickLongInList(0);
+        solo.clickOnButton("Confirm");
+        assertFalse(solo.waitForText("test 2", 1, 10000));
+    }
+
+    @Test
+    public void checkClick() {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        assertTrue(solo.waitForText("test 2", 1, 10000));
+        solo.clickOnView(solo.getView(R.id.rb_ascending));
+        solo.clickInList(0);
+        // assert that new QRProfile is opened
+    }
+
+
+    @Test
+    public void checkAscendingSort() {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.rb_ascending));
+        solo.clickInList(0);
+        assertTrue(solo.waitForText("test 1"));
+    }
+
+    @Test
+    public void checkDescendingSort() {
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.rb_descending));
+        solo.clickInList(0);
+        assertTrue(solo.waitForText("test 3"));
+    }
+
     // make test to check add button
 
     /**
@@ -94,6 +162,10 @@ public class WalletTest {
     @After
     public void tearDown() throws Exception{
         db.collection("CodeList").document("test doc")
+                .delete();
+        db.collection("CodeList").document("test doc1")
+                .delete();
+        db.collection("CodeList").document("test doc2")
                 .delete();
         solo.finishOpenedActivities();
     }
