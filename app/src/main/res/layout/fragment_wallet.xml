@@ -88,6 +88,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
+            android:textColor="@color/black"
             android:text="Total Points: " />
 
         <TextView
@@ -97,6 +98,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="32dp"
             android:layout_toRightOf="@id/textView8"
+            android:textColor="@color/black"
             android:text="Points" />
 
         <Space
@@ -112,6 +114,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="32dp"
             android:layout_toRightOf="@id/wallet_spacer"
+            android:textColor="@color/black"
             android:text="QR Code Scanned: " />
 
         <TextView
@@ -122,6 +125,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:layout_toRightOf="@id/textView10"
+            android:textColor="@color/black"
             android:text="Scanned" />
     </RelativeLayout>
 
