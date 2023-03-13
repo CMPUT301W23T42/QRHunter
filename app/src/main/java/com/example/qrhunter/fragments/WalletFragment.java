@@ -107,9 +107,7 @@ public class WalletFragment extends Fragment {
                 qrDataList.clear();
 
                 for (QueryDocumentSnapshot doc: value) {
-                    List<String> ownerNameList = (List<String>) doc.get("owner");
-                    String ownerName = ownerNameList.get(0);
-                    assert ownerName != null;
+                    String ownerName = (String) doc.getData().get("owner");
                     if (ownerName.equals("Roy")) {
                         Log.d(TAG, "Show list of QR codes");
                         String id = doc.getId();
@@ -118,8 +116,7 @@ public class WalletFragment extends Fragment {
                         GeoPoint location = (GeoPoint) doc.getData().get("location");
                         String name = (String) doc.getData().get("name");
 
-                        List<String> ownerList = (List<String>) doc.get("owner");
-                        String owner = ownerList.get(0);
+                        String owner = (String) doc.getData().get("owner");
                         int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
                         
 
