@@ -14,36 +14,26 @@
         android:id="@+id/tab_layout"
         android:layout_alignParentBottom="true"
         android:background="@color/black"
-        app:tabTextColor="@color/white">
+        app:tabIconTint="@color/white">
         <com.google.android.material.tabs.TabItem
             android:id="@+id/home_tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Home">
+            android:layout_height="wrap_content">
         </com.google.android.material.tabs.TabItem>
         <com.google.android.material.tabs.TabItem
             android:id="@+id/map_tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Map">
-        </com.google.android.material.tabs.TabItem>
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/camera_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Camera">
+            android:layout_height="wrap_content">
         </com.google.android.material.tabs.TabItem>
         <com.google.android.material.tabs.TabItem
             android:id="@+id/search_tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search">
+            android:layout_height="wrap_content">
         </com.google.android.material.tabs.TabItem>
         <com.google.android.material.tabs.TabItem
             android:id="@+id/profile_tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Profile">
+            android:layout_height="wrap_content">
         </com.google.android.material.tabs.TabItem>
 
     </com.google.android.material.tabs.TabLayout>
