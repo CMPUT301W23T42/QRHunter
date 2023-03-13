@@ -5,6 +5,7 @@ import com.example.qrhunter.fragments.WalletFragment;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class WalletUnitTest {
 
@@ -18,7 +19,6 @@ public class WalletUnitTest {
     void testCountPoints() {
         ArrayList<QRCode> list = qrList();
         WalletFragment walletFragment = new WalletFragment();
-        walletFragment.countPoints(list);
-
+        assertEquals(7, walletFragment.countPoints(list));
     }
 }
