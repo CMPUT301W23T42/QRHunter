@@ -69,11 +69,17 @@
             android:textSize="20sp"
             android:textColor="@color/black">
         </TextView>
+
         <ListView
             android:id="@+id/qr_codes_list_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
+            android:layout_height="339dp"></ListView>
+
+        <ImageButton
+            android:id="@+id/searched_player_back_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@android:drawable/ic_menu_revert" />
     </LinearLayout>
 
     <Space
