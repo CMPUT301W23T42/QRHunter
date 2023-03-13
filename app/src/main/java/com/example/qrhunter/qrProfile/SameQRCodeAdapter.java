@@ -16,7 +16,7 @@ import com.example.qrhunter.R;
 import java.util.ArrayList;
 
 /**
- * This calss defines an adapter for showing the same QR code in QRProfile.
+ * This class defines an adapter for showing the same QR code in QRProfile.
  */
 public class SameQRCodeAdapter extends ArrayAdapter<QRCode> {
 

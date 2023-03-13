@@ -1,6 +1,7 @@
 package com.example.qrhunter;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -46,7 +47,7 @@ public class TabManager implements UserInfo {
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
         if (!activity.isFinishing() && !activity.isDestroyed()) {
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
         }
     }
 
