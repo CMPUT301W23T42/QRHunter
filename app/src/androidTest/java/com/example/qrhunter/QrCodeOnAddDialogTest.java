@@ -1,5 +1,7 @@
 package com.example.qrhunter;
 
+import static org.junit.Assert.assertTrue;
+
 import android.app.AlertDialog;
 import android.view.View;
 
@@ -21,6 +23,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+/**
+ *
+ */
 public class QrCodeOnAddDialogTest extends Fragment {
     private Solo solo;
     FragmentManager fm;
@@ -42,10 +47,11 @@ public class QrCodeOnAddDialogTest extends Fragment {
         dialogQR.show(fm, "Test");
         solo.sleep(100);
         solo.clickOnView(solo.getView(R.id.qr_add_location_button));
-        solo.waitForText("Continue",1,100);
-        solo.waitForText(" has been added to your inventory!", 1, 100);
-        solo.waitForText("Score",1,100);
+        assertTrue(solo.waitForText("Continue",1,100));
+        assertTrue(solo.waitForText(" has been added to your inventory!", 1, 100));
+        assertTrue(solo.waitForText("Score",1,100));
         solo.clickOnText("Continue");
+        assertTrue(solo.waitForText("Wallet",1,100));
     }
 
 }

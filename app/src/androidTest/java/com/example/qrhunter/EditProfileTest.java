@@ -19,7 +19,11 @@ import com.robotium.solo.Solo;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+/**
 
+ Fragment class for displaying and editing user profile information.
+ This fragment allows the user to edit their profile picture, name, email and password.
+ */
 public class EditProfileTest {
     private Solo solo;
 

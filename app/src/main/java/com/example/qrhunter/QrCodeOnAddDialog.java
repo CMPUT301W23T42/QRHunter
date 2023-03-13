@@ -20,6 +20,11 @@ import com.example.qrhunter.generators.QrCodeImageGenerator;
 import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.example.qrhunter.generators.QrCodeScoreGenerator;
 
+/**
+ * Creates a dialog fragment that shows the user the
+ * name, score, and picture of the QRCode that they just scanned
+ * Also has buttons to save location of QRCode and to take a picture of the QRCode
+ */
 public class QrCodeOnAddDialog extends DialogFragment {
     String hash;
     Activity activity;

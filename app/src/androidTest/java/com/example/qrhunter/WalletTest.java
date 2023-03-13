@@ -98,7 +98,7 @@ public class WalletTest {
      */
     @Test
     public void checkList() {
-        // Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
+        // Asserts that the current activity is the MainActivity. Otherwise, show "Wrong Activity"
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         assertTrue(solo.waitForText("test 1", 1, 20000));
     }
