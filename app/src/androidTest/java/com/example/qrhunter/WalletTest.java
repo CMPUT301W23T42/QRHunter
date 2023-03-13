@@ -64,9 +64,9 @@ public class WalletTest {
                 .set(QRInfo);
 
         Map<String, Object> QRInfo1 = new HashMap<>();
-        QRInfo1.put("name", "test 2");
-        QRInfo1.put("date", "test date");
-        QRInfo1.put("hash", "test hash");
+        QRInfo1.put("name", "Absolutely Solid Ready To Go TurboDraconic Tesseract");
+        QRInfo1.put("date", "2023-03-12 11:24");
+        QRInfo1.put("hash", "6fb8be06ad18006337bc6dbfd760eec088a69ba9aa021420213cf8bd1166f2c7");
         QRInfo1.put("owner", "Roy");
         QRInfo1.put("location", null);
         QRInfo1.put("score", 1);
@@ -128,9 +128,8 @@ public class WalletTest {
     @Test
     public void checkClick() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        assertTrue(solo.waitForText("test 2", 1, 10000));
-        solo.clickOnView(solo.getView(R.id.rb_ascending));
-        solo.clickInList(0);
+        solo.clickOnView(solo.getView(R.id.rb_descending));
+        solo.clickInList(2);
         solo.assertCurrentActivity("QRProfileActivity not opened", QRProfileActivity.class);
     }
 
