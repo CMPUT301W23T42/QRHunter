@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.R;
 import com.example.qrhunter.searchPlayer.QRCodeAdapter;
@@ -38,6 +41,8 @@ public class SearchedPlayerProfileFragment extends Fragment {
     ArrayList<QRCodeListItem> qrCodes;
     ArrayAdapter qrCodeAdapter;
     ListView qrCodeListView;
+
+    ImageButton backButton;
 
     public SearchedPlayerProfileFragment() {
         // Required empty public constructor
@@ -67,6 +72,7 @@ public class SearchedPlayerProfileFragment extends Fragment {
 
         usernameTextView = view.findViewById(R.id.username_text);
         qrCodeListView = view.findViewById(R.id.qr_codes_list_view);
+        backButton = view.findViewById(R.id.searched_player_back_button);
 
         usernameTextView.setText(username);
 
@@ -97,7 +103,15 @@ public class SearchedPlayerProfileFragment extends Fragment {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
+
 
         return view;
+
     }
 }
