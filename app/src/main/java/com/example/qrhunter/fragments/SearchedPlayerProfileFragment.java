@@ -84,7 +84,7 @@ public class SearchedPlayerProfileFragment extends Fragment {
          * @param task Has a task object that has all the documents required
          * @return None
          */
-        collectionReference.whereArrayContains("owner", username).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        collectionReference.whereEqualTo("owner", username).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

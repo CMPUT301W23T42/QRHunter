@@ -136,6 +136,7 @@ public class LeaderboardFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);
                 String username = usernameObj.getUsername();
+                assert username != "";
                 Log.d("ans", username);
 
                 Bundle bundle = new Bundle();
