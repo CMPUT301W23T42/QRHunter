@@ -1,5 +1,6 @@
 package com.example.qrhunter;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -24,12 +25,14 @@ public class TabManager implements UserInfo {
 
     private FragmentManager fragmentManager;
     private Fragment currentFragment;
+    private FragmentActivity activity;
 
     /**
      * TabManager initializer
      * @param fragmentActivity  object representing main activity
      */
     public TabManager(@NonNull FragmentActivity fragmentActivity) {
+        activity = fragmentActivity;
         fragmentManager = fragmentActivity.getSupportFragmentManager();
     }
 
@@ -42,8 +45,9 @@ public class TabManager implements UserInfo {
         transaction.replace(R.id.container, fragment, transactionTAG);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
-
-        transaction.commit();
+        if (!activity.isFinishing()) {
+            transaction.commit();
+        }
     }
 
     /**
