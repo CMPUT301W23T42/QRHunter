@@ -39,6 +39,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * This is a class for the fragment that shows the QRCodes in the database, allows us to remove a QRCode, shows the total no. scanned and total points, sorts QRCodes according to score and allows to add a QRCode.
@@ -107,7 +108,6 @@ public class WalletFragment extends Fragment {
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
-                    assert ownerName != null;
                     if (ownerName.equals("Roy")) {
                         Log.d(TAG, "Show list of QR codes");
                         String id = doc.getId();
@@ -115,8 +115,10 @@ public class WalletFragment extends Fragment {
                         String hash = (String) doc.getData().get("hash");
                         GeoPoint location = (GeoPoint) doc.getData().get("location");
                         String name = (String) doc.getData().get("name");
+
                         String owner = (String) doc.getData().get("owner");
                         int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
+                        
 
                         qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
                     }
