@@ -18,13 +18,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+
+This class extends ArrayAdapter<UserListItem> and implements Filterable. It is used as an adapter for a ListView
+in order to display a list of UserListItem objects. The class contains two ArrayLists: originalUsernames and
+filteredUsernames. originalUsernames is used to keep a copy of the original data and filteredUsernames is used
+to store the filtered data. The class also contains a UserFilter object, which is used to filter the data based
+on user input. The class provides methods to sort the data based on the score of the UserListItem objects.
+*/
+
 public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filterable {
     private ArrayList<UserListItem> originalUsernames; // Keep a copy of original data
-    private ArrayList<UserListItem> filteredUsernames;
+    private ArrayList<UserListItem> filteredUsernames; // Store filtered data
     private UserFilter userFilter;
     private TextView usernameTextView;
     private TextView scoreTextView;
     private TextView numberingTextView;
+
+    /**
+    Constructor for the SearchAdapter class. Initializes the adapter with a context and an ArrayList of UserListItem
+    objects. It also initializes the filteredUsernames and originalUsernames ArrayLists with a copy of the passed in
+    ArrayList.
+    @param context The context of the adapter
+    @param usernames An ArrayList of UserListItem objects
+    */
 
     public SearchAdapter(Context context, ArrayList<UserListItem> usernames) {
         super(context, 0, usernames);
@@ -32,6 +49,10 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
         this.originalUsernames = new ArrayList<>(usernames);
     }
 
+    /**
+    Sorts the filteredUsernames ArrayList based on the score of the UserListItem objects. The sort is performed in
+    descending order.
+    */
     public void sortFilteredScores() {
         Collections.sort(filteredUsernames, new Comparator<UserListItem>() {
             @Override
@@ -40,7 +61,10 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
             }
         });
     }
-
+    /**
+    Sorts the originalUsernames ArrayList based on the score of the UserListItem objects. The sort is performed in
+    descending order.
+    */
     public void sortOriginalScores() {
         Collections.sort(originalUsernames, new Comparator<UserListItem>() {
             @Override
@@ -49,6 +73,14 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
             }
         });
     }
+
+    /**
+    Returns a View object that displays the UserListItem object at the specified position in the ListView.
+    @param position The position of the UserListItem object to display
+    @param convertView The old view to reuse, if possible
+    @param parent The parent view
+    @return A View object that displays the UserListItem object at the specified position in the ListView
+    */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -80,7 +112,10 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
         return view;
     }
 
-
+    /**
+    Returns a filter that can be used to constrain data with a filtering pattern.
+    @return a filter used to constrain data
+    */
     @Override
     public Filter getFilter() {
         if (userFilter == null) {
@@ -89,12 +124,24 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
         return userFilter;
     }
 
+    /**
+    Returns the filtered list of usernames after applying a constraint pattern.
+    @return the filtered list of usernames
+    */
     public ArrayList<UserListItem> getFilteredList(){
         return filteredUsernames;
     }
 
+    /**
+    A private class used to perform filtering on the data.
+    */
     private class UserFilter extends Filter {
 
+        /**
+        Performs filtering on the data based on the specified constraint.
+        @param constraint the filtering constraint
+        @return the results of the filtering operation
+        */
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
@@ -117,6 +164,11 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
             return results;
         }
 
+        /**
+        Publishes the results of the filtering operation to the UI thread.
+        @param constraint the filtering constraint
+        @param results the results of the filtering operation
+        */
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             filteredUsernames.clear();
