@@ -44,6 +44,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class handles QRCode scanning using the zxing-android-embedded library
+ */
 public class ScannerFragment extends Fragment {
     private final String TAG = "Scanner Fragment";
     private onCameraClose listener;
@@ -54,7 +57,6 @@ public class ScannerFragment extends Fragment {
     SimpleDateFormat simpleDateFormat;
     String owner = "Roy";
     int index = 0;
-
     public ScannerFragment() {
         // Required empty public constructor
     }
@@ -94,34 +96,41 @@ public class ScannerFragment extends Fragment {
 
     }
 
-
+    /**
+     * Sets up options of QRCode camera scanner and launchs scanner
+     */
     public void scanCode() {
         ScanOptions options = new ScanOptions();
-        options.setPrompt("Volume up to flash on");
+        options.setPrompt("Scan QRCode");
         options.setBeepEnabled(false);
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureAct.class);
         barLauncher.launch(options);
     }
 
-
+    /**
+     * Returns results of the QRCode scan.
+     */
     private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-        if (result.getContents() == null) {
+        if (result.getContents() == null) { //User either went back or qrcode contents are empty
             goToWallet();
         } else {
             GeoPoint geoPoint = getLocation();
             System.out.println(geoPoint);
+            // Generate hash from qrcode contents
             String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
+
             QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
             int score = scoreGenerator.score_algorithm(hash);
+
+            QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
+            String codeName = nameGenerator.createQRName(hash);
 
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date = simpleDateFormat.format(new Date());
             System.out.println(date);
 
-
-            QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
-            String codeName = nameGenerator.createQRName(hash);
+            // Put QRCode into database
             Map<String, Object> QRInfo = new HashMap<>();
             QRInfo.put("name", codeName);
             QRInfo.put("date", date);
@@ -129,9 +138,10 @@ public class ScannerFragment extends Fragment {
             QRInfo.put("owner", owner);
             QRInfo.put("location", geoPoint);
             QRInfo.put("score", score);
-//            QRInfo.put("id",index+1);
             CollectionReference CodeList = db.collection("CodeList");
             CodeList.add(QRInfo);
+
+            // Open dialog showing user the qrcode they just scanned
             QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity());
             qrAddDialog.show(getParentFragmentManager(),"Test" );
             goToWallet();
@@ -198,12 +208,19 @@ public class ScannerFragment extends Fragment {
 
     }
 
+    /**
+     * Goes to wallet fragment
+     */
     public void goToWallet() {
         WalletFragment walletFragment = new WalletFragment();
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, walletFragment);
         fragmentTransaction.commit();
+    }
+
+    public void thisisatest(String hash) {
+
     }
 
 
