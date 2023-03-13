@@ -42,9 +42,8 @@ public class QrCodeGeneratorsTest {
         assertEquals(1, scoreGenerator.score_algorithm("110101010101010101010101010101010101010101010101010101010101010"));
         // Edge Case: Repeat only at end
         assertEquals(1, scoreGenerator.score_algorithm("1a0101010101010101010101010101010101010101010101010101010101011"));
-        // Edge Case: Max value possibly does not overflow. With this, 68 scores of max value needed to overflow wallet total score
+        // Edge Case: Max value possibly does not overflow. With this, 68 scores of max value needed to overflow 32 bit.
         assertEquals(32000400, scoreGenerator.score_algorithm("000001000001000001000001000001000001000001000001000001000001000"));
-
 
     }
 }

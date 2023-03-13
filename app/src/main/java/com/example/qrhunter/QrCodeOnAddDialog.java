@@ -75,5 +75,4 @@ public class QrCodeOnAddDialog extends DialogFragment {
         });
         return builder.create();
     }
-
 }
