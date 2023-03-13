@@ -34,9 +34,9 @@ public class TabManager implements UserInfo {
      * Utilizes fragment transaction to replace fragment on display
      * @param   fragment    fragment object to place on display
      */
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment, String transactionTAG) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.container, fragment);
+        transaction.replace(R.id.container, fragment, transactionTAG);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.commit();
     }
@@ -47,6 +47,7 @@ public class TabManager implements UserInfo {
      */
     public void switchFragment(int position) {
         Log.d(TAG, "Running createFragment, " + position);
+        String transactionTAG;
         switch (position) {
             case 2:
                 WalletFragment walletFragment = new WalletFragment();
@@ -57,6 +58,7 @@ public class TabManager implements UserInfo {
                         switchFragment(10000);
                     }
                 });
+                transactionTAG = "Scanner Fragment";
                 currentFragment = scannerFragment;
                 break;
 
@@ -68,12 +70,14 @@ public class TabManager implements UserInfo {
                         switchFragment(6);
                     }
                 });
+                transactionTAG = "Profile Fragment";
                 currentFragment = profileFragment;
                 break;
 
             case 3:
                 LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
 
+                transactionTAG = "Search Player Fragment";
                 currentFragment = leaderboardFragment;
                 break;
 
@@ -85,18 +89,21 @@ public class TabManager implements UserInfo {
                         switchFragment(4);
                     }
                 });
+                transactionTAG = "Edit Profile Fragment";
                 currentFragment = editProfileFragment;
                 break;
 
             case 7:
+                transactionTAG = "Login Fragment";
                 currentFragment = new LoginFragment();
                 break;
 
             default:
+                transactionTAG = "Wallet Fragment";
                 currentFragment = new WalletFragment();
                 break;
         }
-        replaceFragment(currentFragment);
+        replaceFragment(currentFragment, transactionTAG);
         Log.d(TAG, "Fragment Type: " + currentFragment.getClass().toString());
     }
 
