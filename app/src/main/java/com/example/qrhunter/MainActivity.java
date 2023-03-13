@@ -59,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setVisibility(View.GONE);
         tabManager = new TabManager(this);
         tabLayout.selectTab(tabLayout.getTabAt(0));
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.list_icon);
+        tabLayout.getTabAt(1).setIcon(R.drawable.map_icon);
+        tabLayout.getTabAt(2).setIcon(R.drawable.search_icon);
+        tabLayout.getTabAt(3).setIcon(R.drawable.profile_icon);
+
         getProfile(docRef);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

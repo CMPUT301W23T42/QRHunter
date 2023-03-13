@@ -56,20 +56,17 @@ public class TabManager implements UserInfo {
         Log.d(TAG, "Running createFragment, " + position);
         String transactionTAG;
         switch (position) {
-            case 2:
-                WalletFragment walletFragment = new WalletFragment();
-                ScannerFragment scannerFragment = new ScannerFragment();
-                scannerFragment.setOnCameraCloseListener(new ScannerFragment.onCameraClose() {
-                    @Override
-                    public void onCameraClose() {
-                        switchFragment(10000);
-                    }
-                });
-                transactionTAG = "Scanner Fragment";
-                currentFragment = scannerFragment;
+            case 0:
+                transactionTAG = "Wallet Fragment";
+                currentFragment = new WalletFragment();
                 break;
+            case 2:
+                LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
 
-            case 4:
+                transactionTAG = "Search Player Fragment";
+                currentFragment = leaderboardFragment;
+                break;
+            case 3:
                 ProfileFragment profileFragment = new ProfileFragment(profile);
                 profileFragment.setOnEditProfileListener(new ProfileFragment.onEditProfileListener() {
                     @Override
@@ -79,13 +76,6 @@ public class TabManager implements UserInfo {
                 });
                 transactionTAG = "Profile Fragment";
                 currentFragment = profileFragment;
-                break;
-
-            case 3:
-                LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
-
-                transactionTAG = "Search Player Fragment";
-                currentFragment = leaderboardFragment;
                 break;
 
             case 6:
