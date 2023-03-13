@@ -15,6 +15,9 @@ import com.example.qrhunter.fragments.ScannerFragment;
 import com.example.qrhunter.fragments.WalletFragment;
 import com.example.qrhunter.fragments.LeaderboardFragment;
 
+/**
+ * Class responsible for handling tab switching and information passing between tabs
+ */
 public class TabManager implements UserInfo {
     private final String TAG = "Tab Manager";
     private UserProfile profile = null;
