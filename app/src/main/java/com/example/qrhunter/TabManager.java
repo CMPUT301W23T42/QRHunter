@@ -15,6 +15,9 @@ import com.example.qrhunter.fragments.ScannerFragment;
 import com.example.qrhunter.fragments.WalletFragment;
 import com.example.qrhunter.fragments.LeaderboardFragment;
 
+/**
+ * Class responsible for handling tab switching and information passing between tabs
+ */
 public class TabManager implements UserInfo {
     private final String TAG = "Tab Manager";
     private UserProfile profile = null;
@@ -22,7 +25,7 @@ public class TabManager implements UserInfo {
     private FragmentManager fragmentManager;
     private Fragment currentFragment;
 
-    /*
+    /**
      * TabManager initializer
      * @param fragmentActivity  object representing main activity
      */
@@ -30,7 +33,7 @@ public class TabManager implements UserInfo {
         fragmentManager = fragmentActivity.getSupportFragmentManager();
     }
 
-    /*
+    /**
      * Utilizes fragment transaction to replace fragment on display
      * @param   fragment    fragment object to place on display
      */
@@ -41,7 +44,7 @@ public class TabManager implements UserInfo {
         transaction.commit();
     }
 
-    /*
+    /**
      * Switches main fragment display based on parameter
      * @param   position    integer representation of fragment to display
      */
@@ -107,7 +110,7 @@ public class TabManager implements UserInfo {
         Log.d(TAG, "Fragment Type: " + currentFragment.getClass().toString());
     }
 
-    /*
+    /**
      * Set the profile attribute of object
      * @param   profile UserProfile object representing the user profile
      */
@@ -120,7 +123,7 @@ public class TabManager implements UserInfo {
         }
     }
 
-    /*
+    /**
      * Set profile on profile fragment attribute on changes to object
      */
     @Override
