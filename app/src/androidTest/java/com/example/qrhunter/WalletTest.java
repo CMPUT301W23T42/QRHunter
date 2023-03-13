@@ -31,6 +31,9 @@ import static org.junit.Assert.assertFalse;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class for intent testing the WalletFragment.
+ */
 public class WalletTest {
 
     private Solo solo;
@@ -93,8 +96,7 @@ public class WalletTest {
     }
 
     /**
-     * Add a city to the listview and check the city name using assertTrue
-     * Clear all the cities from the listview and check again with assertFalse
+     * Checks if the listview shows test item in the database.
      */
     @Test
     public void checkList() {
@@ -113,6 +115,9 @@ public class WalletTest {
 //
 //    }
 
+    /**
+     * Checks delete functionality. At first cancels the delete to check if nothing happens then confirms and checks if item was deleted.
+     */
     @Test
     public void checkDelete() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -127,16 +132,21 @@ public class WalletTest {
         assertFalse(solo.waitForText("test 2", 1, 10000));
     }
 
+    /**
+     * Checks if clicking on listView goes to a new activity of the profile of the listView item.
+     */
     @Test
     public void checkClick() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         assertTrue(solo.waitForText("test 2", 1, 10000));
         solo.clickOnView(solo.getView(R.id.rb_ascending));
         solo.clickInList(0);
-        // assert that new QRProfile is opened
+        solo.assertCurrentActivity("QRProfileActivity not opened", QRProfileActivity.class);
     }
 
-
+    /**
+     * Checks if clicking on radio button for ascending sort works properly.
+     */
     @Test
     public void checkAscendingSort() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -145,6 +155,9 @@ public class WalletTest {
         assertTrue(solo.waitForText("test 1"));
     }
 
+    /**
+     * Checks if clicking on radio button for descending sort works properly.
+     */
     @Test
     public void checkDescendingSort() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
@@ -153,10 +166,9 @@ public class WalletTest {
         assertTrue(solo.waitForText("test 3"));
     }
 
-    // make test to check add button
-
     /**
      * Closes the activity after each test
+     * Deletes the test QRCodes that were added.
      * @throws Exception
      */
     @After
