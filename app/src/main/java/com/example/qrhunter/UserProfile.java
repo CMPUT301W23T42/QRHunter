@@ -4,6 +4,9 @@ import android.util.Log;
 
 import java.util.Observable;
 
+/**
+ * Model class of user profile info
+ */
 public class UserProfile {
     private String userName;
     private String fullName;
@@ -15,35 +18,35 @@ public class UserProfile {
 
     }
 
-    /*
+    /**
      * Method sets userName attribute
      */
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    /*
+    /**
      * Method sets fullName attribute
      */
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    /*
+    /**
      * Method sets email attribute
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /*
+    /**
      * Method sets phone attribute
      */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    /*
+    /**
      * Method return userName attribute
      * @return
      * String
@@ -52,7 +55,7 @@ public class UserProfile {
         return userName;
     }
 
-    /*
+    /**
      * Method returns fullName attribute
      * @return
      * String
@@ -61,7 +64,7 @@ public class UserProfile {
         return fullName;
     }
 
-    /*
+    /**
      * Method returns email attribute
      * @return
      * String
@@ -70,7 +73,7 @@ public class UserProfile {
         return email;
     }
 
-    /*
+    /**
      * Method returns phone attribute
      * @return
      * String
