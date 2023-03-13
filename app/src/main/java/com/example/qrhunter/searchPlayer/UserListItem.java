@@ -1,4 +1,4 @@
-package com.example.qrhunter;
+package com.example.qrhunter.searchPlayer;
 
 public class UserListItem {
     private String username;

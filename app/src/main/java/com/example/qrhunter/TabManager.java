@@ -7,16 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.qrhunter.fragments.EditProfileFragment;
-import com.example.qrhunter.fragments.HomeFragment;
 import com.example.qrhunter.fragments.LoginFragment;
 import com.example.qrhunter.fragments.ProfileFragment;
 import com.example.qrhunter.fragments.ScannerFragment;
 import com.example.qrhunter.fragments.WalletFragment;
-import com.example.qrhunter.fragments.SearchPlayerFragment;
+import com.example.qrhunter.fragments.LeaderboardFragment;
 
 public class TabManager implements UserInfo {
     private final String TAG = "Tab Manager";
@@ -53,11 +50,12 @@ public class TabManager implements UserInfo {
         String transactionTAG;
         switch (position) {
             case 2:
+                WalletFragment walletFragment = new WalletFragment();
                 ScannerFragment scannerFragment = new ScannerFragment();
                 scannerFragment.setOnCameraCloseListener(new ScannerFragment.onCameraClose() {
                     @Override
                     public void onCameraClose() {
-                        switchFragment(0);
+                        switchFragment(10000);
                     }
                 });
                 transactionTAG = "Scanner Fragment";
@@ -77,10 +75,10 @@ public class TabManager implements UserInfo {
                 break;
 
             case 3:
-                SearchPlayerFragment searchPlayerFragment = new SearchPlayerFragment();
+                LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
 
                 transactionTAG = "Search Player Fragment";
-                currentFragment = searchPlayerFragment;
+                currentFragment = leaderboardFragment;
                 break;
 
             case 6:

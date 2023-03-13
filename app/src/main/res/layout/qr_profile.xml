@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/gradient_background"
     android:orientation="vertical"
+    android:tag="QR Profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,10 +39,9 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="10dp"
-            android:background="@color/black"
             >
 
             <ImageView

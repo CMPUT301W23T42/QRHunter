@@ -1,5 +1,8 @@
 package com.example.qrhunter.generators;
 
+/**
+ * This class handles QRCode score generation
+ */
 public class QrCodeScoreGenerator {
     /***
      * Generates the score of a QRCode by counting repeated characters in a sha-256 hash

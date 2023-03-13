@@ -3,45 +3,29 @@ package com.example.qrhunter.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationRequest;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.CaptureAct;
-
-import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.QrCodeOnAddDialog;
 import com.example.qrhunter.R;
-
-import com.example.qrhunter.generators.QrCodeImageGenerator;
+import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.example.qrhunter.generators.QrCodeScoreGenerator;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import com.example.qrhunter.generators.QrCodeNameGenerator;
-
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.AggregateQuery;
 import com.google.firebase.firestore.AggregateQuerySnapshot;
@@ -60,6 +44,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class handles QRCode scanning using the zxing-android-embedded library
+ */
 public class ScannerFragment extends Fragment {
     private final String TAG = "Scanner Fragment";
     private onCameraClose listener;
@@ -70,13 +57,11 @@ public class ScannerFragment extends Fragment {
     SimpleDateFormat simpleDateFormat;
     String owner = "Roy";
     int index = 0;
-
     public ScannerFragment() {
         // Required empty public constructor
     }
 
     public static ScannerFragment newInstance() {
-
         ScannerFragment fragment = new ScannerFragment();
         return fragment;
     }
@@ -84,15 +69,6 @@ public class ScannerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
-
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("CodeList");
         AggregateQuery countQuery = query.count();
@@ -112,47 +88,49 @@ public class ScannerFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                listener.onCameraClose();
+                //listener.onCameraClose();
             }
         });
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         scanCode();
         askPermission();
+
     }
 
+    /**
+     * Sets up options of QRCode camera scanner and launchs scanner
+     */
     public void scanCode() {
         ScanOptions options = new ScanOptions();
-        options.setPrompt("Volume up to flash on");
+        options.setPrompt("Scan QRCode");
         options.setBeepEnabled(false);
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureAct.class);
         barLauncher.launch(options);
     }
 
-
+    /**
+     * Returns results of the QRCode scan.
+     */
     private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-
-        if (result.getContents() != null) {
-
+        if (result.getContents() == null) { //User either went back or qrcode contents are empty
+            goToWallet();
+        } else {
             GeoPoint geoPoint = getLocation();
             System.out.println(geoPoint);
+            // Generate hash from qrcode contents
             String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
+
             QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
             int score = scoreGenerator.score_algorithm(hash);
+
+            QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
+            String codeName = nameGenerator.createQRName(hash);
 
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String date = simpleDateFormat.format(new Date());
             System.out.println(date);
 
-
-            QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
-            String codeName = nameGenerator.createQRName(hash);
+            // Put QRCode into database
             Map<String, Object> QRInfo = new HashMap<>();
             QRInfo.put("name", codeName);
             QRInfo.put("date", date);
@@ -160,11 +138,13 @@ public class ScannerFragment extends Fragment {
             QRInfo.put("owner", owner);
             QRInfo.put("location", geoPoint);
             QRInfo.put("score", score);
-//            QRInfo.put("id",index+1);
             CollectionReference CodeList = db.collection("CodeList");
             CodeList.add(QRInfo);
+
+            // Open dialog showing user the qrcode they just scanned
             QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity());
             qrAddDialog.show(getParentFragmentManager(),"Test" );
+            goToWallet();
         }
     });
 
@@ -225,5 +205,26 @@ public class ScannerFragment extends Fragment {
 
     public interface onCameraClose {
         void onCameraClose();
+
     }
+
+    /**
+     * Goes to wallet fragment
+     */
+    public void goToWallet() {
+        WalletFragment walletFragment = new WalletFragment();
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, walletFragment);
+        fragmentTransaction.commit();
+    }
+
+    public void thisisatest(String hash) {
+
+    }
+
+
+
+
+
 }

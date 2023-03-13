@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.R;
 
+/**
+ * This class allows users to take a photo of their QRCode after scanning it
+ */
 public class CameraActivity extends Activity {
     private ImageView image;
     private static final int CAMERA_REQUEST = 999;
@@ -22,6 +25,7 @@ public class CameraActivity extends Activity {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
         image = findViewById(R.id.camera_image);
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
