@@ -30,6 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/** Class for the fragment that shows the Leaderboard and Search Player functionality **/
 public class LeaderboardFragment extends Fragment {
 
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -45,6 +46,18 @@ public class LeaderboardFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Called to create the view hierarchy associated with the fragment. This method is responsible for
+     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment
+     * does not have a UI or does not need to display a view, you can return null from this method.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          The parent view that the fragment's UI should be attached to. This value may be null
+     *                           if the fragment is not being attached to a parent view.
+     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null
+     *                           if the fragment is being instantiated for the first time.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,6 +71,13 @@ public class LeaderboardFragment extends Fragment {
         usernames = new ArrayList<UserListItem>();
 
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+            /**
+             * Called when the query is able to execute, and get data from the database
+             *
+             * @param task Has a task object that has all the documents required
+             * @return None
+             */
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -103,6 +123,15 @@ public class LeaderboardFragment extends Fragment {
 
         //open new profile fragment on clicking list item
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * Called when an item in the listview is clicked on
+             *
+             * @param adapterView Has a task object that has all the documents required
+             * @param view The veiw of the item clciked on
+             * @param i Position of the item clicked
+             * @param l ID of the item clicked
+             * @return None
+             */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);

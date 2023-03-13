@@ -14,6 +14,7 @@ import com.example.qrhunter.R;
 
 import java.util.ArrayList;
 
+/** Custom adapter made to implement a custom listview in searched player's profile with name of QR code and its score **/
 public class QRCodeAdapter extends ArrayAdapter<QRCodeListItem> {
 
     private TextView qrCodeNameTextView;
@@ -22,7 +23,12 @@ public class QRCodeAdapter extends ArrayAdapter<QRCodeListItem> {
     public QRCodeAdapter(Context context, ArrayList<QRCodeListItem> qrCodeArrayList){
         super(context, 0, qrCodeArrayList);
     }
-
+    /**
+     * getView method infaltes a view passed a parameter and returns the view for each element of the listview.
+     * @param position position of each item within adapters dataset
+     * @param convertView the old view to reuse
+     * @param parent The parent view that will eventually be attched to
+     * **/
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

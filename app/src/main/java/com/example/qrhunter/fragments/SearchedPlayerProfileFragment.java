@@ -29,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/** Class for fragment that shows the profile of a player when searched for and clicked in the listview of Leaderboard fragment**/
 public class SearchedPlayerProfileFragment extends Fragment {
 
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -42,6 +43,18 @@ public class SearchedPlayerProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Called to create the view hierarchy associated with the fragment. This method is responsible for
+     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment
+     * does not have a UI or does not need to display a view, you can return null from this method.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          The parent view that the fragment's UI should be attached to. This value may be null
+     *                           if the fragment is not being attached to a parent view.
+     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null
+     *                           if the fragment is being instantiated for the first time.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,6 +72,12 @@ public class SearchedPlayerProfileFragment extends Fragment {
 
         qrCodes = new ArrayList<QRCodeListItem>();
 
+        /**
+         * Called when the query is able to execute, and get data from the database. Has a condition attached, to return only return reults with specific username
+         *
+         * @param task Has a task object that has all the documents required
+         * @return None
+         */
         collectionReference.whereArrayContains("owner", username).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
