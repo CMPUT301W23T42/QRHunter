@@ -77,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
         This is a listener that will update the profile data if it changes.
         */
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            /**
+             Sets up a listener for tab selection events and switches the fragment according to the selected tab.
+            @param tabLayout the TabLayout object that the listener will be attached to.
+            */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (!isFinishing()) {
@@ -86,8 +91,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            /**
+            An empty method that is called when a tab is unselected.
+            @param tab the TabLayout.Tab object that was unselected.
+            */
             @Override
             public void onTabUnselected(TabLayout.Tab tab) { }
+
+            /**
+            An empty method that is called when a tab is reselected.
+            @param tab the TabLayout.Tab object that was reselected.
+            */
             @Override
             public void onTabReselected(TabLayout.Tab tab) { }
         });
