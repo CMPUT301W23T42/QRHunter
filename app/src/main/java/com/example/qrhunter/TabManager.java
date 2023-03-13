@@ -13,7 +13,7 @@ import com.example.qrhunter.fragments.LoginFragment;
 import com.example.qrhunter.fragments.ProfileFragment;
 import com.example.qrhunter.fragments.ScannerFragment;
 import com.example.qrhunter.fragments.WalletFragment;
-import com.example.qrhunter.fragments.SearchPlayerFragment;
+import com.example.qrhunter.fragments.LeaderboardFragment;
 
 public class TabManager implements UserInfo {
     private final String TAG = "Tab Manager";
@@ -72,9 +72,9 @@ public class TabManager implements UserInfo {
                 break;
 
             case 3:
-                SearchPlayerFragment searchPlayerFragment = new SearchPlayerFragment();
+                LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
 
-                currentFragment = searchPlayerFragment;
+                currentFragment = leaderboardFragment;
                 break;
 
             case 6:

@@ -9,15 +9,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.example.qrhunter.SearchAdapter;
+import com.example.qrhunter.searchPlayer.SearchAdapter;
 import com.example.qrhunter.R;
-import com.example.qrhunter.UserListItem;
+import com.example.qrhunter.searchPlayer.UserListItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,17 +29,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class SearchPlayerFragment extends Fragment {
+public class LeaderboardFragment extends Fragment {
 
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final CollectionReference collectionReference = db.collection("Users");
     ListView playerListView;
     ArrayList<UserListItem> usernames;
     EditText searchEditText;
+
+    Button sortButton;
     SearchAdapter usernamesArrayAdapter;
 
-    public SearchPlayerFragment() {
+    public LeaderboardFragment() {
         // Required empty public constructor
     }
 
@@ -46,11 +53,11 @@ public class SearchPlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
         playerListView = view.findViewById(R.id.player_list_list_view);
         searchEditText = view.findViewById(R.id.search_profile_edit_text);
-
+        sortButton = view.findViewById(R.id.sort_by_scores_button);
 
         usernames = new ArrayList<UserListItem>();
 
@@ -60,7 +67,10 @@ public class SearchPlayerFragment extends Fragment {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String username = document.getString("UserName");
-                        usernames.add(new UserListItem(username, 0));
+                        Long scoreLong = document.getLong("score");
+                        int score = (scoreLong != null) ? scoreLong.intValue() : 0; // Set score to 0 if the value is null
+                        usernames.add(new UserListItem(username, score));
+
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -89,11 +99,44 @@ public class SearchPlayerFragment extends Fragment {
             }
         });
 
+        playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String username = usernames.get(i).getUsername();
+                Log.d("ans", username);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+
+                SearchedPlayerProfileFragment searchedPlayerProfileFragment = new SearchedPlayerProfileFragment();
+                searchedPlayerProfileFragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.activity_main, searchedPlayerProfileFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        // Set a click listener for the sort button
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Sort the usernames ArrayList by score
+                Collections.sort(usernames, new Comparator<UserListItem>() {
+                    @Override
+                    public int compare(UserListItem o1, UserListItem o2) {
+                        return Integer.compare(o2.getScore(), o1.getScore());
+                    }
+                });
+
+                // Set the updated list to the adapter
+                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
+                playerListView.setAdapter(usernamesArrayAdapter);
+            }
+        });
+
         return view;
     }
 
 }
-
-
-
-
