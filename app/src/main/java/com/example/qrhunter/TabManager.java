@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.fragments.EditProfileFragment;
 import com.example.qrhunter.fragments.LoginFragment;
+import com.example.qrhunter.fragments.PlaceholderMapFragment;
 import com.example.qrhunter.fragments.ProfileFragment;
 import com.example.qrhunter.fragments.ScannerFragment;
 import com.example.qrhunter.fragments.WalletFragment;
@@ -59,6 +60,10 @@ public class TabManager implements UserInfo {
             case 0:
                 transactionTAG = "Wallet Fragment";
                 currentFragment = new WalletFragment();
+                break;
+            case 1:
+                transactionTAG = "Placeholder Map Fragment";
+                currentFragment = new PlaceholderMapFragment();
                 break;
             case 2:
                 LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
