@@ -7,6 +7,12 @@ android {
     namespace 'com.example.qrhunter'
     compileSdk 33
 
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.qrhunter"
         minSdk 19
