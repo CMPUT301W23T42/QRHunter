@@ -26,14 +26,12 @@ public class TabManager implements UserInfo {
 
     private FragmentManager fragmentManager;
     private Fragment currentFragment;
-    private FragmentActivity activity;
 
     /**
      * TabManager initializer
      * @param fragmentActivity  object representing main activity
      */
     public TabManager(@NonNull FragmentActivity fragmentActivity) {
-        activity = fragmentActivity;
         fragmentManager = fragmentActivity.getSupportFragmentManager();
     }
 
