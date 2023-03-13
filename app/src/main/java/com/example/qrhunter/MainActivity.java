@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private Boolean transactionSafe = true;
     DocumentReference docRef;
 
-    // This method retrieves the user profile data from the database
+    /**
+    This method retrieves the user profile data from the database
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(3).setIcon(R.drawable.profile_icon);
 
         getProfile(docRef);
-        // This is a listener that will update the profile data if it changes.
+        /**  
+        This is a listener that will update the profile data if it changes.
+        */
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -118,7 +122,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        // This is a listener that will update the profile data if it changes.
+        /**  
+        This is a listener that will update the profile data if it changes.
+        */
         docRef.addSnapshotListener(MetadataChanges.INCLUDE, (value, error) -> {
             Log.d(TAG, "Snapshot Listener running");
             if (error != null) {
