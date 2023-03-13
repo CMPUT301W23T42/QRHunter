@@ -45,7 +45,7 @@ public class TabManager implements UserInfo {
         transaction.replace(R.id.container, fragment, transactionTAG);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
-        transaction.commitNow();
+        transaction.commitAllowingStateLoss();
     }
 
     /**
