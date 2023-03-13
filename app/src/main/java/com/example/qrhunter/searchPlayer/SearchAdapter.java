@@ -106,7 +106,7 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (UserListItem username : originalUsernames) {
-                    if (username.getUsername().toLowerCase().contains(filterPattern)) {
+                    if (username.getUsername() != null && username.getUsername().toLowerCase().contains(filterPattern)) {
                         filteredList.add(username);
                     }
                 }

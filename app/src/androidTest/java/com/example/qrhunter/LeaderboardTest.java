@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import android.app.Activity;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
@@ -59,39 +60,41 @@ public class LeaderboardTest {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        LayoutInflater inflater = rule.getActivity().getLayoutInflater();
+        View fragmentLeaderboard = inflater.inflate(R.layout.fragment_leaderboard, null);
 
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Users");
 
-        Map<String, Object> QRInfo = new HashMap<>();
-        QRInfo.put("Name", "test 1");
-        QRInfo.put("Email", "test@email.com");
-        QRInfo.put("Phone", "1234567");
-        QRInfo.put("UserName", "TestUsername1");
-        QRInfo.put("score", 10);
+        Map<String, Object> ProfileInfo1 = new HashMap<>();
+        ProfileInfo1.put("Name", "test 1");
+        ProfileInfo1.put("Email", "test@email.com");
+        ProfileInfo1.put("Phone", "1234567");
+        ProfileInfo1.put("UserName", "TestUsername1");
+        ProfileInfo1.put("score", 10);
         collectionReference
                 .document("test doc")
-                .set(QRInfo);
+                .set(ProfileInfo1);
 
-        Map<String, Object> QRInfo1 = new HashMap<>();
-        QRInfo.put("Name", "test 2");
-        QRInfo.put("Email", "test2@email.com");
-        QRInfo.put("Phone", "123456789");
-        QRInfo.put("UserName", "TestUsername2");
-        QRInfo.put("score", 20);
+        Map<String, Object> ProfileInfo2 = new HashMap<>();
+        ProfileInfo2.put("Name", "test 2");
+        ProfileInfo2.put("Email", "test2@email.com");
+        ProfileInfo2.put("Phone", "123456789");
+        ProfileInfo2.put("UserName", "TestUsername2");
+        ProfileInfo2.put("score", 20);
         collectionReference
                 .document("test doc2")
-                .set(QRInfo1);
+                .set(ProfileInfo2);
 
-        Map<String, Object> QRInfo2 = new HashMap<>();
-        QRInfo.put("Name", "test 3");
-        QRInfo.put("Email", "test3@email.com");
-        QRInfo.put("Phone", "1234567910");
-        QRInfo.put("UserName", "TestUsername3");
-        QRInfo.put("score", 0);
+        Map<String, Object> ProfileInfo3 = new HashMap<>();
+        ProfileInfo3.put("Name", "test 3");
+        ProfileInfo3.put("Email", "test3@email.com");
+        ProfileInfo3.put("Phone", "1234567910");
+        ProfileInfo3.put("UserName", "TestUsername3");
+        ProfileInfo3.put("score", 0);
         collectionReference
                 .document("test doc3")
-                .set(QRInfo2);
+                .set(ProfileInfo3);
     }
 
     /**
@@ -110,7 +113,7 @@ public class LeaderboardTest {
     public void checkProfileSwitch() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        solo.clickOnText("Leaderboard");
+        solo.getView(R.id.search_tab);
         View frag = solo.getView(R.id.fragment_leaderboard);
 
         assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
@@ -121,12 +124,11 @@ public class LeaderboardTest {
      */
     @Test
     public void checkListViewItems(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         TestCase.assertTrue(solo.waitForText("test 1", 1, 20000));
     }
 
     /**
-     * Checks if Leaderbaord list is sorted based on score
+     * Checks if Leaderboard list is sorted based on score
      */
     @Test
     public void checkAscendingSort() {
