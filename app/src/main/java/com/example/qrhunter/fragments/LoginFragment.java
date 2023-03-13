@@ -24,6 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+/**
+ * Object responsible for prompting user for login info
+ */
 public class LoginFragment extends Fragment {
     private final String TAG = "Sample";
     private EditText usernameEdit;
@@ -32,7 +35,18 @@ public class LoginFragment extends Fragment {
     private EditText phoneEdit;
     private Button signUpButton;
 
-
+    /**
+     * Called to create the view hierarchy associated with the fragment. This method is responsible for
+     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment
+     * does not have a UI or does not need to display a view, you can return null from this method.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          The parent view that the fragment's UI should be attached to. This value may be null
+     *                           if the fragment is not being attached to a parent view.
+     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null
+     *                           if the fragment is being instantiated for the first time.
+     * @return The View for the fragment's UI, or null.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -87,6 +101,9 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+    /**
+     * actions to run on removal of view
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

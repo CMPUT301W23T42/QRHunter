@@ -106,16 +106,6 @@ public class WalletTest {
     }
 
     /**
-     * Check item taken from the listview
-     */
-//    @Test
-//    public void checkCiyListItem() {
-//        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//        assertTrue(solo.waitForText("test 1", 1, 20000));
-//
-//    }
-
-    /**
      * Checks delete functionality. At first cancels the delete to check if nothing happens then confirms and checks if item was deleted.
      */
     @Test

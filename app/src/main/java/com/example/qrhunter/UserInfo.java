@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
+
 public interface UserInfo {
     void setProfile(UserProfile profile);
     void onChange();

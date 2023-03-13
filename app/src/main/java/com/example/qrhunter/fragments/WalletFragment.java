@@ -213,7 +213,7 @@ public class WalletFragment extends Fragment {
 
     }
 
-    private int countPoints(ArrayList<QRCode> qrDataList) {
+    public int countPoints(ArrayList<QRCode> qrDataList) {
         int points = 0;
         for (int i = 0; i < qrDataList.size(); i++) {
             points += qrDataList.get(i).getScore();

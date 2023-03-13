@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The mainAcitvity of the QR profile.
+ * The mainActivity of the QR profile.
  */
 public class QRProfileActivity extends AppCompatActivity implements AddCommentFragment.AddCommentDialogListener {
 
