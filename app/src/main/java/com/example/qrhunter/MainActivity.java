@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
 
     private FirebaseFirestore db;
+    private Boolean transactionSafe = true;
     DocumentReference docRef;
 
     @Override
@@ -58,14 +59,22 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setVisibility(View.GONE);
         tabManager = new TabManager(this);
         tabLayout.selectTab(tabLayout.getTabAt(0));
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.list_icon);
+        tabLayout.getTabAt(1).setIcon(R.drawable.map_icon);
+        tabLayout.getTabAt(2).setIcon(R.drawable.search_icon);
+        tabLayout.getTabAt(3).setIcon(R.drawable.profile_icon);
+
         getProfile(docRef);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                tabManager.switchFragment(position);
-                Log.d(TAG, "Tab Selected: " + position);
+                if (!isFinishing()) {
+                    int position = tab.getPosition();
+                    tabManager.switchFragment(position);
+                    Log.d(TAG, "Tab Selected: " + position);
+                }
             }
 
             @Override

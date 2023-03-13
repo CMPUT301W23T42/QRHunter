@@ -1,4 +1,4 @@
-package com.example.qrhunter;
+package com.example.qrhunter.qrProfile;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qrhunter.QRCode;
+import com.example.qrhunter.R;
+
 import java.util.ArrayList;
 
+/**
+ * This class defines an adapter for showing the same QR code in QRProfile.
+ */
 public class SameQRCodeAdapter extends ArrayAdapter<QRCode> {
 
     public SameQRCodeAdapter(Context context, ArrayList<QRCode> qrCodes) {

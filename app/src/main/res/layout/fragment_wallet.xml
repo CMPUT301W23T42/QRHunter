@@ -2,22 +2,37 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wallet_fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    android:tag="WALLET"
     tools:context=".fragments.WalletFragment"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="0dp">
+
+    <TextView
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="Wallet"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"></TextView>
 
     <TextView
         android:id="@+id/tv_sort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="11dp"
         android:text="SORT BY:"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/banner" />
 
     <RadioGroup
         android:id="@+id/rg_sort"
@@ -27,7 +42,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_sort"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/banner">
 
         <RadioButton
             android:id="@+id/rb_ascending"
@@ -47,51 +62,84 @@
     <ListView
         android:id="@+id/qr_list"
         android:layout_width="409dp"
-        android:layout_height="550dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="5dp"
         android:longClickable="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rg_sort">
 
     </ListView>
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="Total Points: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qr_list" />
-
-    <TextView
-        android:id="@+id/tv_total_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Points"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/qr_list" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="QR Code Scanned: "
-        app:layout_constraintEnd_toStartOf="@+id/tv_total_scanned"
-        app:layout_constraintTop_toBottomOf="@+id/qr_list" />
-
-    <TextView
-        android:id="@+id/tv_total_scanned"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Scanned"
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#CCD6DD"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qr_list" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:textColor="@color/black"
+            android:text="Total Points: " />
+
+        <TextView
+            android:id="@+id/tv_total_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="32dp"
+            android:layout_toRightOf="@id/textView8"
+            android:textColor="@color/black"
+            android:text="Points" />
+
+        <Space
+            android:id="@+id/wallet_spacer"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_total_points" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="32dp"
+            android:layout_toRightOf="@id/wallet_spacer"
+            android:textColor="@color/black"
+            android:text="QR Code Scanned: " />
+
+        <TextView
+            android:id="@+id/tv_total_scanned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_toRightOf="@id/textView10"
+            android:textColor="@color/black"
+            android:text="Scanned" />
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/wallet_button_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#EC3561"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

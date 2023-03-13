@@ -1,11 +1,14 @@
 package com.example.qrhunter.fragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -24,10 +24,11 @@ import android.widget.TextView;
 
 import com.example.qrhunter.WalletCustomList;
 import com.example.qrhunter.QRCode;
-import com.example.qrhunter.QRProfileActivity;
+import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.example.qrhunter.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,7 +41,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * This is a class for the fragment that shows the QRCodes in the database, allows us to remove a QRCode, shows the total no. scanned and total points, sorts QRCodes according to score and allows to add a QRCode.
+ */
 public class WalletFragment extends Fragment {
     RadioGroup radioGroup;
     RadioButton descendingSort, ascendingSort;
@@ -49,9 +52,24 @@ public class WalletFragment extends Fragment {
     ArrayList<QRCode> qrDataList;
     TextView totalPoints;
     TextView totalScanned;
+
+    FloatingActionButton scanButton;
     final String TAG = "Sample";
     FirebaseFirestore db;
 
+
+    /**
+     * Called to create the view hierarchy associated with the fragment. This method is responsible for
+     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment
+     * does not have a UI or does not need to display a view, you can return null from this method.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          The parent view that the fragment's UI should be attached to. This value may be null
+     *                           if the fragment is not being attached to a parent view.
+     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null
+     *                           if the fragment is being instantiated for the first time.
+     * @return The View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,16 +87,25 @@ public class WalletFragment extends Fragment {
         qrDataList = new ArrayList<>();
         qrAdapter = new WalletCustomList(this.getActivity(), qrDataList);
         qrList.setAdapter(qrAdapter);
+        scanButton = view.findViewById(R.id.wallet_button_scan);
 
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("CodeList");
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            /**
+             * This method is called when the data in the specified query snapshot changes. This includes
+             * the initial data and any subsequent changes to the documents that match the query criteria.
+             * Clears the arraylist of QRCodes and adds again from the document.
+             *
+             * @param value The query snapshot representing the updated data.
+             * @param error The error, if any, that occurred while listening for changes. If the error is null,
+             *              no errors occurred during the listening operation.
+             */
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 qrDataList.clear();
 
-                assert value != null;
                 for (QueryDocumentSnapshot doc: value) {
                     List<String> ownerNameList = (List<String>) doc.get("owner");
                     String ownerName = ownerNameList.get(0);
@@ -90,20 +117,42 @@ public class WalletFragment extends Fragment {
                         String hash = (String) doc.getData().get("hash");
                         GeoPoint location = (GeoPoint) doc.getData().get("location");
                         String name = (String) doc.getData().get("name");
+
                         List<String> ownerList = (List<String>) doc.get("owner");
                         String owner = ownerList.get(0);
-                        Long score = (Long) doc.getData().get("score");
+                        int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
+                        
 
-                        qrDataList.add(new QRCode(date, hash, name, location, owner, Math.toIntExact(score), id));
+                        qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
                     }
                 }
                 qrAdapter.notifyDataSetChanged();
-                totalPoints.setText(Integer.toString(countPoints()));
+                totalPoints.setText(Integer.toString(countPoints(qrDataList)));
                 totalScanned.setText(Integer.toString(qrDataList.size()));
+            }
+        });
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when the scan button is clicked and replaces the fragment with a scanner fragment.
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                ScannerFragment scannerFragment = new ScannerFragment();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, scannerFragment);
+                fragmentTransaction.commit();
+
             }
         });
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            /**
+             * Called when the checked radio button has changed in a radio group. Sorts the datalist according to the radio button checked. (Either ascending or descending)
+             * @param radioGroup The radio group in which the checked radio button has changed.
+             * @param i The unique identifier of the newly checked radio button.
+             */
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.rb_ascending) {
@@ -116,16 +165,28 @@ public class WalletFragment extends Fragment {
             }
         });
 
-        qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String id = qrAdapter.getItem(i).getId();
-                deleteData(id);
-                return true;
-            }
+        qrList.setOnItemLongClickListener((parent, v, position, id) -> {
+            new AlertDialog.Builder(this.getActivity())
+                    .setTitle("Do you want to delete this QR code?")
+                    .setPositiveButton("Confirm", (dialog, which) -> {
+                        String docID = qrAdapter.getItem(position).getId();
+                        deleteData(docID);
+                        radioGroup.clearCheck();
+                        qrAdapter.notifyDataSetChanged();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+            return true;
         });
 
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * Called when an item in the ListView has been clicked. Opens a new activity for the profile of the QR code clicked.
+             * @param adapterView The AdapterView where the click happened.
+             * @param view The view within the AdapterView that was clicked (this will be a view provided by the adapter).
+             * @param i The position of the view in the adapter.
+             * @param l The row id of the item that was clicked.
+             */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), QRProfileActivity.class);
@@ -137,6 +198,7 @@ public class WalletFragment extends Fragment {
 
         return view;
     }
+
 
     private void deleteData(String id){
         db.collection("CodeList").document(id)
@@ -153,9 +215,10 @@ public class WalletFragment extends Fragment {
                         Log.w(TAG, "Error deleting document", e);
                     }
                 });
+
     }
 
-    private int countPoints() {
+    public int countPoints(ArrayList<QRCode> qrDataList) {
         int points = 0;
         for (int i = 0; i < qrDataList.size(); i++) {
             points += qrDataList.get(i).getScore();

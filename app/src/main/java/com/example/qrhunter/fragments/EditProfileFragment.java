@@ -21,9 +21,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+/**
+ * Fragment responsible for displaying the edit profile view and collecting input
+ */
 public class EditProfileFragment extends Fragment implements UserInfo {
     private onCompleteListener listener;
-
     private UserProfile profile;
     private final String ID = Settings.Secure.ANDROID_ID;
     private final String TAG = "Edit Profile Fragment";
@@ -33,10 +35,26 @@ public class EditProfileFragment extends Fragment implements UserInfo {
     private EditText editEmail;
     private EditText editPhone;
 
+    /**
+     * EditProfileFragment initializer
+     * @param profile UserProfile object representing a user profile
+     */
     public EditProfileFragment(UserProfile profile) {
         this.profile = profile;
     }
 
+    /**
+     * Called to create the view hierarchy associated with the fragment. This method is responsible for
+     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment
+     * does not have a UI or does not need to display a view, you can return null from this method.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          The parent view that the fragment's UI should be attached to. This value may be null
+     *                           if the fragment is not being attached to a parent view.
+     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null
+     *                           if the fragment is being instantiated for the first time.
+     * @return The View for the fragment's UI, or null.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -89,12 +107,19 @@ public class EditProfileFragment extends Fragment implements UserInfo {
         return view;
     }
 
+    /**
+     * Set the profile attribute of object
+     * @param   profile UserProfile object representing the user profile
+     */
     @Override
     public void setProfile(UserProfile profile) {
         this.profile = profile;
         onChange();
     }
 
+    /**
+     * Updates view elements on any changes to object
+     */
     @Override
     public void onChange() {
         if (view != null) {
@@ -104,6 +129,11 @@ public class EditProfileFragment extends Fragment implements UserInfo {
             editPhone.setText(profile.getPhone());
         }
     }
+
+    /**
+     * Sets listener attribute of profile fragment object
+     * @param   listener    represents an onEditProfileListener
+     */
     public void setOnCompleteListener(onCompleteListener listener) {
         this.listener = listener;
     }

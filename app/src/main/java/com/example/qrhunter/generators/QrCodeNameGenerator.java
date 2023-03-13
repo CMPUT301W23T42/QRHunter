@@ -9,7 +9,7 @@ public class QrCodeNameGenerator implements QrCodeRepresentative{
 
     protected final String[] zeroString = {"Absolutely ", "Massive ", "Extremely Expensive ", "Turbo", "Multi-Dimensional ", "Poly-Dodecahedron"};
     protected final String[] oneString = {"Fiery ", "Solid ", "Ready To Go ", "Giga", "Draconic ", "Tesseract"};
-    protected int maxBits = 8;
+    protected int maxBytes = 2;
     /**
      * This generates a UNIQUE (up to the number of bits) QRCode Name up to @maxBits
      * Draws strings from zeroString and oneString
@@ -43,10 +43,10 @@ public class QrCodeNameGenerator implements QrCodeRepresentative{
     public String hex_to_bit(String hex_string) {
         String bit_string = "";
         int i = 0;
-        while(i<(maxBits-maxBits %4)/4+1) {
+        while(i<maxBytes) {
             char fixedChar = hex_string.charAt(i);
             String byteString = (Integer.toBinaryString(Character.getNumericValue(fixedChar)));
-            while (byteString.length() < 4 && 4*i + byteString.length() < maxBits) {
+            while (byteString.length() < 4) {
                 byteString = "0".concat(byteString);
             }
             bit_string = bit_string.concat(byteString);
