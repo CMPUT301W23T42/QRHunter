@@ -113,7 +113,7 @@ public class LeaderboardTest {
     public void checkProfileSwitch() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        solo.getView(R.id.search_tab);
+        solo.clickOnView(solo.getView(R.id.search_tab));
         View frag = solo.getView(R.id.fragment_leaderboard);
 
         assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
