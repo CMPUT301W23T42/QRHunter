@@ -97,7 +97,6 @@ public class WalletFragment extends Fragment {
              * the initial data and any subsequent changes to the documents that match the query criteria.
              * Clears the arraylist of QRCodes and adds again from the document.
              *
-             *
              * @param value The query snapshot representing the updated data.
              * @param error The error, if any, that occurred while listening for changes. If the error is null,
              *              no errors occurred during the listening operation.
@@ -128,6 +127,10 @@ public class WalletFragment extends Fragment {
             }
         });
         scanButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when the scan button is clicked and replaces the fragment with a scanner fragment.
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 ScannerFragment scannerFragment = new ScannerFragment();
@@ -140,6 +143,11 @@ public class WalletFragment extends Fragment {
         });
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            /**
+             * Called when the checked radio button has changed in a radio group. Sorts the datalist according to the radio button checked. (Either ascending or descending)
+             * @param radioGroup The radio group in which the checked radio button has changed.
+             * @param i The unique identifier of the newly checked radio button.
+             */
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.rb_ascending) {
@@ -167,6 +175,13 @@ public class WalletFragment extends Fragment {
         });
 
         qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * Called when an item in the ListView has been clicked. Opens a new activity for the profile of the QR code clicked.
+             * @param adapterView The AdapterView where the click happened.
+             * @param view The view within the AdapterView that was clicked (this will be a view provided by the adapter).
+             * @param i The position of the view in the adapter.
+             * @param l The row id of the item that was clicked.
+             */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), QRProfileActivity.class);

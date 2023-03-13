@@ -16,16 +16,33 @@ import com.example.qrhunter.generators.QrCodeNameGenerator;
 
 import java.util.ArrayList;
 
+import kotlin.contracts.Returns;
+
+/**
+ * WalletCustomList is a class that extends ArrayAdapter to create a custom list view for displaying a list of QRCodes.
+ */
 public class WalletCustomList extends ArrayAdapter<QRCode> {
     private ArrayList<QRCode> codes;
     private Context context;
 
+    /**
+     * Constructs a new CustomList object.
+     * @param context The context where the CustomList will be used.
+     * @param codes The QRCodes to represent in the ListView.
+     */
     public WalletCustomList(Context context, ArrayList<QRCode> codes){
         super(context,0, codes);
         this.codes = codes;
         this.context = context;
     }
 
+    /**
+     * Returns the view to be displayed for the specified position in the list view.
+     * @param position The position of the item within the adapter's data set of the item whose view we want.
+     * @param convertView The old view to reuse, if possible.
+     * @param parent The parent that this view will eventually be attached to.
+     * @return The view corresponding to the data at the specified position.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
