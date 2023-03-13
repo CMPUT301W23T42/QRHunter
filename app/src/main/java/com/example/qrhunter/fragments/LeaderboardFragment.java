@@ -29,8 +29,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class LeaderboardFragment extends Fragment {
 
@@ -47,7 +45,6 @@ public class LeaderboardFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,7 +54,6 @@ public class LeaderboardFragment extends Fragment {
 
         playerListView = view.findViewById(R.id.player_list_list_view);
         searchEditText = view.findViewById(R.id.search_profile_edit_text);
-        sortButton = view.findViewById(R.id.sort_by_scores_button);
 
         usernames = new ArrayList<UserListItem>();
 
@@ -77,6 +73,8 @@ public class LeaderboardFragment extends Fragment {
                 }
 
                 usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
+                usernamesArrayAdapter.sortFilteredScores();
+                usernamesArrayAdapter.notifyDataSetChanged();
                 playerListView.setAdapter(usernamesArrayAdapter);
             }
         });
@@ -91,18 +89,24 @@ public class LeaderboardFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (usernamesArrayAdapter != null) {
                     usernamesArrayAdapter.getFilter().filter(s);
+                    Log.d("Filter", usernamesArrayAdapter.getFilter().toString());
+                    usernamesArrayAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                usernamesArrayAdapter.sortOriginalScores();
+                usernamesArrayAdapter.notifyDataSetChanged();
             }
         });
 
+        //open new profile fragment on clicking list item
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String username = usernames.get(i).getUsername();
+                UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);
+                String username = usernameObj.getUsername();
                 Log.d("ans", username);
 
                 Bundle bundle = new Bundle();
@@ -118,23 +122,7 @@ public class LeaderboardFragment extends Fragment {
             }
         });
 
-        // Set a click listener for the sort button
-        sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Sort the usernames ArrayList by score
-                Collections.sort(usernames, new Comparator<UserListItem>() {
-                    @Override
-                    public int compare(UserListItem o1, UserListItem o2) {
-                        return Integer.compare(o2.getScore(), o1.getScore());
-                    }
-                });
-
-                // Set the updated list to the adapter
-                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
-                playerListView.setAdapter(usernamesArrayAdapter);
-            }
-        });
+        // sort the adapter automatically when view is created
 
         return view;
     }

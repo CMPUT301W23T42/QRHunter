@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.qrhunter.R;
+import com.example.qrhunter.searchPlayer.QRCodeAdapter;
+import com.example.qrhunter.searchPlayer.QRCodeListItem;
 import com.example.qrhunter.searchPlayer.SearchAdapter;
 import com.example.qrhunter.searchPlayer.UserListItem;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,11 +32,11 @@ import java.util.ArrayList;
 public class SearchedPlayerProfileFragment extends Fragment {
 
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    final CollectionReference collectionReference = db.collection("Users");
+    final CollectionReference collectionReference = db.collection("CodeList");
     TextView usernameTextView;
-    TextView nameTextView;
-    TextView emailTextView;
-    TextView phoneTextView;
+    ArrayList<QRCodeListItem> qrCodes;
+    ArrayAdapter qrCodeAdapter;
+    ListView qrCodeListView;
 
     public SearchedPlayerProfileFragment() {
         // Required empty public constructor
@@ -50,18 +53,28 @@ public class SearchedPlayerProfileFragment extends Fragment {
         String username = bundle.getString("username");
 
         usernameTextView = view.findViewById(R.id.username_text);
+        qrCodeListView = view.findViewById(R.id.qr_codes_list_view);
+
         usernameTextView.setText(username);
 
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        qrCodes = new ArrayList<QRCodeListItem>();
+
+        collectionReference.whereArrayContains("owner", username).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        System.out.println("Get list of QR codes");//does nothing for now
+                        String name = document.getString("name");
+                        int score = Integer.parseInt(String.valueOf(document.getLong("score")));
+
+                        qrCodes.add(new QRCodeListItem(name, score));
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
+
+                qrCodeAdapter = new QRCodeAdapter(getContext(), qrCodes);
+                qrCodeListView.setAdapter(qrCodeAdapter);
             }
         });
 

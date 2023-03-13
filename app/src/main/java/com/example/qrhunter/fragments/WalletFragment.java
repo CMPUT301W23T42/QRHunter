@@ -38,6 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class WalletFragment extends Fragment {
@@ -79,7 +80,8 @@ public class WalletFragment extends Fragment {
 
                 assert value != null;
                 for (QueryDocumentSnapshot doc: value) {
-                    String ownerName = (String) doc.getData().get("owner");
+                    List<String> ownerNameList = (List<String>) doc.get("owner");
+                    String ownerName = ownerNameList.get(0);
                     assert ownerName != null;
                     if (ownerName.equals("Roy")) {
                         Log.d(TAG, "Show list of QR codes");
@@ -88,7 +90,8 @@ public class WalletFragment extends Fragment {
                         String hash = (String) doc.getData().get("hash");
                         GeoPoint location = (GeoPoint) doc.getData().get("location");
                         String name = (String) doc.getData().get("name");
-                        String owner = (String) doc.getData().get("owner");
+                        List<String> ownerList = (List<String>) doc.get("owner");
+                        String owner = ownerList.get(0);
                         Long score = (Long) doc.getData().get("score");
 
                         qrDataList.add(new QRCode(date, hash, name, location, owner, Math.toIntExact(score), id));

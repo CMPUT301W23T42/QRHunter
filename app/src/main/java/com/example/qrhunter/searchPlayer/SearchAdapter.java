@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import com.example.qrhunter.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filterable {
     private ArrayList<UserListItem> originalUsernames; // Keep a copy of original data
@@ -22,6 +24,7 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
     private UserFilter userFilter;
     private TextView usernameTextView;
     private TextView scoreTextView;
+    private TextView numberingTextView;
 
     public SearchAdapter(Context context, ArrayList<UserListItem> usernames) {
         super(context, 0, usernames);
@@ -29,6 +32,23 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
         this.originalUsernames = new ArrayList<>(usernames);
     }
 
+    public void sortFilteredScores() {
+        Collections.sort(filteredUsernames, new Comparator<UserListItem>() {
+            @Override
+            public int compare(UserListItem u1, UserListItem u2) {
+                return Integer.compare(u2.getScore(), u1.getScore());
+            }
+        });
+    }
+
+    public void sortOriginalScores() {
+        Collections.sort(originalUsernames, new Comparator<UserListItem>() {
+            @Override
+            public int compare(UserListItem u1, UserListItem u2) {
+                return Integer.compare(u2.getScore(), u1.getScore());
+            }
+        });
+    }
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -40,22 +60,22 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
             view = convertView;
         }
 
+        usernameTextView = view.findViewById(R.id.player_username_text_view);
+        scoreTextView = view.findViewById(R.id.player_score_text_view);
+        numberingTextView = view.findViewById(R.id.numbering_text_view);
+
         if (filteredUsernames.size() > 0 && position < filteredUsernames.size()) {
             UserListItem userListItem = filteredUsernames.get(position);
-
-            usernameTextView = view.findViewById(R.id.player_username_text_view);
-            scoreTextView = view.findViewById(R.id.player_score_text_view);
 
             usernameTextView.setText(userListItem.getUsername());
             scoreTextView.setText(String.valueOf(userListItem.getScore()));
         } else {
             // Set text views to empty strings for empty items
-            usernameTextView = view.findViewById(R.id.player_username_text_view);
-            scoreTextView = view.findViewById(R.id.player_score_text_view);
-
             usernameTextView.setText("");
             scoreTextView.setText("");
         }
+
+        numberingTextView.setText(String.valueOf(position + 1));
 
         return view;
     }
@@ -67,6 +87,10 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
             userFilter = new UserFilter();
         }
         return userFilter;
+    }
+
+    public ArrayList<UserListItem> getFilteredList(){
+        return filteredUsernames;
     }
 
     private class UserFilter extends Filter {
@@ -93,7 +117,6 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
             return results;
         }
 
-
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             filteredUsernames.clear();
@@ -104,5 +127,4 @@ public class SearchAdapter extends ArrayAdapter<UserListItem> implements Filtera
         }
 
     }
-
 }
