@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (transactionSafe) {
+                if (!isFinishing()) {
                     int position = tab.getPosition();
                     tabManager.switchFragment(position);
                     Log.d(TAG, "Tab Selected: " + position);
@@ -77,24 +77,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) { }
         });
     }
-
-    /**
-     * Runs after app is brought back from background
-     */
-    public void onPostResume(){
-        super.onPostResume();
-        transactionSafe=true;
-    }
-
-    /**
-     * Runs when app is pushed to background
-     */
-    public void onPause(){
-        super.onPause();
-        transactionSafe=false;
-
-    }
-
 
     private void getProfile(DocumentReference docRef) {
         profile = new UserProfile();
