@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,7 +57,9 @@ public class EditProfileTest {
     public void checkEditSwitch() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        solo.clickOnText("Profile");
+        TabLayout tabs = (TabLayout) solo.getCurrentActivity().findViewById(R.id.tab_layout);
+        solo.clickOnView(tabs.getTabAt(3).view);
+
         View profileFrag = solo.getView(R.id.Profile_Fragment);
         assertTrue("Wrong fragment", profileFrag.getVisibility() == View.VISIBLE);
 
