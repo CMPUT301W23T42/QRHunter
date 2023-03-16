@@ -191,7 +191,7 @@ public class LeaderboardTest {
 
         EditText editText = frag.findViewById(R.id.search_profile_edit_text);
         solo.typeText(editText, "TestUsername1");
-
+        solo.waitForText("TestUsername1", 2, 10000);
         solo.clickInList(0);
         assertTrue(solo.waitForText("TestUsername1", 1, 10000));
     }
