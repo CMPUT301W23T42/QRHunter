@@ -13,8 +13,11 @@ Wallet             |  Search
 
 ## Features
 -[x] QR scoring system
+
 -[x] View other players profiles
+
 -[x] Map functionality
+
 -[x] QR Visual Representation
 
 ## Contributors
