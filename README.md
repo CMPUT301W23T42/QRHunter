@@ -19,8 +19,13 @@ Wallet             |  Search
 
 ## Contributors
 Isaac-Stamatelakis
+
 roy20010327
+
 Oriyans-sunset
+
 Sam-Sandhu
+
 zihan001
+
 Danielaca18
