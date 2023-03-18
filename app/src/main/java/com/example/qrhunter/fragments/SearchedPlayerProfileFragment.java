@@ -44,7 +44,7 @@ public class SearchedPlayerProfileFragment extends Fragment {
     ArrayAdapter qrCodeAdapter;
     ListView qrCodeListView;
 
-    ImageButton backButton;
+    ImageView backButton;
 
     public SearchedPlayerProfileFragment() {
         // Required empty public constructor
