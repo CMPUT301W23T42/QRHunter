@@ -12,13 +12,13 @@ Wallet             |  Search
 ![]()  |  ![]()
 
 ## Features
--[x] QR scoring system
+- [x] QR scoring system
 
--[x] View other players profiles
+- [x] View other players profiles
 
--[x] Map functionality
+- [x] Map functionality
 
--[x] QR Visual Representation
+- [x] QR Visual Representation
 
 ## Contributors
 Isaac-Stamatelakis
