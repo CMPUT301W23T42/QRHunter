@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRHunter"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCrhBNpa3Z7rh_bzgoQBY6W9-Pl07ARoX4" />
         <activity android:name=".fragments.EditProfileFragment"
             android:exported="false"
             android:label="EditProfileFragment"/>
