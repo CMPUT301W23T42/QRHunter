@@ -1,6 +1,5 @@
 package com.example.qrhunter;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,9 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.fragments.EditProfileFragment;
 import com.example.qrhunter.fragments.LoginFragment;
-import com.example.qrhunter.fragments.PlaceholderMapFragment;
+import com.example.qrhunter.fragments.MapFragment;
 import com.example.qrhunter.fragments.ProfileFragment;
-import com.example.qrhunter.fragments.ScannerFragment;
 import com.example.qrhunter.fragments.WalletFragment;
 import com.example.qrhunter.fragments.LeaderboardFragment;
 
@@ -61,7 +59,7 @@ public class TabManager implements UserInfo {
                 break;
             case 1:
                 transactionTAG = "Placeholder Map Fragment";
-                currentFragment = new PlaceholderMapFragment();
+                currentFragment = new MapFragment();
                 break;
             case 2:
                 LeaderboardFragment leaderboardFragment = new LeaderboardFragment();

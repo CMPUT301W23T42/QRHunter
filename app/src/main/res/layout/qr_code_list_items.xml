@@ -9,19 +9,19 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp">
         <ImageView
-            android:id="@+id/qr_wallet_frame"
+            android:id="@+id/qr_frame"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/frame_null"
             />
         <ImageView
-            android:id="@+id/qr_wallet_square"
+            android:id="@+id/qr_square"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/square_null"
             />
         <ImageView
-            android:id="@+id/qr_wallet_rest"
+            android:id="@+id/qr_rest"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/rest_null"

@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.qrhunter.R;
+import com.example.qrhunter.generators.QrCodeImageGenerator;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,8 @@ public class QRCodeAdapter extends ArrayAdapter<QRCodeListItem> {
 
     private TextView qrCodeNameTextView;
     private TextView qrCodeScoreTextView;
+    private ImageView frame, rest, square;
+    QrCodeImageGenerator qrCodeImageGenerator = new QrCodeImageGenerator();
 
     public QRCodeAdapter(Context context, ArrayList<QRCodeListItem> qrCodeArrayList){
         super(context, 0, qrCodeArrayList);
@@ -44,7 +48,11 @@ public class QRCodeAdapter extends ArrayAdapter<QRCodeListItem> {
 
         qrCodeNameTextView = view.findViewById(R.id.qr_code_name_text_view);
         qrCodeScoreTextView = view.findViewById(R.id.qr_code_score_text_view);
+        frame = view.findViewById(R.id.qr_frame);
+        rest = view.findViewById(R.id.qr_rest);
+        square = view.findViewById(R.id.qr_square);
 
+        qrCodeImageGenerator.setQRCodeImage(qrCodeListItem.getHash(), frame, rest, square);
         qrCodeNameTextView.setText(qrCodeListItem.getName());
         qrCodeScoreTextView.setText(String.valueOf(qrCodeListItem.getScore()));
 

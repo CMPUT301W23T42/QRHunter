@@ -14,7 +14,7 @@ import com.example.qrhunter.R;
 /**
  * Fragment responsible for displaying an image as the actual Map functionality has not been implemented
  */
-public class PlaceholderMapFragment extends Fragment {
+public class MapFragment extends Fragment {
     private View view;
 
     /**
@@ -34,7 +34,7 @@ public class PlaceholderMapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = inflater.inflate(R.layout.fragment_placeholder_map, container, false);
+        view = inflater.inflate(R.layout.fragment_map, container, false);
         return view;
     }
 }

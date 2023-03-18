@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.R;
+import com.example.qrhunter.generators.QrCodeImageGenerator;
 import com.example.qrhunter.searchPlayer.QRCodeAdapter;
 import com.example.qrhunter.searchPlayer.QRCodeListItem;
 import com.example.qrhunter.searchPlayer.SearchAdapter;
@@ -91,8 +93,9 @@ public class SearchedPlayerProfileFragment extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String name = document.getString("name");
                         int score = Integer.parseInt(String.valueOf(document.getLong("score")));
+                        String hash = document.getString("hash");
 
-                        qrCodes.add(new QRCodeListItem(name, score));
+                        qrCodes.add(new QRCodeListItem(name, score, hash));
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
