@@ -32,7 +32,7 @@ import java.util.ArrayList;
 /** Class for fragment that shows the profile of a player when searched for and clicked in the listview of Leaderboard fragment**/
 public class SearchedPlayerProfileFragment extends Fragment {
 
-    final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore db;
     final CollectionReference collectionReference = db.collection("CodeList");
     TextView usernameTextView;
     ListView qrList;
