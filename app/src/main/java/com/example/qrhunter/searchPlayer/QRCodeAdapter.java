@@ -47,7 +47,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
         View view = convertView;
 
         if(view == null){
-            view = LayoutInflater.from(context).inflate(R.layout.search_player_content, parent,false);
+            view = LayoutInflater.from(context).inflate(R.layout.searched_player_content, parent,false);
         }
 
         QRCode code = codes.get(position);
