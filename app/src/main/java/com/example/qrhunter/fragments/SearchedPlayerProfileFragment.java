@@ -33,7 +33,6 @@ import java.util.ArrayList;
 public class SearchedPlayerProfileFragment extends Fragment {
 
     FirebaseFirestore db;
-    final CollectionReference collectionReference = db.collection("CodeList");
     TextView usernameTextView;
     ListView qrList;
     ArrayAdapter<QRCode> qrAdapter;
@@ -65,6 +64,7 @@ public class SearchedPlayerProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_searched_player_profile, container, false);
 
         Bundle bundle = getArguments();
+        assert bundle != null;
         String username = bundle.getString("username");
 
         usernameTextView = view.findViewById(R.id.username_text);
