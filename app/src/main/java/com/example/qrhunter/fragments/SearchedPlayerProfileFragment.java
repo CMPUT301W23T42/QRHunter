@@ -110,6 +110,7 @@ public class SearchedPlayerProfileFragment extends Fragment {
                         qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
                     }
                 }
+                qrAdapter.notifyDataSetChanged();
             }
         });
 
