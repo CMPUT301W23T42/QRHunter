@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.qrhunter.QRCode;
 import com.example.qrhunter.R;
 import com.example.qrhunter.WalletCustomList;
+import com.example.qrhunter.searchPlayer.QRCodeAdapter;
 import com.example.qrhunter.searchPlayer.QRCodeListItem;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -73,7 +74,7 @@ public class SearchedPlayerProfileFragment extends Fragment {
 
         qrList = view.findViewById(R.id.qr_codes_list_view);
         qrDataList = new ArrayList<>();
-        qrAdapter = new WalletCustomList(this.getActivity(), qrDataList);
+        qrAdapter = new QRCodeAdapter(this.getActivity(), qrDataList);
         qrList.setAdapter(qrAdapter);
 
         db = FirebaseFirestore.getInstance();
