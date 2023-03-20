@@ -82,6 +82,14 @@ public class ProfileFragment extends Fragment implements UserInfo {
     }
 
     /**
+     * Get profile attribute of object
+     * @return profile UserProfile object attribute
+     */
+    public UserProfile getProfile() {
+        return profile;
+    }
+
+    /**
      * Updates view elements on any changes to object
      */
     @Override
