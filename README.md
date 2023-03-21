@@ -1,3 +1,7 @@
+<div id="header" align="center">
+  <img src="https://github.com/CMPUT301W23T42/QRHunter/blob/readme/QRHunter.png" width="100"/>
+</div>
+
 # QRHunter
 
 QRHunter is an android mobile app, allowing users to compete by scanning QR codes to earn points and climb the leaderboards. This app also lets users view each others profiles, browse the map or profiles to view all the interesting qr images scanned.
