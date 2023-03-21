@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.qrhunter.QRCode;
 import com.example.qrhunter.R;
+import com.example.qrhunter.generators.QrCodeImageGenerator;
 
 import java.util.ArrayList;
 
@@ -39,7 +41,13 @@ public class SameQRCodeAdapter extends ArrayAdapter<QRCode> {
         TextView sameQRDate = view.findViewById(R.id.same_QR_code_date);
         TextView sameQROwner = view.findViewById(R.id.same_QR_code_owner);
 
-        sameQRName.setText("QRName:"+qrCode.getName());
+        ImageView qrFrame = view.findViewById(R.id.same_qr_frame);
+        ImageView qrRest = view.findViewById(R.id.same_qr_rest);
+        ImageView qrSquare = view.findViewById(R.id.same_qr_square);
+        QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
+        imageGenerator.setQRCodeImage(qrCode.getHash(), qrFrame, qrRest, qrSquare);
+
+        sameQRName.setText(qrCode.getName());
         sameQRDate.setText("Date:"+qrCode.getDate().toString());
         sameQROwner.setText("Taken by:"+qrCode.getOwner());
 
