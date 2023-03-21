@@ -4,8 +4,11 @@ import com.example.qrhunter.fragments.ProfileFragment;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ProfileFragmentUnitTest {
 
     private UserProfile profile;
@@ -14,7 +17,7 @@ public class ProfileFragmentUnitTest {
     /**
      * Initializes attributes before testing begins
      */
-    @Before
+    @BeforeEach
     public void setup() {
         profile = newProfile();
         fragment = new ProfileFragment(profile);
@@ -54,7 +57,7 @@ public class ProfileFragmentUnitTest {
      * Tests if ProfileFragment class initialization, functions properly
      */
     @Test
-    private void testProfileInit() {
+    public void testProfileInit() {
         UserProfile fragmentProfile = fragment.getProfile();
         UserProfile testProfile = newProfile();
         Assert.assertTrue("Full names do not match",
@@ -71,7 +74,7 @@ public class ProfileFragmentUnitTest {
      * Tests if setProfile method of ProfileFragment class functions properly
      */
     @Test
-    private void testSetProfile() {
+    public void testSetProfile() {
         UserProfile testProfile = newProfile("testcase", "testuser",
                 "4034034034", "test@email.com");
         fragment.setProfile(testProfile);
