@@ -4,12 +4,9 @@ QRHunter is an android mobile app, allowing users to compete by scanning QR code
 
 ## Features
 - QR scoring system
-
 - Realtime leaderboard updates
-
 - View other players profiles
 - Map functionality
-
 - QR Visual Representation
 
 ## Installation
@@ -18,12 +15,12 @@ QRHunter is an android mobile app, allowing users to compete by scanning QR code
 3. Build and run the app on your device
 
 ## Contributors
-Isaac-Stamatelakis
-roy20010327
-Oriyans-sunset
-Sam-Sandhu
-zihan001
-Danielaca18
+-Isaac-Stamatelakis
+-Roy20010327
+-Oriyans-sunset
+-Sam-Sandhu
+-Zihan001
+-Danielaca18
 
 ## Preview
 Wallet             |  Search
