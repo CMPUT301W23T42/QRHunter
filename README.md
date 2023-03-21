@@ -1,5 +1,5 @@
 <div id="header" align="center">
-  <img src="https://github.com/CMPUT301W23T42/QRHunter/blob/readme/QRHunter.png" width="100"/>
+  <img src="https://github.com/CMPUT301W23T42/QRHunter/blob/readme/QRHunter.svg" width="100"/>
 </div>
 
 # QRHunter
