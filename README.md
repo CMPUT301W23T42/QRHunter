@@ -9,11 +9,11 @@
 ## Preview
 Wallet             |  Search
 :-------------------------:|:-------------------------:
-![]()  |  ![]()
+![](https://github.com/CMPUT301W23T42/QRHunter/blob/readme/app_previews/wallet_preview.png)  |  ![](https://github.com/CMPUT301W23T42/QRHunter/blob/readme/app_previews/search_preview.png)
 
 Map             |  Profile
 :-------------------------:|:-------------------------:
-![]()  |  ![]()
+![](https://github.com/CMPUT301W23T42/QRHunter/blob/readme/app_previews/map_preview.png)  |  ![](https://github.com/CMPUT301W23T42/QRHunter/blob/readme/app_previews/profile_preview.png)
 
 ## Features
 - [x] QR scoring system
