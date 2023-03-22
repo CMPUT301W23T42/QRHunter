@@ -29,5 +29,14 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       
-    - name: Run Tests
-      run: ./gradlew test
+    - name: Execute Unit Tests (gradlew test)
+      run: bash ./gradlew test --stacktrace
+
+    - name: Execute Instrumentation Tests (gradlew connectedCheck - api 23)
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 23
+        target: default
+        arch: x86
+        profile: Nexus 6
+        script: ./gradlew connectedCheck --stacktrace
