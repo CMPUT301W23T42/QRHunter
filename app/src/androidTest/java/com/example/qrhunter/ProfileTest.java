@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.provider.Settings;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,8 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,6 +31,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Map;
+
+import io.grpc.util.MutableHandlerRegistry;
 
 public class ProfileTest {
     private Solo solo;
@@ -67,7 +73,8 @@ public class ProfileTest {
     public void checkProfileSwitch() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        solo.clickOnText("Profile");
+        TabLayout tabs = (TabLayout) solo.getCurrentActivity().findViewById(R.id.tab_layout);
+        solo.clickOnView(tabs.getTabAt(3).view);
 
         View frag = solo.getView(R.id.Profile_Fragment);
 
@@ -81,7 +88,8 @@ public class ProfileTest {
     public void checkProfileInfo() {
         solo.assertCurrentActivity("Wrong activity", MainActivity.class);
 
-        solo.clickOnText("Profile");
+        TabLayout tabs = (TabLayout) solo.getCurrentActivity().findViewById(R.id.tab_layout);
+        solo.clickOnView(tabs.getTabAt(3).view);
 
         View frag = solo.getView(R.id.Profile_Fragment);
         assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
