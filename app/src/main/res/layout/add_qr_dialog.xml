@@ -63,16 +63,23 @@
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         app:layout_constraintVertical_bias="0.138" />
 
-    <Button
-        android:id="@+id/qr_add_location_button"
+    <CheckBox
+        android:id="@+id/qr_add_dialog_storelocation_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Store Location"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="32dp"
+        android:checked="true"
+        android:ellipsize="none"
+        android:hapticFeedbackEnabled="false"
+        android:text="STORE LOCATION"
+        android:textColorLink="#CD9393"
+        android:textSize="25sp"
+        android:theme="@style/MyCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/qr_add_dialog_score"
-        app:layout_constraintVertical_bias="0.163" />
+        app:useMaterialThemeColors="false" />
 
     <Button
         android:id="@+id/qr_add_photo_button"
@@ -82,7 +89,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qr_add_location_button"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintTop_toBottomOf="@+id/qr_add_dialog_storelocation_checkbox"
+        app:layout_constraintVertical_bias="0.196" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

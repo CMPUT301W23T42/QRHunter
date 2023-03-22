@@ -1,37 +1,111 @@
 package com.example.qrhunter;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.qrhunter.generators.QrCodeImageGenerator;
 import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.example.qrhunter.generators.QrCodeScoreGenerator;
+import com.google.common.hash.Hashing;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.nio.charset.StandardCharsets;
+import java.security.acl.Owner;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Creates a dialog fragment that shows the user the
  * name, score, and picture of the QRCode that they just scanned
- * Also has buttons to save location of QRCode and to take a picture of the QRCode
+ * Also has checkbox to save location of QRCode and to take a picture of the QRCode
  */
 public class QrCodeOnAddDialog extends DialogFragment {
     String hash;
     Activity activity;
-    public QrCodeOnAddDialog(String hash, Activity activity) {
+    String owner;
+    SimpleDateFormat simpleDateFormat;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    public QrCodeOnAddDialog(String hash, Activity activity,String owner) {
         this.hash = hash;
         this.activity = activity;
+        this.owner = owner;
     }
+
+    /**
+     * This method get the current location of the user.
+     * @return
+     * Return the geopoint of current location
+     */
+    @Nullable
+    public GeoPoint getLocation() {
+        //      Location location = null;
+        LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null) {
+            return null;
+        }
+        Location location = null;
+
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000L, 0f, new LocationListener() {
+
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                }
+            });
+        }
+        List<String> providers = locationManager.getProviders(true);
+        for (String provider : providers) {
+            @SuppressLint("MissingPermission") Location l = locationManager.getLastKnownLocation(provider);
+            if (l == null){
+                continue;
+            }
+            if (location == null||location.getAccuracy() < l.getAccuracy()){
+                location = l;
+            }
+        }
+        if (location!= null){
+            GeoPoint geoPoint = new GeoPoint(location.getLatitude(),location.getLongitude());
+            return geoPoint;
+        }else{
+            return null;
+        }
+    }
+
+
+
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -46,30 +120,66 @@ public class QrCodeOnAddDialog extends DialogFragment {
         ImageView qrSquare = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_square);
         TextView nameText = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_nameandtext);
         TextView scoreText = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_score);
-        Button locationButton = add_qr_dialog_fragment.findViewById(R.id.qr_add_location_button);
+        CheckBox locationCheckBox = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_storelocation_checkbox);
         Button photoButton = add_qr_dialog_fragment.findViewById(R.id.qr_add_photo_button);
 
         QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
         imageGenerator.setQRCodeImage(hash, qrFrame, qrRest, qrSquare);
         QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
         String name = nameGenerator.createQRName(hash);
-        nameText.setText(name.concat(" has been added to your inventory!"));
+        nameText.setText(name);
         QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
         scoreText.setText("Score: ".concat(Integer.toString(scoreGenerator.score_algorithm(hash))));
 
 
 
-        builder.setNegativeButton("Continue", new DialogInterface.OnClickListener() {
+        builder
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GeoPoint geoPoint = null;
+                        if (locationCheckBox.isChecked()){
+                            geoPoint =  getLocation();
+                        }
+                        System.out.println(geoPoint);
+                        // Generate hash from qrcode contents
+                        QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
+                        int score = scoreGenerator.score_algorithm(hash);
+
+                        QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
+                        String codeName = nameGenerator.createQRName(hash);
+                        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        String date = simpleDateFormat.format(new Date());
+                        System.out.println(date);
+
+                        // Put QRCode into database
+                        Map<String, Object> QRInfo = new HashMap<>();
+                        QRInfo.put("name", codeName);
+                        QRInfo.put("date", date);
+                        QRInfo.put("hash", hash);
+                        QRInfo.put("owner", owner);
+                        QRInfo.put("location", geoPoint);
+                        QRInfo.put("score", score);
+                        CollectionReference CodeList = db.collection("CodeList");
+                        CodeList.add(QRInfo);
+                        Context context = getActivity().getApplicationContext();
+                        Toast toast = new Toast(context);
+                        toast.setText("QR Code Added successfully!");
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {}
         });
 
-        locationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+//        locationButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
 
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -22,4 +22,11 @@
     <style name="Theme.QRHunter.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.QRHunter.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#ADB6AF</item>
+        <item name="colorAccent">#000000</item>
+    </style>
+
 </resources>
