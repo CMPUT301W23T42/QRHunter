@@ -37,13 +37,6 @@ public class EditProfileFragment extends Fragment implements UserInfo {
 
     /**
      * EditProfileFragment initializer
-     */
-    public EditProfileFragment() {
-        this.profile = new UserProfile();
-    }
-
-    /**
-     * EditProfileFragment initializer
      * @param profile UserProfile object representing a user profile
      */
     public EditProfileFragment(UserProfile profile) {
