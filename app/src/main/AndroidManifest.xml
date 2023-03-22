@@ -13,14 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRHunter"
         tools:targetApi="31">
-        <activity android:name=".fragments.EditProfileFragment"
-            android:exported="false"
-            android:label="EditProfileFragment"/>
-        <activity
-            android:name=".fragments.ProfileFragment"
-            android:exported="false"
-            android:label="@string/title_activity_profile_fragment"
-            android:theme="@style/Theme.QRHunter.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
