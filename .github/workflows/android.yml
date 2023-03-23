@@ -26,7 +26,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        api-level: [22]
+        api-level: [26]
     steps:
     - uses: actions/checkout@v3
     - name: Setup JDK 11
@@ -55,6 +55,7 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: ${{ matrix.api-level }}
+        arch: x86_64
         force-avd-creation: false
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
         disable-animations: false
