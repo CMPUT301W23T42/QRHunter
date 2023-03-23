@@ -71,4 +71,4 @@ jobs:
         force-avd-creation: false
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
         disable-animations: true
-        script: ./gradlew cDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.annotation=com.example.qrhunter.EditProfileTest
+        script: ./gradlew cDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.qrhunter.EditProfileTest
