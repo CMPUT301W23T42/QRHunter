@@ -41,6 +41,7 @@ This is the main activity of the app. It is responsible for the tab layout and t
 */
 public class MainActivity extends AppCompatActivity { 
     private final String TAG = "Main";
+    private Boolean testing;
     private UserProfile profile;
     private TabManager tabManager;
     private TabLayout tabLayout;
@@ -58,8 +59,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final String ID = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        try {
+            getApplication().getClassLoader().loadClass("com.robotium.solo.Solo");
+            testing = true;
+        } catch(Exception e) {
+            testing = false;
+        }
+
+        final String ID = (!testing) ? (Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID)) : "android_id";
         Log.d("Secure_id", ID);
 
         db = FirebaseFirestore.getInstance();
