@@ -40,12 +40,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private static final long MIN_TIME = 400;
     private static final float MIN_DISTANCE = 1000;
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
+    boolean animationInProgress = true;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MapsInitializer.initialize(getActivity().getApplicationContext(), MapsInitializer.Renderer.LATEST, this);
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -63,7 +65,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
 
-        MapsInitializer.initialize(getActivity().getApplicationContext(), MapsInitializer.Renderer.LATEST, this);
+
 
         return view;
     }
@@ -103,7 +105,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onLocationChanged(@NonNull Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 5);
-        mMap.animateCamera(cameraUpdate);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
     }
 }
