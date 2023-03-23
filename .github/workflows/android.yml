@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        api-level: [29]
+        api-level: [22]
 
     steps:
     - uses: actions/checkout@v3
@@ -53,7 +53,7 @@ jobs:
       with:
         api-level: ${{ matrix.api-level }}
         force-avd-creation: false
-        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
         disable-animations: false
         script: echo "Generated AVD snapshot for caching."
         
@@ -65,6 +65,6 @@ jobs:
       with:
         api-level: ${{ matrix.api-level }}
         force-avd-creation: false
-        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
         disable-animations: true
         script: ./gradlew connectedCheck
