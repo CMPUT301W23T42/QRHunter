@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -22,12 +22,18 @@ jobs:
         
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
-
+  
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
     - name: Build with Gradle
       run: ./gradlew build
       
-    - name: Run Tests
-      run: ./gradlew test
+    - name: Execute Unit Tests (gradlew test)
+      run: bash ./gradlew test
+
+    - name: Run Instrumentation Tests (gradlew connectedCheck - api 23)
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 23
+        script: ./gradlew connectedAndroidTest
