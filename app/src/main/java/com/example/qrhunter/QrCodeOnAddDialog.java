@@ -9,10 +9,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +25,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -30,14 +38,22 @@ import androidx.fragment.app.DialogFragment;
 import com.example.qrhunter.generators.QrCodeImageGenerator;
 import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.example.qrhunter.generators.QrCodeScoreGenerator;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.acl.Owner;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +70,12 @@ public class QrCodeOnAddDialog extends DialogFragment {
     String owner;
     SimpleDateFormat simpleDateFormat;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseStorage fbs = FirebaseStorage.getInstance();
+    String TAG = "Add QR Dialog";
+    int totalPhotoNumber = 0;
+    TextView photoNumberText;
+
+    ArrayList<byte[]> byteArrayList = new ArrayList<>();
 
     public QrCodeOnAddDialog(String hash, Activity activity,String owner) {
         this.hash = hash;
@@ -122,6 +144,7 @@ public class QrCodeOnAddDialog extends DialogFragment {
         TextView scoreText = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_score);
         CheckBox locationCheckBox = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_storelocation_checkbox);
         Button photoButton = add_qr_dialog_fragment.findViewById(R.id.qr_add_photo_button);
+        photoNumberText = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_totalimage);
 
         QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
         imageGenerator.setQRCodeImage(hash, qrFrame, qrRest, qrSquare);
@@ -161,7 +184,25 @@ public class QrCodeOnAddDialog extends DialogFragment {
                         QRInfo.put("location", geoPoint);
                         QRInfo.put("score", score);
                         CollectionReference CodeList = db.collection("CodeList");
-                        CodeList.add(QRInfo);
+                        String id = CodeList.document().getId();
+                        db.collection("CodeList").document(id).set(QRInfo)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d(TAG,"Add qrinfo success");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG,"Add qrinfo fail"+e);
+                                    }
+                                });
+
+                        for (int i = 0;i<byteArrayList.size();i++){
+                            firebaseUploadBitmap(byteArrayList.get(i),id,i);
+                        }
+
                         Context context = getActivity().getApplicationContext();
                         Toast toast = new Toast(context);
                         toast.setText("QR Code Added successfully!");
@@ -174,20 +215,51 @@ public class QrCodeOnAddDialog extends DialogFragment {
             public void onClick(DialogInterface dialogInterface, int i) {}
         });
 
-//        locationButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
 
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, UserInfo.CameraActivity.class);
-                activity.startActivity(intent);
+                Intent intent = new Intent(activity, CameraActivity.class);
+                activityResultLauncher.launch(intent);
+
             }
         });
         return builder.create();
+    }
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 111){
+                        Intent intent = result.getData();
+                        byte[] byteArray = intent.getByteArrayExtra("image");
+                        byteArrayList.add(byteArray);
+                        totalPhotoNumber++;
+                        photoNumberText.setText(String.valueOf(totalPhotoNumber)+" photos in total");
+                   //     Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+
+                    }
+                }
+            });
+
+    private void firebaseUploadBitmap(byte[] data,String id,int index) {
+        StorageReference imageStorage = fbs.getReference();
+        StorageReference imageRef = imageStorage.child("images/" + id + "/image"+ String.valueOf(index));
+
+
+        UploadTask uploadTask = imageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG,"Image storage failed"+e);
+            }
+        });
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            }
+        });
     }
 }
