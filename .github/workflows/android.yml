@@ -22,12 +22,7 @@ jobs:
         
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
-    
-    - name: Create local.properties
-      env:
-        MAPS_API_KEY: ${{secrets.MAPS_API_KEY}}
-      run: echo "MAPS_API_KEY=$MAPS_API_KEY" >> local.properties
-
+  
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
@@ -41,7 +36,7 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 23
-        target: default
-        arch: x86
+        target: google_apis
+        arch: x86_64
         profile: Nexus 6
         script: ./gradlew connectedCheck --stacktrace
