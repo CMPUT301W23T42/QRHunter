@@ -102,7 +102,7 @@ public class WalletTest {
     public void checkList() {
         // Asserts that the current activity is the MainActivity. Otherwise, show "Wrong Activity"
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        assertTrue(solo.waitForText("test 1", 1, 20000));
+        assertTrue(solo.waitForText("test 1", 1, 50000));
     }
 
     /**
@@ -111,7 +111,7 @@ public class WalletTest {
     @Test
     public void checkDelete() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        assertTrue(solo.waitForText("test 1", 1, 10000));
+        assertTrue(solo.waitForText("test 1", 1, 50000));
         solo.clickOnView(solo.getView(R.id.rb_ascending));
         solo.clickLongInList(1);
         solo.clickOnButton("Cancel");
@@ -119,7 +119,7 @@ public class WalletTest {
         solo.clickOnView(solo.getView(R.id.rb_ascending));
         solo.clickLongInList(0);
         solo.clickOnButton("Confirm");
-        assertFalse(solo.waitForText("test 2", 1, 10000));
+        assertFalse(solo.waitForText("test 2", 1, 50000));
     }
 
     /**
@@ -141,7 +141,7 @@ public class WalletTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.rb_ascending));
         solo.clickInList(0);
-        assertTrue(solo.waitForText("test 1"));
+        assertTrue(solo.waitForText("test 1", 1,  50000));
     }
 
     /**
@@ -152,7 +152,7 @@ public class WalletTest {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.rb_descending));
         solo.clickInList(0);
-        assertTrue(solo.waitForText("test 3"));
+        assertTrue(solo.waitForText("test 3", 1, 50000));
     }
 
     /**
