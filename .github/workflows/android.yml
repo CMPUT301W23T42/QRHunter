@@ -72,3 +72,22 @@ jobs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
         disable-animations: true
         script: ./gradlew cDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.qrhunter.EditProfileTest
+
+  java-doc:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup JDK 11
+        uses: actions/setup-java@v3
+          with:
+            java-version: '11'
+            distribution: 'temurin'
+      - name: Grant Execute Permissions for Gradlew
+        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Run Gradle Build
+        run: ./gradlew build --parallel
+      - name: Generate Javadocs
+        run: ./gradlew generateReleaseJavaDoc
