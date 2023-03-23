@@ -34,6 +34,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrhunter.generators.QrCodeImageGenerator;
 import com.example.qrhunter.generators.QrCodeNameGenerator;
@@ -74,6 +76,7 @@ public class QrCodeOnAddDialog extends DialogFragment {
     String TAG = "Add QR Dialog";
     int totalPhotoNumber = 0;
     TextView photoNumberText;
+    ImageDisplayAdapter imageDisplayAdapter;
 
     ArrayList<byte[]> byteArrayList = new ArrayList<>();
 
@@ -145,6 +148,12 @@ public class QrCodeOnAddDialog extends DialogFragment {
         CheckBox locationCheckBox = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_storelocation_checkbox);
         Button photoButton = add_qr_dialog_fragment.findViewById(R.id.qr_add_photo_button);
         photoNumberText = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_totalimage);
+
+        RecyclerView recyclerView = add_qr_dialog_fragment.findViewById(R.id.qr_add_dialog_image_display_recylerview);
+        imageDisplayAdapter = new ImageDisplayAdapter(byteArrayList);
+        recyclerView.setAdapter(imageDisplayAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        imageDisplayAdapter.notifyDataSetChanged();
 
         QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
         imageGenerator.setQRCodeImage(hash, qrFrame, qrRest, qrSquare);
@@ -238,6 +247,7 @@ public class QrCodeOnAddDialog extends DialogFragment {
                         byteArrayList.add(byteArray);
                         totalPhotoNumber++;
                         photoNumberText.setText(String.valueOf(totalPhotoNumber)+" photos in total");
+                        imageDisplayAdapter.notifyDataSetChanged();
                    //     Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
 
                     }
