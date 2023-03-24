@@ -38,4 +38,4 @@ jobs:
           destination_folder: 'app'
           user_email: 'dcastro@ualberta.ca'
           user_name: 'danielaca18'
-          commit-msg: 'Generated Javadoc'
+          commit_msg: 'Generated Javadoc'
