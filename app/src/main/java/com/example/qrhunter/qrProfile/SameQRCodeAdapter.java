@@ -48,8 +48,8 @@ public class SameQRCodeAdapter extends ArrayAdapter<QRCode> {
         imageGenerator.setQRCodeImage(qrCode.getHash(), qrFrame, qrRest, qrSquare);
 
         sameQRName.setText(qrCode.getName());
-        sameQRDate.setText("Date:"+qrCode.getDate().toString());
-        sameQROwner.setText("Taken by:"+qrCode.getOwner());
+        sameQRDate.setText("Date: "+qrCode.getDate().toString());
+        sameQROwner.setText("Taken by: "+qrCode.getOwner());
 
         return view;
     }

@@ -187,10 +187,10 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
                     QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
                     imageGenerator.setQRCodeImage(hash, qrFrame, qrRest, qrSquare);
                     qrName.setText(QRData.get("name").toString());
-                    qrOwner.setText("Owner:"+QRData.get("owner").toString());
-                    qrScore.setText("Score:"+QRData.get("score").toString());
-                    qrDate.setText("Date:"+QRData.get("date").toString());
-                    displaySameQR(hash,user_name);
+                    qrOwner.setText("Owner: "+QRData.get("owner").toString());
+                    qrScore.setText("Score: "+QRData.get("score").toString());
+                    qrDate.setText("Date: "+QRData.get("date").toString());
+                    displaySameQR(hash,QRData.get("owner").toString());
                 }
             }
         });
@@ -225,7 +225,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(QRProfileActivity.this, QRProfileActivity.class);
                 intent.putExtra("DOC_ID", sameQRDataList.get(position).getId());
-                intent.putExtra("OWNER_NAME", sameQRDataList.get(position).getOwner());
+                intent.putExtra("OWNER_NAME", user_name);
                 startActivity(intent);
             }
         });
