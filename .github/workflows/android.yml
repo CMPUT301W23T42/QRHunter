@@ -94,7 +94,10 @@ jobs:
       - name: Generate Javadocs
         run: ./gradlew createJavaDocs
       - name: Push Javadocs to Branch
+        uses: actions/checkout@v3
         run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add app/doc
-          git commit -m "Auto Push Docs"
+          git commit -m "Auto Generated Javadocs"
           git push
