@@ -92,7 +92,7 @@ jobs:
       - name: Generate Javadocs
         run: ./gradlew createJavaDocs
       - name: Push Javadocs to Branch
-        runs: |
+        run: |
           git add app/doc
           git commit -m "Auto Push Docs"
           git push origin ${{ github.ref_name }}
