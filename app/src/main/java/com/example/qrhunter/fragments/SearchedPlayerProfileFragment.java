@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,7 +40,7 @@ public class SearchedPlayerProfileFragment extends Fragment {
     ArrayAdapter<QRCode> qrAdapter;
     ArrayList<QRCode> qrDataList;
 
-    ImageButton backButton;
+    ImageView backButton;
 
     public SearchedPlayerProfileFragment() {
         // Required empty public constructor
@@ -91,6 +92,7 @@ public class SearchedPlayerProfileFragment extends Fragment {
              *              no errors occurred during the listening operation.
              */
             @Override
+
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 qrDataList.clear();
 

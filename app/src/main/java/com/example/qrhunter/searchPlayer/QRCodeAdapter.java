@@ -24,6 +24,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
     private ArrayList<QRCode> codes;
     private Context context;
 
+
     /**
      * Constructs a new CustomList object.
      * @param context The context where the CustomList will be used.
@@ -54,6 +55,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
 
         QRCode code = codes.get(position);
 
+
         TextView qrName = view.findViewById(R.id.tv_qr_name_searched_player);
         TextView qrPoints = view.findViewById(R.id.tv_searched_player_points);
         ImageView qrFrame = view.findViewById(R.id.qr_seached_player_frame);
@@ -65,6 +67,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
         QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
         imageGenerator.setQRCodeImage(code.getHash(), qrFrame, qrRest, qrSquare);
         // image stuff
+
 
         return view;
     }
