@@ -63,4 +63,4 @@ jobs:
           echo git checkout ${{ github.head_ref }}
           git add .
           git commit -m "test push"
-          git push
+          echo git push origin HEAD: ${{ github.head_ref }}
