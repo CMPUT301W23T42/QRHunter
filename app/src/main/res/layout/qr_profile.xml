@@ -98,13 +98,6 @@
                 android:text="TextView"
                 android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/QR_profile_location_Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location"
-                android:textSize="10sp"
-                app:backgroundTint="#E67D7D" />
         </LinearLayout>
     </LinearLayout>
 
@@ -113,6 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5sp"
+        android:layout_marginTop="5sp"
         android:text="Comment:"
         android:textSize="20dp" />
 

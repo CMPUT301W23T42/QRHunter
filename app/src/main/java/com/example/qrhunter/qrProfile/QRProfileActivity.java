@@ -5,6 +5,7 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -50,9 +52,8 @@ import java.util.Map;
 public class QRProfileActivity extends AppCompatActivity implements AddCommentFragment.AddCommentDialogListener {
 
     ListView sameQRList;
+    ArrayList<QRCode> sameQRDataList = new ArrayList<>();
     SameQRCodeAdapter sameQRAdapter;
-    ArrayList<QRCode> qrDataList;
-
     ListView qrCommentList;
     QRCommentAdapter qrCommentAdapter;
     ArrayList<QRComment> qrCommentDataList;
@@ -69,7 +70,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
 
     ImageView returnButton;
 
-    FirebaseFirestore db;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     SimpleDateFormat simpleDateFormat;
 
 
@@ -87,7 +88,6 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
      */
     @Override
     public void addComment(String comment) {
-        db = FirebaseFirestore.getInstance();
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         DocumentReference QRCodeCommentReference = db.collection("Comments").document(String.valueOf(QR_id));
         Map<String,String> data = new HashMap<>();
@@ -115,6 +115,33 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
     }
 
 
+    public void displaySameQR(String hash,String username){
+        // deal with the same QR code scanned by other player.
+        db.collection("CodeList")
+                .whereEqualTo("hash",hash)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for(QueryDocumentSnapshot document:queryDocumentSnapshots){
+                            Map<String,Object> doc = document.getData();
+                            if (doc.get("owner").toString().compareTo(username) != 0){
+                                QRCode qrCode = new QRCode(doc.get("date").toString(),
+                                        doc.get("hash").toString(),doc.get("name").toString(),(GeoPoint) doc.get("location"),
+                                        doc.get("owner").toString(),Integer.parseInt(document.get("score").toString()),document.getId());
+                                sameQRDataList.add(qrCode);
+                            }
+                        }
+                        sameQRAdapter.notifyDataSetChanged();
+                    }
+                });
+
+       // QRCode qrCode = new QRCode("2022-12-12","2ca0a77816f6dce72e5c147cc2225cf1392362abaff9d70c7d40de1298de9006","hunter",null,"Roy", 60, "kkAR0oZisLLwigCNibMV");
+       // sameQRDataList.add(qrCode);
+        sameQRAdapter = new SameQRCodeAdapter(this,sameQRDataList);
+        sameQRList.setAdapter(sameQRAdapter);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +151,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         Bundle bundle = intent.getExtras();
         QR_id = bundle.getString("DOC_ID");
         user_name = bundle.getString("OWNER_NAME");
+        sameQRList = findViewById(R.id.same_QR_code_listview);
         System.out.println(QR_id);
         System.out.println(user_name);
 
@@ -133,8 +161,7 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(QRProfileActivity.this, MainActivity.class);
-                startActivity(intent1);
+                finish();
             }
         });
 
@@ -160,10 +187,10 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
                     QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
                     imageGenerator.setQRCodeImage(hash, qrFrame, qrRest, qrSquare);
                     qrName.setText(QRData.get("name").toString());
-                    qrOwner.setText("Owner:"+QRData.get("owner").toString());
-                    qrScore.setText("Score:"+QRData.get("score").toString());
-                    qrDate.setText("Date:"+QRData.get("date").toString());
-
+                    qrOwner.setText("Owner: "+QRData.get("owner").toString());
+                    qrScore.setText("Score: "+QRData.get("score").toString());
+                    qrDate.setText("Date: "+QRData.get("date").toString());
+                    displaySameQR(hash,QRData.get("owner").toString());
                 }
             }
         });
@@ -193,20 +220,15 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
 //        });
 
 
-
-
-
-
-
-
-
-        // deal with the same QR code scanned by other player.
-        QRCode qrCode = new QRCode("2022-12-12","2ca0a77816f6dce72e5c147cc2225cf1392362abaff9d70c7d40de1298de9006","hunter",null,"Roy", 60, "kkAR0oZisLLwigCNibMV");
-        qrDataList = new ArrayList<>();
-        qrDataList.add(qrCode);
-        sameQRList = findViewById(R.id.same_QR_code_listview);
-        sameQRAdapter = new SameQRCodeAdapter(this,qrDataList);
-        sameQRList.setAdapter(sameQRAdapter);
+        sameQRList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(QRProfileActivity.this, QRProfileActivity.class);
+                intent.putExtra("DOC_ID", sameQRDataList.get(position).getId());
+                intent.putExtra("OWNER_NAME", user_name);
+                startActivity(intent);
+            }
+        });
 
 
         // show qr comments and deal with add comment fragment.
