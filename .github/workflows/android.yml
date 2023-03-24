@@ -103,7 +103,7 @@ jobs:
           git fetch
           git add app/doc
           git commit -m "Auto Generated Javadocs"
-          echo git push origin ${{ github.ref }}
+          git push
 
   java-docsss:
     runs-on: macos-latest
@@ -123,4 +123,4 @@ jobs:
             git fetch
             git add generated.txt
             git commit -m "Auto Generated Javadocs"
-            echo git push origin ${{ github.ref }}
+            git push
