@@ -12,11 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.qrhunter.generators.QrCodeImageGenerator;
-import com.example.qrhunter.generators.QrCodeNameGenerator;
 
 import java.util.ArrayList;
-
-import kotlin.contracts.Returns;
 
 /**
  * WalletCustomList is a class that extends ArrayAdapter to create a custom list view for displaying a list of QRCodes.
@@ -55,11 +52,11 @@ public class WalletCustomList extends ArrayAdapter<QRCode> {
 
         QRCode code = codes.get(position);
 
-        TextView qrName = view.findViewById(R.id.tv_qr_name);
-        TextView qrPoints = view.findViewById(R.id.tv_wallet_points);
-        ImageView qrFrame = view.findViewById(R.id.qr_wallet_frame);
-        ImageView qrRest = view.findViewById(R.id.qr_wallet_rest);
-        ImageView qrSquare = view.findViewById(R.id.qr_wallet_square);
+        TextView qrName = view.findViewById(R.id.tv_qr_name_searched_player);
+        TextView qrPoints = view.findViewById(R.id.tv_searched_player_points);
+        ImageView qrFrame = view.findViewById(R.id.qr_seached_player_frame);
+        ImageView qrRest = view.findViewById(R.id.qr_searched_player_rest);
+        ImageView qrSquare = view.findViewById(R.id.qr_searched_player_square);
         qrName.setText(code.getName());
         qrPoints.setText(Integer.toString(code.getScore()));
 

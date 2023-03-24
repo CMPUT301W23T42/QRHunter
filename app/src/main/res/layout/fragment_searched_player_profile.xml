@@ -10,17 +10,30 @@
     android:gravity="center"
     android:background="@drawable/gradient_background"
     tools:context=".fragments.ProfileFragment" >
-    <TextView
-        android:text="@string/profile_title"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
-        android:paddingStart="40dp"
-        android:paddingEnd="40dp">
-    </TextView>
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/searched_player_back_button"
+            android:layout_width="80sp"
+            android:layout_height="25sp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/return_arrow" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/profile_title"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rajdhani_bold"
+            android:textSize="30sp" />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/profile_pic"
         android:src="@drawable/default_icon"
@@ -74,13 +87,6 @@
             android:id="@+id/qr_codes_list_view"
             android:layout_width="match_parent"
             android:layout_height="398dp"></ListView>
-
-        <ImageButton
-            android:id="@+id/searched_player_back_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@android:drawable/ic_menu_revert"
-            />
     </LinearLayout>
 
     <Space

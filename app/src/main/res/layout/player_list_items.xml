@@ -8,26 +8,27 @@
         android:id="@+id/numbering_text_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
         android:layout_alignParentLeft="true"
         android:textColor="@color/black"
         android:fontFamily="@font/rajdhani_bold"
         android:text="1"/>
+
     <TextView
         android:id="@+id/player_username_text_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="30sp"
+        android:layout_marginLeft="6dp"
+        android:layout_toRightOf="@id/numbering_text_view"
+        android:fontFamily="@font/rajdhani_bold"
+        android:paddingTop="15dp"
         android:paddingRight="15dp"
         android:paddingBottom="15dp"
-        android:paddingTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/numbering_text_view"
+        android:text="myUsername"
         android:textColor="@color/black"
-        android:fontFamily="@font/rajdhani_bold"
-        android:text="myUsername"/>
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/player_score_text_view"
