@@ -28,4 +28,5 @@
     <string name="search_player">Search Player</string>
     <string name="map">Map</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="google_maps_api_key">AIzaSyAZRI5eXdHQSBxa7OSYLqOP0ZbWh8zuBtk</string>
 </resources>

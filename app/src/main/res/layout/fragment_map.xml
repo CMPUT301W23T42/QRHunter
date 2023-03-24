@@ -15,6 +15,12 @@
         android:paddingStart="40dp"
         android:paddingEnd="40dp">
     </TextView>
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search location">
+    </androidx.appcompat.widget.SearchView>
     <fragment
         android:id="@+id/qr_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
