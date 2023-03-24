@@ -1,7 +1,9 @@
 package com.example.qrhunter.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
+import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,14 +17,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Object responsible for prompting user for login info
@@ -64,9 +72,24 @@ public class LoginFragment extends Fragment {
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("Users");
+        Map<String, Object> users = new HashMap<>();
+
+        Task<DocumentSnapshot> usersTask = collectionReference.
+                document("Usernames").get();
+
+        usersTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    users.putAll(doc.getData());
+                }
+            }
+        });
 
         signUpButton.setOnClickListener(v -> {
-            final String ID = Settings.Secure.ANDROID_ID;
+            final String ID = Settings.Secure.getString(getContext().getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
 
             final String userName = usernameEdit.getText().toString();
             final String name = nameEdit.getText().toString();
@@ -74,25 +97,42 @@ public class LoginFragment extends Fragment {
             final String phone = phoneEdit.getText().toString();
 
             HashMap<String, String> data = new HashMap<>();
+            if (users.containsKey(userName)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Username is already in use, ")
+                        .setTitle("The username is taken. Try another.");
+                builder.create().show();
 
-            if (!userName.isEmpty() && !name.isEmpty()
-                    && !email.isEmpty() && phone.length()>9) {
-                data.put("UserName", userName);
-                data.put("Name", name);
-                data.put("Email", email);
-                data.put("Phone", phone);
+            } else {
+                if (!userName.isEmpty() && !name.isEmpty()
+                        && !email.isEmpty() && phone.length() > 9) {
+                    data.put("UserName", userName);
+                    data.put("Name", name);
+                    data.put("Email", email);
+                    data.put("Phone", phone);
+                    users.put(userName, "");
 
-                collectionReference
-                        .document(ID)
-                        .set(data)
-                        .addOnSuccessListener(unused -> {
-                            Log.d(TAG, "Data has been added successfully!");
-                            //ViewPager2 viewPager = getActivity().
-                                    //findViewById(R.id.view_pager);
-                            //viewPager.setCurrentItem(0);
-                            tabLayout.setVisibility(View.VISIBLE);
-                        })
-                        .addOnFailureListener(e -> Log.d(TAG, "Data could not be added!" + e));
+                    collectionReference
+                            .document("Usernames")
+                            .update(users)
+                            .addOnSuccessListener(unused -> {
+                                Log.d(TAG, "Users has been updated");
+                            });
+
+                    collectionReference
+                            .document(ID)
+                            .set(data)
+                            .addOnSuccessListener(unused -> {
+                                Log.d(TAG, "Data has been added successfully!");
+                                //ViewPager2 viewPager = getActivity().
+                                //findViewById(R.id.view_pager);
+                                //viewPager.setCurrentItem(0);
+                                tabLayout.setVisibility(View.VISIBLE);
+
+                                ((MainActivity)getActivity()).signedUp();
+                            })
+                            .addOnFailureListener(e -> Log.d(TAG, "Data could not be added!" + e));
+                }
             }
         });
 

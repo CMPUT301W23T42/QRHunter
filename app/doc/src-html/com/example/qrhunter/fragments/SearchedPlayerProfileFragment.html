@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package com.example.qrhunter.fragments;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import static android.content.ContentValues.TAG;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import android.os.Bundle;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import android.util.Log;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import android.view.LayoutInflater;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import android.view.View;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import android.view.ViewGroup;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import android.widget.ArrayAdapter;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import android.widget.EditText;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import android.widget.ImageButton;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import android.widget.ListView;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import android.widget.TextView;</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">import androidx.annotation.NonNull;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import androidx.fragment.app.Fragment;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import androidx.fragment.app.FragmentManager;</a>
+<span class="sourceLineNo">019</span><a id="line.19">import androidx.fragment.app.FragmentTransaction;</a>
+<span class="sourceLineNo">020</span><a id="line.20"></a>
+<span class="sourceLineNo">021</span><a id="line.21">import com.example.qrhunter.R;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import com.example.qrhunter.searchPlayer.QRCodeAdapter;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import com.example.qrhunter.searchPlayer.QRCodeListItem;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import com.example.qrhunter.searchPlayer.SearchAdapter;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import com.example.qrhunter.searchPlayer.UserListItem;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import com.google.android.gms.tasks.OnCompleteListener;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import com.google.android.gms.tasks.Task;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import com.google.firebase.firestore.CollectionReference;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import com.google.firebase.firestore.FirebaseFirestore;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import com.google.firebase.firestore.QueryDocumentSnapshot;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import com.google.firebase.firestore.QuerySnapshot;</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">import java.util.ArrayList;</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">/** Class for fragment that shows the profile of a player when searched for and clicked in the listview of Leaderboard fragment**/</a>
+<span class="sourceLineNo">036</span><a id="line.36">public class SearchedPlayerProfileFragment extends Fragment {</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">    final FirebaseFirestore db = FirebaseFirestore.getInstance();</a>
+<span class="sourceLineNo">039</span><a id="line.39">    final CollectionReference collectionReference = db.collection("CodeList");</a>
+<span class="sourceLineNo">040</span><a id="line.40">    TextView usernameTextView;</a>
+<span class="sourceLineNo">041</span><a id="line.41">    ArrayList&lt;QRCodeListItem&gt; qrCodes;</a>
+<span class="sourceLineNo">042</span><a id="line.42">    ArrayAdapter qrCodeAdapter;</a>
+<span class="sourceLineNo">043</span><a id="line.43">    ListView qrCodeListView;</a>
+<span class="sourceLineNo">044</span><a id="line.44"></a>
+<span class="sourceLineNo">045</span><a id="line.45">    ImageButton backButton;</a>
+<span class="sourceLineNo">046</span><a id="line.46"></a>
+<span class="sourceLineNo">047</span><a id="line.47">    public SearchedPlayerProfileFragment() {</a>
+<span class="sourceLineNo">048</span><a id="line.48">        // Required empty public constructor</a>
+<span class="sourceLineNo">049</span><a id="line.49">    }</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">    /**</a>
+<span class="sourceLineNo">052</span><a id="line.52">     * Called to create the view hierarchy associated with the fragment. This method is responsible for</a>
+<span class="sourceLineNo">053</span><a id="line.53">     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment</a>
+<span class="sourceLineNo">054</span><a id="line.54">     * does not have a UI or does not need to display a view, you can return null from this method.</a>
+<span class="sourceLineNo">055</span><a id="line.55">     *</a>
+<span class="sourceLineNo">056</span><a id="line.56">     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.</a>
+<span class="sourceLineNo">057</span><a id="line.57">     * @param container          The parent view that the fragment's UI should be attached to. This value may be null</a>
+<span class="sourceLineNo">058</span><a id="line.58">     *                           if the fragment is not being attached to a parent view.</a>
+<span class="sourceLineNo">059</span><a id="line.59">     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null</a>
+<span class="sourceLineNo">060</span><a id="line.60">     *                           if the fragment is being instantiated for the first time.</a>
+<span class="sourceLineNo">061</span><a id="line.61">     * @return The View for the fragment's UI, or null.</a>
+<span class="sourceLineNo">062</span><a id="line.62">     */</a>
+<span class="sourceLineNo">063</span><a id="line.63">    @Override</a>
+<span class="sourceLineNo">064</span><a id="line.64">    public View onCreateView(LayoutInflater inflater, ViewGroup container,</a>
+<span class="sourceLineNo">065</span><a id="line.65">                             Bundle savedInstanceState) {</a>
+<span class="sourceLineNo">066</span><a id="line.66"></a>
+<span class="sourceLineNo">067</span><a id="line.67">        // Inflate the layout for this fragment</a>
+<span class="sourceLineNo">068</span><a id="line.68">        View view = inflater.inflate(R.layout.fragment_searched_player_profile, container, false);</a>
+<span class="sourceLineNo">069</span><a id="line.69"></a>
+<span class="sourceLineNo">070</span><a id="line.70">        Bundle bundle = getArguments();</a>
+<span class="sourceLineNo">071</span><a id="line.71">        String username = bundle.getString("username");</a>
+<span class="sourceLineNo">072</span><a id="line.72"></a>
+<span class="sourceLineNo">073</span><a id="line.73">        usernameTextView = view.findViewById(R.id.username_text);</a>
+<span class="sourceLineNo">074</span><a id="line.74">        qrCodeListView = view.findViewById(R.id.qr_codes_list_view);</a>
+<span class="sourceLineNo">075</span><a id="line.75">        backButton = view.findViewById(R.id.searched_player_back_button);</a>
+<span class="sourceLineNo">076</span><a id="line.76"></a>
+<span class="sourceLineNo">077</span><a id="line.77">        usernameTextView.setText(username);</a>
+<span class="sourceLineNo">078</span><a id="line.78"></a>
+<span class="sourceLineNo">079</span><a id="line.79">        qrCodes = new ArrayList&lt;QRCodeListItem&gt;();</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">        /**</a>
+<span class="sourceLineNo">082</span><a id="line.82">         * Called when the query is able to execute, and get data from the database. Has a condition attached, to return only return reults with specific username</a>
+<span class="sourceLineNo">083</span><a id="line.83">         *</a>
+<span class="sourceLineNo">084</span><a id="line.84">         * @param task Has a task object that has all the documents required</a>
+<span class="sourceLineNo">085</span><a id="line.85">         * @return None</a>
+<span class="sourceLineNo">086</span><a id="line.86">         */</a>
+<span class="sourceLineNo">087</span><a id="line.87">        collectionReference.whereEqualTo("owner", username).get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</a>
+<span class="sourceLineNo">088</span><a id="line.88">            @Override</a>
+<span class="sourceLineNo">089</span><a id="line.89">            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                if (task.isSuccessful()) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">                    for (QueryDocumentSnapshot document : task.getResult()) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">                        String name = document.getString("name");</a>
+<span class="sourceLineNo">093</span><a id="line.93">                        int score = Integer.parseInt(String.valueOf(document.getLong("score")));</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">                        qrCodes.add(new QRCodeListItem(name, score));</a>
+<span class="sourceLineNo">096</span><a id="line.96">                    }</a>
+<span class="sourceLineNo">097</span><a id="line.97">                } else {</a>
+<span class="sourceLineNo">098</span><a id="line.98">                    Log.d(TAG, "Error getting documents: ", task.getException());</a>
+<span class="sourceLineNo">099</span><a id="line.99">                }</a>
+<span class="sourceLineNo">100</span><a id="line.100"></a>
+<span class="sourceLineNo">101</span><a id="line.101">                qrCodeAdapter = new QRCodeAdapter(getContext(), qrCodes);</a>
+<span class="sourceLineNo">102</span><a id="line.102">                qrCodeListView.setAdapter(qrCodeAdapter);</a>
+<span class="sourceLineNo">103</span><a id="line.103">            }</a>
+<span class="sourceLineNo">104</span><a id="line.104">        });</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">        backButton.setOnClickListener(new View.OnClickListener() {</a>
+<span class="sourceLineNo">107</span><a id="line.107">            @Override</a>
+<span class="sourceLineNo">108</span><a id="line.108">            public void onClick(View v) {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                getParentFragmentManager().popBackStack();</a>
+<span class="sourceLineNo">110</span><a id="line.110">            }</a>
+<span class="sourceLineNo">111</span><a id="line.111">        });</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113"></a>
+<span class="sourceLineNo">114</span><a id="line.114">        return view;</a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">    }</a>
+<span class="sourceLineNo">117</span><a id="line.117">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
