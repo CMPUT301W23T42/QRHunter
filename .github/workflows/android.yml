@@ -103,4 +103,4 @@ jobs:
           echo git checkout ${{ github.head_ref }}
           git add app/doc
           git commit -m "Auto Generated Javadocs"
-          echo git push origin HEAD: ${{ github.head_ref }}
+          echo git push origin ${{ github.head_ref }}
