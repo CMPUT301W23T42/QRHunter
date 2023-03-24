@@ -96,10 +96,13 @@ jobs:
       - name: Generate Javadocs
         run: ./gradlew createJavaDocs
       - name: Push Javadocs to Branch
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git checkout ${{ github.head_ref }}
-          git add app/doc
-          git commit -m "Auto Generated Javadocs"
-          git push
+        uses: datalbry/copy_folder_to_another_repo_action@1.0.0
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_folder: 'app/doc'
+          destination_repo: 'qrhunter/${{ github.head_ref }}'
+          destination_folder: 'app'
+          user_email: 'dcastro@ualberta.ca'
+          user_name: 'danielaca18'
+          commit_msg: "Auto Generated Javadocs"
