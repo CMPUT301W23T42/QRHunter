@@ -236,6 +236,7 @@ public class QrCodeOnAddDialog extends DialogFragment {
         return builder.create();
     }
 
+    // Receive the image result from camera activity.
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -254,6 +255,15 @@ public class QrCodeOnAddDialog extends DialogFragment {
                 }
             });
 
+    /**
+     * Upload image into firebaseStorage
+     * @param data
+     * The data of image in byte[]
+     * @param id
+     * The id of the QR Code.
+     * @param index
+     * The current index of image in the arraylist.
+     */
     private void firebaseUploadBitmap(byte[] data,String id,int index) {
         StorageReference imageStorage = fbs.getReference();
         StorageReference imageRef = imageStorage.child("images/" + id + "/image"+ String.valueOf(index));
