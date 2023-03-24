@@ -46,14 +46,33 @@ android {
     }
 }
 
+task createJavadocs (type: Javadoc)
+{
+    source = android.sourceSets.main.java.srcDirs
+    options.linkSource true
+    doFirst {
+        failOnError false
+        destinationDir = new File("${projectDir}/doc")
+
+        classpath += project.files(project.android.getBootClasspath().join(File.pathSeparator))
+        android.applicationVariants.collect { variant ->
+            classpath += files(variant.javaCompileProvider.get().classpath.files)
+            classpath += files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+        }
+        options.addStringOption "-show-members", "package"
+        options.links("http://d.android.com/reference/")
+    }
+}
+
 dependencies {
     //JAVADOC
     //implementation files('C:\\Users\\DCastro\\AppData\\Local\\Android\\Sdk\\platforms\\android-33\\android.jar')
 
+    implementation fileTree(dir: 'libs', include: '*.jar')
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.firebase:firebase-firestore:24.4.3'
+    implementation 'com.google.firebase:firebase-firestore:24.4.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'com.android.support:multidex:1.0.3'

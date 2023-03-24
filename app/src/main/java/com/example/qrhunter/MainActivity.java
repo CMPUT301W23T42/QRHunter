@@ -1,10 +1,12 @@
 package com.example.qrhunter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.annotation.NonNull;
@@ -39,6 +41,7 @@ This is the main activity of the app. It is responsible for the tab layout and t
 */
 public class MainActivity extends AppCompatActivity { 
     private final String TAG = "Main";
+    private Boolean testing;
     private UserProfile profile;
     private TabManager tabManager;
     private TabLayout tabLayout;
@@ -56,7 +59,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final String ID = Settings.Secure.ANDROID_ID;
+        try {
+            getApplication().getClassLoader().loadClass("com.robotium.solo.Solo");
+            testing = true;
+        } catch(Exception e) {
+            testing = false;
+        }
+
+        final String ID = (!testing) ? (Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID)) : "android_id";
+        Log.d("Secure_id", ID);
 
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("Users");
@@ -80,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
             /**
              Sets up a listener for tab selection events and switches the fragment according to the selected tab.
-            @param tabLayout the TabLayout object that the listener will be attached to.
+            @param tab the TabLayout object that the listener will be attached to.
             */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -132,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     tabLayout.setVisibility(View.VISIBLE);
                 } else {
                     Log.d(TAG, "Failed");
-                    tabManager.switchFragment(5);
+                    tabManager.switchFragment(7);
                 }
             }
         });
@@ -161,5 +173,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    /**
+     * Updates profile and switches to wallet after successful sign up
+     */
+    public void signedUp() {
+        getProfile(docRef);
+        hideKeyboard();
+        tabLayout.selectTab(tabLayout.getTabAt(0));
+    }
+
+    private void hideKeyboard() {
+        View focus = this.getCurrentFocus();
+
+        if (focus != null) {
+            InputMethodManager manager =
+                    (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(focus.getWindowToken(), 0);
+        }
     }
 }
