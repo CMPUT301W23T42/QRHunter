@@ -90,4 +90,4 @@ jobs:
       - name: Run Gradle Build
         run: ./gradlew build --parallel
       - name: Generate Javadocs
-        run: ./gradlew generateReleaseJavaDoc
+        run: ./gradlew createJavaDocs
