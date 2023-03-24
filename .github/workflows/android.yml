@@ -115,7 +115,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{github.head_ref}}
+          ref: ${{github.ref}}
           fetch-depth: 0
       - name: Push Javadocs to Branch
         run: |
@@ -127,4 +127,4 @@ jobs:
             git pull
             git add .
             git commit -m "Auto Generated Javadocs"
-            echo git push origin ${{ github.head_ref }}
+            echo git push origin ${{ github.ref }}
