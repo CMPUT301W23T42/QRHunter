@@ -91,8 +91,8 @@ jobs:
         run: ./gradlew build --parallel
       - name: Generate Javadocs
         run: ./gradlew createJavaDocs
-      - name: Deploy to Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: app/doc
-          branch: ${{ github.ref_name }}
+      - name: Push Javadocs to Branch
+        runs: |
+          git add app/doc
+          git commit -m "Auto Push Docs"
+          git push origin ${{ github.ref_name }}
