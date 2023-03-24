@@ -100,7 +100,6 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          echo git checkout ${{ github.ref }}
           git fetch
           git add app/doc
           git commit -m "Auto Generated Javadocs"
@@ -121,8 +120,7 @@ jobs:
             date > generated.txt
             git config user.name github-actions
             git config user.email github-actions@github.com
-            echo git checkout ${{ github.ref }}
             git fetch
-            git add .
+            git add generated.txt
             git commit -m "Auto Generated Javadocs"
             echo git push origin ${{ github.ref }}
