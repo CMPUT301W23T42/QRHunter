@@ -23,7 +23,7 @@ jobs:
       - name: Run Tests
         run: bash ./gradlew test --stacktrace
         
-  build:
+  ui-test:
     runs-on: macos-latest
     strategy:
       matrix:
