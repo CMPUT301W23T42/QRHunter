@@ -5,48 +5,66 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qrhunter.QRCode;
 import com.example.qrhunter.R;
+import com.example.qrhunter.generators.QrCodeImageGenerator;
 
 import java.util.ArrayList;
 
-/** Custom adapter made to implement a custom listview in searched player's profile with name of QR code and its score **/
-public class QRCodeAdapter extends ArrayAdapter<QRCodeListItem> {
+/**
+ * WalletCustomList is a class that extends ArrayAdapter to create a custom list view for displaying a list of QRCodes.
+ */
+public class QRCodeAdapter extends ArrayAdapter<QRCode> {
+    private ArrayList<QRCode> codes;
+    private Context context;
 
-    private TextView qrCodeNameTextView;
-    private TextView qrCodeScoreTextView;
-
-    public QRCodeAdapter(Context context, ArrayList<QRCodeListItem> qrCodeArrayList){
-        super(context, 0, qrCodeArrayList);
-    }
     /**
-     * getView method infaltes a view passed a parameter and returns the view for each element of the listview.
-     * @param position position of each item within adapters dataset
-     * @param convertView the old view to reuse
-     * @param parent The parent view that will eventually be attched to
-     * **/
+     * Constructs a new CustomList object.
+     * @param context The context where the CustomList will be used.
+     * @param codes The QRCodes to represent in the ListView.
+     */
+    public QRCodeAdapter(Context context, ArrayList<QRCode> codes){
+        super(context,0, codes);
+        this.codes = codes;
+        this.context = context;
+    }
+
+    /**
+     * Returns the view to be displayed for the specified position in the list view.
+     * @param position The position of the item within the adapter's data set of the item whose view we want.
+     * @param convertView The old view to reuse, if possible.
+     * @param parent The parent that this view will eventually be attached to.
+     * @return The view corresponding to the data at the specified position.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view;
+//        return super.getView(position, convertView, parent);
+        View view = convertView;
 
-        if (convertView == null) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.qr_code_list_items, parent, false);
-        } else {
-            view = convertView;
+        if(view == null){
+            view = LayoutInflater.from(context).inflate(R.layout.searched_player_content, parent,false);
         }
 
-        QRCodeListItem qrCodeListItem = getItem(position);
+        QRCode code = codes.get(position);
 
-        qrCodeNameTextView = view.findViewById(R.id.qr_code_name_text_view);
-        qrCodeScoreTextView = view.findViewById(R.id.qr_code_score_text_view);
+        TextView qrName = view.findViewById(R.id.tv_qr_name_searched_player);
+        TextView qrPoints = view.findViewById(R.id.tv_searched_player_points);
+        ImageView qrFrame = view.findViewById(R.id.qr_seached_player_frame);
+        ImageView qrRest = view.findViewById(R.id.qr_searched_player_rest);
+        ImageView qrSquare = view.findViewById(R.id.qr_searched_player_square);
+        qrName.setText(code.getName());
+        qrPoints.setText(Integer.toString(code.getScore()));
 
-        qrCodeNameTextView.setText(qrCodeListItem.getName());
-        qrCodeScoreTextView.setText(String.valueOf(qrCodeListItem.getScore()));
+        QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();
+        imageGenerator.setQRCodeImage(code.getHash(), qrFrame, qrRest, qrSquare);
+        // image stuff
 
         return view;
     }
