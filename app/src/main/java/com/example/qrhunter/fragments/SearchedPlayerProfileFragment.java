@@ -8,27 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import com.example.qrhunter.QRCode;
 import com.example.qrhunter.R;
-import com.example.qrhunter.generators.QrCodeImageGenerator;
+import com.example.qrhunter.WalletCustomList;
 import com.example.qrhunter.searchPlayer.QRCodeAdapter;
 import com.example.qrhunter.searchPlayer.QRCodeListItem;
-import com.example.qrhunter.searchPlayer.SearchAdapter;
-import com.example.qrhunter.searchPlayer.UserListItem;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -37,12 +34,11 @@ import java.util.ArrayList;
 /** Class for fragment that shows the profile of a player when searched for and clicked in the listview of Leaderboard fragment**/
 public class SearchedPlayerProfileFragment extends Fragment {
 
-    final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    final CollectionReference collectionReference = db.collection("CodeList");
+    FirebaseFirestore db;
     TextView usernameTextView;
-    ArrayList<QRCodeListItem> qrCodes;
-    ArrayAdapter qrCodeAdapter;
-    ListView qrCodeListView;
+    ListView qrList;
+    ArrayAdapter<QRCode> qrAdapter;
+    ArrayList<QRCode> qrDataList;
 
     ImageView backButton;
 
@@ -70,39 +66,54 @@ public class SearchedPlayerProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_searched_player_profile, container, false);
 
         Bundle bundle = getArguments();
+        assert bundle != null;
         String username = bundle.getString("username");
 
         usernameTextView = view.findViewById(R.id.username_text);
-        qrCodeListView = view.findViewById(R.id.qr_codes_list_view);
         backButton = view.findViewById(R.id.searched_player_back_button);
-
         usernameTextView.setText(username);
 
-        qrCodes = new ArrayList<QRCodeListItem>();
+        qrList = view.findViewById(R.id.qr_codes_list_view);
+        qrDataList = new ArrayList<>();
+        qrAdapter = new QRCodeAdapter(this.getActivity(), qrDataList);
+        qrList.setAdapter(qrAdapter);
 
-        /**
-         * Called when the query is able to execute, and get data from the database. Has a condition attached, to return only return reults with specific username
-         *
-         * @param task Has a task object that has all the documents required
-         * @return None
-         */
-        collectionReference.whereEqualTo("owner", username).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db.collection("CodeList");
+
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            /**
+             * This method is called when the data in the specified query snapshot changes. This includes
+             * the initial data and any subsequent changes to the documents that match the query criteria.
+             * Clears the arraylist of QRCodes and adds again from the document.
+             *
+             * @param value The query snapshot representing the updated data.
+             * @param error The error, if any, that occurred while listening for changes. If the error is null,
+             *              no errors occurred during the listening operation.
+             */
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String name = document.getString("name");
-                        int score = Integer.parseInt(String.valueOf(document.getLong("score")));
-                        String hash = document.getString("hash");
 
-                        qrCodes.add(new QRCodeListItem(name, score, hash));
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                qrDataList.clear();
+
+                for (QueryDocumentSnapshot doc: value) {
+                    String ownerName = (String) doc.getData().get("owner");
+                    if (ownerName.equals("Roy")) {
+                        Log.d(TAG, "Show list of QR codes");
+                        String id = doc.getId();
+                        String date = (String) doc.getData().get("date");
+                        String hash = (String) doc.getData().get("hash");
+                        GeoPoint location = (GeoPoint) doc.getData().get("location");
+                        String name = (String) doc.getData().get("name");
+
+                        String owner = (String) doc.getData().get("owner");
+                        int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
+
+
+                        qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
                     }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
-
-                qrCodeAdapter = new QRCodeAdapter(getContext(), qrCodes);
-                qrCodeListView.setAdapter(qrCodeAdapter);
+                qrAdapter.notifyDataSetChanged();
             }
         });
 
