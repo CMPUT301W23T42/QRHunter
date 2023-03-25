@@ -98,7 +98,7 @@ public class TabManager implements UserInfo {
 
             default:
                 transactionTAG = "Wallet Fragment";
-                currentFragment = new WalletFragment();
+                currentFragment = new WalletFragment(profile.getUserName());
                 break;
         }
         replaceFragment(currentFragment, transactionTAG);

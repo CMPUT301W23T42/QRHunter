@@ -123,7 +123,7 @@ public class WalletFragment extends Fragment {
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
-                    if (ownerName.equals(userName)) {
+                    if (ownerName != null && ownerName.equals(userName)) {
                         Log.d(TAG, "Show list of QR codes");
                         String id = doc.getId();
                         String date = (String) doc.getData().get("date");
