@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.CaptureAct;
+import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.QrCodeOnAddDialog;
 import com.example.qrhunter.R;
 import com.example.qrhunter.generators.QrCodeNameGenerator;
@@ -62,7 +63,7 @@ public class ScannerFragment extends Fragment{
     }
 
     public ScannerFragment(String name) {
-        owner = name;
+        owner = (MainActivity.DEBUG_ROY)?"Roy":name;
     }
 
     public static ScannerFragment newInstance() {
