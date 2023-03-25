@@ -159,7 +159,7 @@
 <span class="sourceLineNo">150</span><a id="line.150">             */</a>
 <span class="sourceLineNo">151</span><a id="line.151">            @Override</a>
 <span class="sourceLineNo">152</span><a id="line.152">            public void onClick(View v) {</a>
-<span class="sourceLineNo">153</span><a id="line.153">                ScannerFragment scannerFragment = new ScannerFragment();</a>
+<span class="sourceLineNo">153</span><a id="line.153">                ScannerFragment scannerFragment = new ScannerFragment(userName);</a>
 <span class="sourceLineNo">154</span><a id="line.154">                FragmentManager fragmentManager = getParentFragmentManager();</a>
 <span class="sourceLineNo">155</span><a id="line.155">                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();</a>
 <span class="sourceLineNo">156</span><a id="line.156">                fragmentTransaction.replace(R.id.container, scannerFragment);</a>
