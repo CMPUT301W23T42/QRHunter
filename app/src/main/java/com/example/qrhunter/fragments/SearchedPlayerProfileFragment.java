@@ -96,20 +96,22 @@ public class SearchedPlayerProfileFragment extends Fragment {
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
-                    if (ownerName!=null && (MainActivity.DEBUG_ROY)?(ownerName.equals("Roy")):
-                            (ownerName.equals(username))) {
-                        Log.d(TAG, "Show list of QR codes");
-                        String id = doc.getId();
-                        String date = (String) doc.getData().get("date");
-                        String hash = (String) doc.getData().get("hash");
-                        GeoPoint location = (GeoPoint) doc.getData().get("location");
-                        String name = (String) doc.getData().get("name");
+                    if (ownerName != null) {
+                        if ((MainActivity.DEBUG_ROY) ? (ownerName.equals("Roy")) :
+                                (ownerName.equals(username))) {
+                            Log.d(TAG, "Show list of QR codes");
+                            String id = doc.getId();
+                            String date = (String) doc.getData().get("date");
+                            String hash = (String) doc.getData().get("hash");
+                            GeoPoint location = (GeoPoint) doc.getData().get("location");
+                            String name = (String) doc.getData().get("name");
 
-                        String owner = (String) doc.getData().get("owner");
-                        int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
+                            String owner = (String) doc.getData().get("owner");
+                            int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
 
 
-                        qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
+                            qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
+                        }
                     }
                 }
                 qrAdapter.notifyDataSetChanged();
