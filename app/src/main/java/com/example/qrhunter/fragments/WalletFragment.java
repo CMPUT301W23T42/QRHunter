@@ -22,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.WalletCustomList;
 import com.example.qrhunter.QRCode;
 import com.example.qrhunter.qrProfile.QRProfileActivity;
@@ -123,7 +124,8 @@ public class WalletFragment extends Fragment {
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
-                    if (ownerName != null && ownerName.equals(userName)) {
+                    if (ownerName != null && (MainActivity.DEBUG_ROY)?(ownerName.equals("Roy")):
+                            (ownerName.equals(userName))) {
                         Log.d(TAG, "Show list of QR codes");
                         String id = doc.getId();
                         String date = (String) doc.getData().get("date");
