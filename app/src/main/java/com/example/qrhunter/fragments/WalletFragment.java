@@ -119,7 +119,7 @@ public class WalletFragment extends Fragment {
              */
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                qrDataList.clear();
+                qrDataList.clear();Log.d("Check name", userName);
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");

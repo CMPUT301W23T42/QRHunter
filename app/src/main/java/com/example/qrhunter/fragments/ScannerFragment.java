@@ -216,7 +216,7 @@ public class ScannerFragment extends Fragment {
      * Goes to wallet fragment
      */
     public void goToWallet() {
-        WalletFragment walletFragment = new WalletFragment();
+        WalletFragment walletFragment = new WalletFragment(owner);
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, walletFragment);
