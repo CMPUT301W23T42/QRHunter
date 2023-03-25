@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -281,10 +281,19 @@ extends androidx.fragment.app.Fragment</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteImageFromStorage(java.lang.String)">deleteImageFromStorage</a></span>&#8203;(java.lang.String&nbsp;docId)</code></th>
-<td class="colLast">&nbsp;</td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteImage(java.lang.String)">deleteImage</a></span>&#8203;(java.lang.String&nbsp;imageurl)</code></th>
+<td class="colLast">
+<div class="block">Delete a single file of the url position.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteImageFromStorage(java.lang.String)">deleteImageFromStorage</a></span>&#8203;(java.lang.String&nbsp;docId)</code></th>
+<td class="colLast">
+<div class="block">Delete image stored when deleting the qr code</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>android.view.View</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle)">onCreateView</a></span>&#8203;(android.view.LayoutInflater&nbsp;inflater,
             android.view.ViewGroup&nbsp;container,
@@ -501,10 +510,29 @@ extends androidx.fragment.app.Fragment</pre>
 <a id="deleteImageFromStorage(java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>deleteImageFromStorage</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/WalletFragment.html#line.232">deleteImageFromStorage</a>&#8203;(java.lang.String&nbsp;docId)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/WalletFragment.html#line.236">deleteImageFromStorage</a>&#8203;(java.lang.String&nbsp;docId)</pre>
+<div class="block">Delete image stored when deleting the qr code</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>docId</code> - The id of QR code.</dd>
+</dl>
+</li>
+</ul>
+<a id="deleteImage(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>deleteImage</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/WalletFragment.html#line.259">deleteImage</a>&#8203;(java.lang.String&nbsp;imageurl)</pre>
+<div class="block">Delete a single file of the url position.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>imageurl</code> - The url position of the image.</dd>
+</dl>
 </li>
 </ul>
 </li>

@@ -120,7 +120,7 @@
 <span class="sourceLineNo">111</span><a id="line.111"></a>
 <span class="sourceLineNo">112</span><a id="line.112">                for (QueryDocumentSnapshot doc: value) {</a>
 <span class="sourceLineNo">113</span><a id="line.113">                    String ownerName = (String) doc.getData().get("owner");</a>
-<span class="sourceLineNo">114</span><a id="line.114">                    if (ownerName.equals("Roy")) {</a>
+<span class="sourceLineNo">114</span><a id="line.114">                    if (ownerName!=null &amp;&amp; ownerName.equals("Roy")) {</a>
 <span class="sourceLineNo">115</span><a id="line.115">                        Log.d(TAG, "Show list of QR codes");</a>
 <span class="sourceLineNo">116</span><a id="line.116">                        String id = doc.getId();</a>
 <span class="sourceLineNo">117</span><a id="line.117">                        String date = (String) doc.getData().get("date");</a>
@@ -237,25 +237,49 @@
 <span class="sourceLineNo">228</span><a id="line.228">    }</a>
 <span class="sourceLineNo">229</span><a id="line.229"></a>
 <span class="sourceLineNo">230</span><a id="line.230"></a>
-<span class="sourceLineNo">231</span><a id="line.231"></a>
-<span class="sourceLineNo">232</span><a id="line.232">    public void deleteImageFromStorage(String docId){</a>
-<span class="sourceLineNo">233</span><a id="line.233">        String url = "image/"+docId;</a>
-<span class="sourceLineNo">234</span><a id="line.234">        StorageReference storageReference = FirebaseStorage.getInstance().getReference();</a>
-<span class="sourceLineNo">235</span><a id="line.235">        storageReference.child(url).delete().addOnSuccessListener(new OnSuccessListener&lt;Void&gt;() {</a>
-<span class="sourceLineNo">236</span><a id="line.236">            @Override</a>
-<span class="sourceLineNo">237</span><a id="line.237">            public void onSuccess(Void unused) {</a>
-<span class="sourceLineNo">238</span><a id="line.238">                Log.d(TAG,"Image storage deleted successfully");</a>
-<span class="sourceLineNo">239</span><a id="line.239">            }</a>
-<span class="sourceLineNo">240</span><a id="line.240">        })</a>
-<span class="sourceLineNo">241</span><a id="line.241">        .addOnFailureListener(new OnFailureListener() {</a>
-<span class="sourceLineNo">242</span><a id="line.242">            @Override</a>
-<span class="sourceLineNo">243</span><a id="line.243">            public void onFailure(@NonNull Exception e) {</a>
-<span class="sourceLineNo">244</span><a id="line.244">                Log.d(TAG,"Image storage deleted fail"+e);</a>
-<span class="sourceLineNo">245</span><a id="line.245">            }</a>
-<span class="sourceLineNo">246</span><a id="line.246">        });</a>
-<span class="sourceLineNo">247</span><a id="line.247"></a>
-<span class="sourceLineNo">248</span><a id="line.248">    }</a>
-<span class="sourceLineNo">249</span><a id="line.249">}</a>
+<span class="sourceLineNo">231</span><a id="line.231">    /**</a>
+<span class="sourceLineNo">232</span><a id="line.232">     * Delete image stored when deleting the qr code</a>
+<span class="sourceLineNo">233</span><a id="line.233">     * @param docId</a>
+<span class="sourceLineNo">234</span><a id="line.234">     * The id of QR code.</a>
+<span class="sourceLineNo">235</span><a id="line.235">     */</a>
+<span class="sourceLineNo">236</span><a id="line.236">    public void deleteImageFromStorage(String docId) {</a>
+<span class="sourceLineNo">237</span><a id="line.237">        String url = "images/" + docId;</a>
+<span class="sourceLineNo">238</span><a id="line.238">        StorageReference storageReference = FirebaseStorage.getInstance().getReference();</a>
+<span class="sourceLineNo">239</span><a id="line.239">        storageReference.child(url).listAll().addOnSuccessListener(new OnSuccessListener&lt;ListResult&gt;() {</a>
+<span class="sourceLineNo">240</span><a id="line.240">            @Override</a>
+<span class="sourceLineNo">241</span><a id="line.241">            public void onSuccess(ListResult listResult) {</a>
+<span class="sourceLineNo">242</span><a id="line.242">                int countImage = 0;</a>
+<span class="sourceLineNo">243</span><a id="line.243">                for (StorageReference item : listResult.getItems()) {</a>
+<span class="sourceLineNo">244</span><a id="line.244">                    countImage = listResult.getItems().size();//will give you number of files present in your firebase storage folder</a>
+<span class="sourceLineNo">245</span><a id="line.245">                }</a>
+<span class="sourceLineNo">246</span><a id="line.246">                for (int i = 0; i &lt; countImage; i++) {</a>
+<span class="sourceLineNo">247</span><a id="line.247">                    String imageurl = url + "/image" + String.valueOf(i);</a>
+<span class="sourceLineNo">248</span><a id="line.248">                    deleteImage(imageurl);</a>
+<span class="sourceLineNo">249</span><a id="line.249">                }</a>
+<span class="sourceLineNo">250</span><a id="line.250">            }</a>
+<span class="sourceLineNo">251</span><a id="line.251">        });</a>
+<span class="sourceLineNo">252</span><a id="line.252">    }</a>
+<span class="sourceLineNo">253</span><a id="line.253"></a>
+<span class="sourceLineNo">254</span><a id="line.254">    /**</a>
+<span class="sourceLineNo">255</span><a id="line.255">     * Delete a single file of the url position.</a>
+<span class="sourceLineNo">256</span><a id="line.256">     * @param imageurl</a>
+<span class="sourceLineNo">257</span><a id="line.257">     * The url position of the image.</a>
+<span class="sourceLineNo">258</span><a id="line.258">     */</a>
+<span class="sourceLineNo">259</span><a id="line.259">    public void deleteImage(String imageurl){</a>
+<span class="sourceLineNo">260</span><a id="line.260">        StorageReference storageReference = FirebaseStorage.getInstance().getReference();</a>
+<span class="sourceLineNo">261</span><a id="line.261">        storageReference.child(imageurl).delete().addOnSuccessListener(new OnSuccessListener&lt;Void&gt;() {</a>
+<span class="sourceLineNo">262</span><a id="line.262">            @Override</a>
+<span class="sourceLineNo">263</span><a id="line.263">            public void onSuccess(Void unused) {</a>
+<span class="sourceLineNo">264</span><a id="line.264">                Log.d(TAG,"Image storage deleted successfully");</a>
+<span class="sourceLineNo">265</span><a id="line.265">            }})</a>
+<span class="sourceLineNo">266</span><a id="line.266">        .addOnFailureListener(new OnFailureListener() {</a>
+<span class="sourceLineNo">267</span><a id="line.267">            @Override</a>
+<span class="sourceLineNo">268</span><a id="line.268">            public void onFailure(@NonNull Exception e) {</a>
+<span class="sourceLineNo">269</span><a id="line.269">                Log.d(TAG,"Image storage deleted fail"+e);</a>
+<span class="sourceLineNo">270</span><a id="line.270">            }</a>
+<span class="sourceLineNo">271</span><a id="line.271">        });</a>
+<span class="sourceLineNo">272</span><a id="line.272">    }</a>
+<span class="sourceLineNo">273</span><a id="line.273">}</a>
 
 
 
