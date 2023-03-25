@@ -55,10 +55,14 @@ public class ScannerFragment extends Fragment {
     FirebaseFirestore db;
     FusedLocationProviderClient client;
     SimpleDateFormat simpleDateFormat;
-    String owner = "Roy";
+    String owner;
     int index = 0;
     public ScannerFragment() {
         // Required empty public constructor
+    }
+
+    public ScannerFragment(String name) {
+        owner = name;
     }
 
     public static ScannerFragment newInstance() {

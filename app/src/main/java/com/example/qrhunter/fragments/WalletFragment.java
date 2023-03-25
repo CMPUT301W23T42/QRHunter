@@ -150,7 +150,7 @@ public class WalletFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
-                ScannerFragment scannerFragment = new ScannerFragment();
+                ScannerFragment scannerFragment = new ScannerFragment(userName);
                 FragmentManager fragmentManager = getParentFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, scannerFragment);
