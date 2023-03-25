@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -154,8 +154,9 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,int)">QRCodeListItem</a></span>&#8203;(java.lang.String&nbsp;name,
-              int&nbsp;score)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,int,java.lang.String)">QRCodeListItem</a></span>&#8203;(java.lang.String&nbsp;name,
+              int&nbsp;score,
+              java.lang.String&nbsp;hash)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -178,20 +179,30 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getHash()">getHash</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getScore()">getScore</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setHash(java.lang.String)">setHash</a></span>&#8203;(java.lang.String&nbsp;hash)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setName(java.lang.String)">setName</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setScore(int)">setScore</a></span>&#8203;(int&nbsp;score)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -220,14 +231,15 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String,int)">
+<a id="&lt;init&gt;(java.lang.String,int,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>QRCodeListItem</h4>
-<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.8">QRCodeListItem</a>&#8203;(java.lang.String&nbsp;name,
-                      int&nbsp;score)</pre>
+<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.9">QRCodeListItem</a>&#8203;(java.lang.String&nbsp;name,
+                      int&nbsp;score,
+                      java.lang.String&nbsp;hash)</pre>
 </li>
 </ul>
 </li>
@@ -246,7 +258,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.13">getName</a>()</pre>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.15">getName</a>()</pre>
 </li>
 </ul>
 <a id="setName(java.lang.String)">
@@ -255,7 +267,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.17">setName</a>&#8203;(java.lang.String&nbsp;name)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.19">setName</a>&#8203;(java.lang.String&nbsp;name)</pre>
 </li>
 </ul>
 <a id="getScore()">
@@ -264,16 +276,34 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getScore</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.21">getScore</a>()</pre>
+<pre class="methodSignature">public&nbsp;int&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.23">getScore</a>()</pre>
 </li>
 </ul>
 <a id="setScore(int)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>setScore</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.25">setScore</a>&#8203;(int&nbsp;score)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.27">setScore</a>&#8203;(int&nbsp;score)</pre>
+</li>
+</ul>
+<a id="getHash()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getHash</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.31">getHash</a>()</pre>
+</li>
+</ul>
+<a id="setHash(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>setHash</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeListItem.html#line.35">setHash</a>&#8203;(java.lang.String&nbsp;hash)</pre>
 </li>
 </ul>
 </li>
