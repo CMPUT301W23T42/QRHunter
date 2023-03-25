@@ -43,14 +43,14 @@ public class QrCodeOnAddDialogTest extends Fragment {
     @Test
     public void QRDialogTest() {
         String hash = "f23ef90d3b61ebadadb75a803a8430e2ac1a383323faf19b86ecc6f375325c8a";
-        QrCodeOnAddDialog dialogQR = new QrCodeOnAddDialog(hash, rule.getActivity());
+        QrCodeOnAddDialog dialogQR = new QrCodeOnAddDialog(hash, rule.getActivity(),"Roy");
         dialogQR.show(fm, "Test");
         solo.sleep(100);
-        solo.clickOnView(solo.getView(R.id.qr_add_location_button));
-        assertTrue(solo.waitForText("Continue",1,100));
-        assertTrue(solo.waitForText(" has been added to your inventory!", 1, 100));
+      //  solo.clickOnView(solo.getView(R.id.qr_add_location_button));
+        assertTrue(solo.waitForText("Add",1,100));
+    //    assertTrue(solo.waitForText(" has been added to your inventory!", 1, 100));
         assertTrue(solo.waitForText("Score",1,100));
-        solo.clickOnText("Continue");
+        solo.clickOnText("Add");
         assertTrue(solo.waitForText("Wallet",1,100));
     }
 

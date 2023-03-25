@@ -57,7 +57,13 @@
             android:name=".UserInfo$CameraActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.QRHunter.NoActionBar" />
+
+            android:theme="@style/Theme.QRHunter.NoActionBar"
+            />
+
+        <activity android:name=".CameraActivity"
+            android:label="@string/app_name"/>
+
     </application>
 
 </manifest>
