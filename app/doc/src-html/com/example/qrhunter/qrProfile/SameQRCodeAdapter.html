@@ -14,47 +14,55 @@
 <span class="sourceLineNo">005</span><a id="line.5">import android.view.View;</a>
 <span class="sourceLineNo">006</span><a id="line.6">import android.view.ViewGroup;</a>
 <span class="sourceLineNo">007</span><a id="line.7">import android.widget.ArrayAdapter;</a>
-<span class="sourceLineNo">008</span><a id="line.8">import android.widget.TextView;</a>
-<span class="sourceLineNo">009</span><a id="line.9"></a>
-<span class="sourceLineNo">010</span><a id="line.10">import androidx.annotation.NonNull;</a>
-<span class="sourceLineNo">011</span><a id="line.11">import androidx.annotation.Nullable;</a>
-<span class="sourceLineNo">012</span><a id="line.12"></a>
-<span class="sourceLineNo">013</span><a id="line.13">import com.example.qrhunter.QRCode;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import com.example.qrhunter.R;</a>
-<span class="sourceLineNo">015</span><a id="line.15"></a>
-<span class="sourceLineNo">016</span><a id="line.16">import java.util.ArrayList;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import android.widget.ImageView;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import android.widget.TextView;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">import androidx.annotation.NonNull;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import androidx.annotation.Nullable;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">import com.example.qrhunter.QRCode;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import com.example.qrhunter.R;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import com.example.qrhunter.generators.QrCodeImageGenerator;</a>
 <span class="sourceLineNo">017</span><a id="line.17"></a>
-<span class="sourceLineNo">018</span><a id="line.18">/**</a>
-<span class="sourceLineNo">019</span><a id="line.19"> * This class defines an adapter for showing the same QR code in QRProfile.</a>
-<span class="sourceLineNo">020</span><a id="line.20"> */</a>
-<span class="sourceLineNo">021</span><a id="line.21">public class SameQRCodeAdapter extends ArrayAdapter&lt;QRCode&gt; {</a>
-<span class="sourceLineNo">022</span><a id="line.22"></a>
-<span class="sourceLineNo">023</span><a id="line.23">    public SameQRCodeAdapter(Context context, ArrayList&lt;QRCode&gt; qrCodes) {</a>
-<span class="sourceLineNo">024</span><a id="line.24">        super(context, 0, qrCodes);</a>
-<span class="sourceLineNo">025</span><a id="line.25">    }</a>
-<span class="sourceLineNo">026</span><a id="line.26"></a>
-<span class="sourceLineNo">027</span><a id="line.27">    @NonNull</a>
-<span class="sourceLineNo">028</span><a id="line.28">    @Override</a>
-<span class="sourceLineNo">029</span><a id="line.29">    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {</a>
-<span class="sourceLineNo">030</span><a id="line.30">        View view;</a>
-<span class="sourceLineNo">031</span><a id="line.31">        if (convertView ==null){</a>
-<span class="sourceLineNo">032</span><a id="line.32">            view = LayoutInflater.from(getContext()).inflate(R.layout.same_code_scaned_player_card,parent,false);</a>
-<span class="sourceLineNo">033</span><a id="line.33">        } else{</a>
-<span class="sourceLineNo">034</span><a id="line.34">            view = convertView;</a>
-<span class="sourceLineNo">035</span><a id="line.35">        }</a>
-<span class="sourceLineNo">036</span><a id="line.36"></a>
-<span class="sourceLineNo">037</span><a id="line.37">        QRCode qrCode = getItem(position);</a>
-<span class="sourceLineNo">038</span><a id="line.38">        TextView sameQRName = view.findViewById(R.id.same_QR_code_name);</a>
-<span class="sourceLineNo">039</span><a id="line.39">        TextView sameQRDate = view.findViewById(R.id.same_QR_code_date);</a>
-<span class="sourceLineNo">040</span><a id="line.40">        TextView sameQROwner = view.findViewById(R.id.same_QR_code_owner);</a>
-<span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">        sameQRName.setText("QRName:"+qrCode.getName());</a>
-<span class="sourceLineNo">043</span><a id="line.43">        sameQRDate.setText("Date:"+qrCode.getDate().toString());</a>
-<span class="sourceLineNo">044</span><a id="line.44">        sameQROwner.setText("Taken by:"+qrCode.getOwner());</a>
-<span class="sourceLineNo">045</span><a id="line.45"></a>
-<span class="sourceLineNo">046</span><a id="line.46">        return view;</a>
-<span class="sourceLineNo">047</span><a id="line.47">    }</a>
-<span class="sourceLineNo">048</span><a id="line.48">}</a>
+<span class="sourceLineNo">018</span><a id="line.18">import java.util.ArrayList;</a>
+<span class="sourceLineNo">019</span><a id="line.19"></a>
+<span class="sourceLineNo">020</span><a id="line.20">/**</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * This class defines an adapter for showing the same QR code in QRProfile.</a>
+<span class="sourceLineNo">022</span><a id="line.22"> */</a>
+<span class="sourceLineNo">023</span><a id="line.23">public class SameQRCodeAdapter extends ArrayAdapter&lt;QRCode&gt; {</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">    public SameQRCodeAdapter(Context context, ArrayList&lt;QRCode&gt; qrCodes) {</a>
+<span class="sourceLineNo">026</span><a id="line.26">        super(context, 0, qrCodes);</a>
+<span class="sourceLineNo">027</span><a id="line.27">    }</a>
+<span class="sourceLineNo">028</span><a id="line.28"></a>
+<span class="sourceLineNo">029</span><a id="line.29">    @NonNull</a>
+<span class="sourceLineNo">030</span><a id="line.30">    @Override</a>
+<span class="sourceLineNo">031</span><a id="line.31">    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {</a>
+<span class="sourceLineNo">032</span><a id="line.32">        View view;</a>
+<span class="sourceLineNo">033</span><a id="line.33">        if (convertView ==null){</a>
+<span class="sourceLineNo">034</span><a id="line.34">            view = LayoutInflater.from(getContext()).inflate(R.layout.same_code_scaned_player_card,parent,false);</a>
+<span class="sourceLineNo">035</span><a id="line.35">        } else{</a>
+<span class="sourceLineNo">036</span><a id="line.36">            view = convertView;</a>
+<span class="sourceLineNo">037</span><a id="line.37">        }</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">        QRCode qrCode = getItem(position);</a>
+<span class="sourceLineNo">040</span><a id="line.40">        TextView sameQRName = view.findViewById(R.id.same_QR_code_name);</a>
+<span class="sourceLineNo">041</span><a id="line.41">        TextView sameQRDate = view.findViewById(R.id.same_QR_code_date);</a>
+<span class="sourceLineNo">042</span><a id="line.42">        TextView sameQROwner = view.findViewById(R.id.same_QR_code_owner);</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">        ImageView qrFrame = view.findViewById(R.id.same_qr_frame);</a>
+<span class="sourceLineNo">045</span><a id="line.45">        ImageView qrRest = view.findViewById(R.id.same_qr_rest);</a>
+<span class="sourceLineNo">046</span><a id="line.46">        ImageView qrSquare = view.findViewById(R.id.same_qr_square);</a>
+<span class="sourceLineNo">047</span><a id="line.47">        QrCodeImageGenerator imageGenerator = new QrCodeImageGenerator();</a>
+<span class="sourceLineNo">048</span><a id="line.48">        imageGenerator.setQRCodeImage(qrCode.getHash(), qrFrame, qrRest, qrSquare);</a>
+<span class="sourceLineNo">049</span><a id="line.49"></a>
+<span class="sourceLineNo">050</span><a id="line.50">        sameQRName.setText(qrCode.getName());</a>
+<span class="sourceLineNo">051</span><a id="line.51">        sameQRDate.setText("Date: "+qrCode.getDate().toString());</a>
+<span class="sourceLineNo">052</span><a id="line.52">        sameQROwner.setText("Taken by: "+qrCode.getOwner());</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">        return view;</a>
+<span class="sourceLineNo">055</span><a id="line.55">    }</a>
+<span class="sourceLineNo">056</span><a id="line.56">}</a>
 
 
 
