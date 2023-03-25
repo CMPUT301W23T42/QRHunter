@@ -126,7 +126,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>android.widget.BaseAdapter</li>
 <li>
 <ul class="inheritance">
-<li>android.widget.ArrayAdapter&lt;<a href="QRCodeListItem.html" title="class in com.example.qrhunter.searchPlayer">QRCodeListItem</a>&gt;</li>
+<li>android.widget.ArrayAdapter&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;</li>
 <li>
 <ul class="inheritance">
 <li>com.example.qrhunter.searchPlayer.QRCodeAdapter</li>
@@ -145,9 +145,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>android.widget.Adapter</code>, <code>android.widget.Filterable</code>, <code>android.widget.ListAdapter</code>, <code>android.widget.SpinnerAdapter</code>, <code>android.widget.ThemedSpinnerAdapter</code></dd>
 </dl>
 <hr>
-<pre>public class <a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeAdapter.html#line.18">QRCodeAdapter</a>
-extends android.widget.ArrayAdapter&lt;<a href="QRCodeListItem.html" title="class in com.example.qrhunter.searchPlayer">QRCodeListItem</a>&gt;</pre>
-<div class="block">Custom adapter made to implement a custom listview in searched player's profile with name of QR code and its score</div>
+<pre>public class <a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeAdapter.html#line.23">QRCodeAdapter</a>
+extends android.widget.ArrayAdapter&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;</pre>
+<div class="block">WalletCustomList is a class that extends ArrayAdapter to create a custom list view for displaying a list of QRCodes.</div>
 </li>
 </ul>
 </div>
@@ -186,8 +186,10 @@ extends android.widget.ArrayAdapter&lt;<a href="QRCodeListItem.html" title="clas
 </tr>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(android.content.Context,java.util.ArrayList)">QRCodeAdapter</a></span>&#8203;(android.content.Context&nbsp;context,
-             java.util.ArrayList&lt;<a href="QRCodeListItem.html" title="class in com.example.qrhunter.searchPlayer">QRCodeListItem</a>&gt;&nbsp;qrCodeArrayList)</code></th>
-<td class="colLast">&nbsp;</td>
+             java.util.ArrayList&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;&nbsp;codes)</code></th>
+<td class="colLast">
+<div class="block">Constructs a new CustomList object.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -213,7 +215,7 @@ extends android.widget.ArrayAdapter&lt;<a href="QRCodeListItem.html" title="clas
        android.view.View&nbsp;convertView,
        android.view.ViewGroup&nbsp;parent)</code></th>
 <td class="colLast">
-<div class="block">getView method infaltes a view passed a parameter and returns the view for each element of the listview.</div>
+<div class="block">Returns the view to be displayed for the specified position in the list view.</div>
 </td>
 </tr>
 </table>
@@ -267,8 +269,14 @@ extends android.widget.ArrayAdapter&lt;<a href="QRCodeListItem.html" title="clas
 <ul class="blockListLast">
 <li class="blockList">
 <h4>QRCodeAdapter</h4>
-<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeAdapter.html#line.23">QRCodeAdapter</a>&#8203;(android.content.Context&nbsp;context,
-                     java.util.ArrayList&lt;<a href="QRCodeListItem.html" title="class in com.example.qrhunter.searchPlayer">QRCodeListItem</a>&gt;&nbsp;qrCodeArrayList)</pre>
+<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeAdapter.html#line.33">QRCodeAdapter</a>&#8203;(android.content.Context&nbsp;context,
+                     java.util.ArrayList&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;&nbsp;codes)</pre>
+<div class="block">Constructs a new CustomList object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>context</code> - The context where the CustomList will be used.</dd>
+<dd><code>codes</code> - The QRCodes to represent in the ListView.</dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -288,21 +296,23 @@ extends android.widget.ArrayAdapter&lt;<a href="QRCodeListItem.html" title="clas
 <li class="blockList">
 <h4>getView</h4>
 <pre class="methodSignature">@NonNull
-public&nbsp;android.view.View&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeAdapter.html#line.32">getView</a>&#8203;(int&nbsp;position,
+public&nbsp;android.view.View&nbsp;<a href="../../../../src-html/com/example/qrhunter/searchPlayer/QRCodeAdapter.html#line.46">getView</a>&#8203;(int&nbsp;position,
                                  @Nullable
                                  android.view.View&nbsp;convertView,
                                  @NonNull
                                  android.view.ViewGroup&nbsp;parent)</pre>
-<div class="block">getView method infaltes a view passed a parameter and returns the view for each element of the listview.</div>
+<div class="block">Returns the view to be displayed for the specified position in the list view.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getView</code>&nbsp;in interface&nbsp;<code>android.widget.Adapter</code></dd>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>getView</code>&nbsp;in class&nbsp;<code>android.widget.ArrayAdapter&lt;<a href="QRCodeListItem.html" title="class in com.example.qrhunter.searchPlayer">QRCodeListItem</a>&gt;</code></dd>
+<dd><code>getView</code>&nbsp;in class&nbsp;<code>android.widget.ArrayAdapter&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>position</code> - position of each item within adapters dataset</dd>
-<dd><code>convertView</code> - the old view to reuse</dd>
-<dd><code>parent</code> - The parent view that will eventually be attched to</dd>
+<dd><code>position</code> - The position of the item within the adapter's data set of the item whose view we want.</dd>
+<dd><code>convertView</code> - The old view to reuse, if possible.</dd>
+<dd><code>parent</code> - The parent that this view will eventually be attached to.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The view corresponding to the data at the specified position.</dd>
 </dl>
 </li>
 </ul>
