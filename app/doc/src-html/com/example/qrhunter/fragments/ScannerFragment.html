@@ -225,7 +225,7 @@
 <span class="sourceLineNo">216</span><a id="line.216">     * Goes to wallet fragment</a>
 <span class="sourceLineNo">217</span><a id="line.217">     */</a>
 <span class="sourceLineNo">218</span><a id="line.218">    public void goToWallet() {</a>
-<span class="sourceLineNo">219</span><a id="line.219">        WalletFragment walletFragment = new WalletFragment();</a>
+<span class="sourceLineNo">219</span><a id="line.219">        WalletFragment walletFragment = new WalletFragment(owner);</a>
 <span class="sourceLineNo">220</span><a id="line.220">        FragmentManager fragmentManager = getParentFragmentManager();</a>
 <span class="sourceLineNo">221</span><a id="line.221">        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();</a>
 <span class="sourceLineNo">222</span><a id="line.222">        fragmentTransaction.replace(R.id.container, walletFragment);</a>
