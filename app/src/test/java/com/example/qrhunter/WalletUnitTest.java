@@ -2,7 +2,7 @@ package com.example.qrhunter;
 
 import com.example.qrhunter.fragments.WalletFragment;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;

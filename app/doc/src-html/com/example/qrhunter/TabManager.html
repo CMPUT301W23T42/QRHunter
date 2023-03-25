@@ -64,7 +64,7 @@
 <span class="sourceLineNo">055</span><a id="line.55">        switch (position) {</a>
 <span class="sourceLineNo">056</span><a id="line.56">            case 0:</a>
 <span class="sourceLineNo">057</span><a id="line.57">                transactionTAG = "Wallet Fragment";</a>
-<span class="sourceLineNo">058</span><a id="line.58">                currentFragment = new WalletFragment(profile.getUserName());</a>
+<span class="sourceLineNo">058</span><a id="line.58">                currentFragment = new WalletFragment();</a>
 <span class="sourceLineNo">059</span><a id="line.59">                break;</a>
 <span class="sourceLineNo">060</span><a id="line.60">            case 1:</a>
 <span class="sourceLineNo">061</span><a id="line.61">                transactionTAG = "Placeholder Map Fragment";</a>
@@ -107,7 +107,7 @@
 <span class="sourceLineNo">098</span><a id="line.98"></a>
 <span class="sourceLineNo">099</span><a id="line.99">            default:</a>
 <span class="sourceLineNo">100</span><a id="line.100">                transactionTAG = "Wallet Fragment";</a>
-<span class="sourceLineNo">101</span><a id="line.101">                currentFragment = new WalletFragment(profile.getUserName());</a>
+<span class="sourceLineNo">101</span><a id="line.101">                currentFragment = new WalletFragment();</a>
 <span class="sourceLineNo">102</span><a id="line.102">                break;</a>
 <span class="sourceLineNo">103</span><a id="line.103">        }</a>
 <span class="sourceLineNo">104</span><a id="line.104">        replaceFragment(currentFragment, transactionTAG);</a>
