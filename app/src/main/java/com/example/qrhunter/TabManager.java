@@ -55,7 +55,7 @@ public class TabManager implements UserInfo {
         switch (position) {
             case 0:
                 transactionTAG = "Wallet Fragment";
-                currentFragment = new WalletFragment();
+                currentFragment = new WalletFragment(profile.getUserName());
                 break;
             case 1:
                 transactionTAG = "Placeholder Map Fragment";

@@ -52,11 +52,26 @@ public class WalletFragment extends Fragment {
     ArrayList<QRCode> qrDataList;
     TextView totalPoints;
     TextView totalScanned;
+    String userName;
 
     FloatingActionButton scanButton;
     final String TAG = "Sample";
     FirebaseFirestore db;
 
+    /**
+     * Default wallet fragment initializer
+     */
+    public WalletFragment() {
+
+    }
+
+    /**
+     * Wallet fragment initializer
+     * @param name String object representing player username
+     */
+    public WalletFragment(String name) {
+        userName = name;
+    }
 
     /**
      * Called to create the view hierarchy associated with the fragment. This method is responsible for
@@ -108,7 +123,7 @@ public class WalletFragment extends Fragment {
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
-                    if (ownerName.equals("Roy")) {
+                    if (ownerName.equals(userName)) {
                         Log.d(TAG, "Show list of QR codes");
                         String id = doc.getId();
                         String date = (String) doc.getData().get("date");
