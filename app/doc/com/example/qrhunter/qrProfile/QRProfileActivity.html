@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10};
+var data = {"i0":10,"i1":10,"i2":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -175,7 +175,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>android.content.ComponentCallbacks</code>, <code>android.content.ComponentCallbacks2</code>, <code>android.view.KeyEvent.Callback</code>, <code>android.view.LayoutInflater.Factory</code>, <code>android.view.LayoutInflater.Factory2</code>, <code>android.view.View.OnCreateContextMenuListener</code>, <code>android.view.Window.Callback</code>, <code>androidx.activity.contextaware.ContextAware</code>, <code>androidx.activity.OnBackPressedDispatcherOwner</code>, <code>androidx.activity.result.ActivityResultCaller</code>, <code>androidx.activity.result.ActivityResultRegistryOwner</code>, <code>androidx.appcompat.app.ActionBarDrawerToggle.DelegateProvider</code>, <code>androidx.appcompat.app.AppCompatCallback</code>, <code>androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback</code>, <code>androidx.core.app.ActivityCompat.RequestPermissionsRequestCodeValidator</code>, <code>androidx.core.app.OnMultiWindowModeChangedProvider</code>, <code>androidx.core.app.OnNewIntentProvider</code>, <code>androidx.core.app.OnPictureInPictureModeChangedProvider</code>, <code>androidx.core.app.TaskStackBuilder.SupportParentable</code>, <code>androidx.core.content.OnConfigurationChangedProvider</code>, <code>androidx.core.content.OnTrimMemoryProvider</code>, <code>androidx.core.view.KeyEventDispatcher.Component</code>, <code>androidx.core.view.MenuHost</code>, <code>androidx.lifecycle.HasDefaultViewModelProviderFactory</code>, <code>androidx.lifecycle.LifecycleOwner</code>, <code>androidx.lifecycle.ViewModelStoreOwner</code>, <code>androidx.savedstate.SavedStateRegistryOwner</code></dd>
 </dl>
 <hr>
-<pre>public class <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.50">QRProfileActivity</a>
+<pre>public class <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.52">QRProfileActivity</a>
 extends androidx.appcompat.app.AppCompatActivity</pre>
 <div class="block">The mainActivity of the QR profile.</div>
 </li>
@@ -241,58 +241,58 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>(package private) java.util.ArrayList&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrDataList">qrDataList</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="altColor">
 <td class="colFirst"><code>(package private) android.widget.TextView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrDate">qrDate</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>(package private) android.widget.ImageView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrFrame">qrFrame</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>(package private) android.widget.Button</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrLocation">qrLocation</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>(package private) android.widget.TextView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrName">qrName</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>(package private) android.widget.TextView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrOwner">qrOwner</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>(package private) android.widget.ImageView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrRest">qrRest</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>(package private) android.widget.TextView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrScore">qrScore</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>(package private) android.widget.ImageView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrSquare">qrSquare</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>(package private) android.widget.ImageView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#returnButton">returnButton</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>(package private) <a href="SameQRCodeAdapter.html" title="class in com.example.qrhunter.qrProfile">SameQRCodeAdapter</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#sameQRAdapter">sameQRAdapter</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>(package private) java.util.ArrayList&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#sameQRDataList">sameQRDataList</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
@@ -373,6 +373,12 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#displaySameQR(java.lang.String,java.lang.String)">displaySameQR</a></span>&#8203;(java.lang.String&nbsp;hash,
+             java.lang.String&nbsp;username)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onCreate(android.os.Bundle)">onCreate</a></span>&#8203;(android.os.Bundle&nbsp;savedInstanceState)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -470,7 +476,16 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>sameQRList</h4>
-<pre>android.widget.ListView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.52">sameQRList</a></pre>
+<pre>android.widget.ListView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.54">sameQRList</a></pre>
+</li>
+</ul>
+<a id="sameQRDataList">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>sameQRDataList</h4>
+<pre>java.util.ArrayList&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt; <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.55">sameQRDataList</a></pre>
 </li>
 </ul>
 <a id="sameQRAdapter">
@@ -479,16 +494,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>sameQRAdapter</h4>
-<pre><a href="SameQRCodeAdapter.html" title="class in com.example.qrhunter.qrProfile">SameQRCodeAdapter</a> <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.53">sameQRAdapter</a></pre>
-</li>
-</ul>
-<a id="qrDataList">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>qrDataList</h4>
-<pre>java.util.ArrayList&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt; <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.54">qrDataList</a></pre>
+<pre><a href="SameQRCodeAdapter.html" title="class in com.example.qrhunter.qrProfile">SameQRCodeAdapter</a> <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.56">sameQRAdapter</a></pre>
 </li>
 </ul>
 <a id="qrCommentList">
@@ -497,7 +503,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrCommentList</h4>
-<pre>android.widget.ListView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.56">qrCommentList</a></pre>
+<pre>android.widget.ListView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.57">qrCommentList</a></pre>
 </li>
 </ul>
 <a id="qrCommentAdapter">
@@ -506,7 +512,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrCommentAdapter</h4>
-<pre><a href="QRCommentAdapter.html" title="class in com.example.qrhunter.qrProfile">QRCommentAdapter</a> <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.57">qrCommentAdapter</a></pre>
+<pre><a href="QRCommentAdapter.html" title="class in com.example.qrhunter.qrProfile">QRCommentAdapter</a> <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.58">qrCommentAdapter</a></pre>
 </li>
 </ul>
 <a id="qrCommentDataList">
@@ -515,7 +521,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrCommentDataList</h4>
-<pre>java.util.ArrayList&lt;<a href="QRComment.html" title="class in com.example.qrhunter.qrProfile">QRComment</a>&gt; <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.58">qrCommentDataList</a></pre>
+<pre>java.util.ArrayList&lt;<a href="QRComment.html" title="class in com.example.qrhunter.qrProfile">QRComment</a>&gt; <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.59">qrCommentDataList</a></pre>
 </li>
 </ul>
 <a id="addCommentButton">
@@ -524,7 +530,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>addCommentButton</h4>
-<pre>android.widget.Button <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.59">addCommentButton</a></pre>
+<pre>android.widget.Button <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.60">addCommentButton</a></pre>
 </li>
 </ul>
 <a id="qrName">
@@ -533,7 +539,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrName</h4>
-<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.61">qrName</a></pre>
+<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.62">qrName</a></pre>
 </li>
 </ul>
 <a id="qrScore">
@@ -542,7 +548,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrScore</h4>
-<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.62">qrScore</a></pre>
+<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.63">qrScore</a></pre>
 </li>
 </ul>
 <a id="qrOwner">
@@ -551,7 +557,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrOwner</h4>
-<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.63">qrOwner</a></pre>
+<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.64">qrOwner</a></pre>
 </li>
 </ul>
 <a id="qrDate">
@@ -560,7 +566,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrDate</h4>
-<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.64">qrDate</a></pre>
+<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.65">qrDate</a></pre>
 </li>
 </ul>
 <a id="qrFrame">
@@ -569,7 +575,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrFrame</h4>
-<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.65">qrFrame</a></pre>
+<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.66">qrFrame</a></pre>
 </li>
 </ul>
 <a id="qrRest">
@@ -578,7 +584,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrRest</h4>
-<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.66">qrRest</a></pre>
+<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.67">qrRest</a></pre>
 </li>
 </ul>
 <a id="qrSquare">
@@ -587,7 +593,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrSquare</h4>
-<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.67">qrSquare</a></pre>
+<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.68">qrSquare</a></pre>
 </li>
 </ul>
 <a id="qrLocation">
@@ -596,7 +602,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>qrLocation</h4>
-<pre>android.widget.Button <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.68">qrLocation</a></pre>
+<pre>android.widget.Button <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.69">qrLocation</a></pre>
 </li>
 </ul>
 <a id="returnButton">
@@ -605,7 +611,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>returnButton</h4>
-<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.70">returnButton</a></pre>
+<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.71">returnButton</a></pre>
 </li>
 </ul>
 <a id="db">
@@ -614,7 +620,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>db</h4>
-<pre>com.google.firebase.firestore.FirebaseFirestore <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.72">db</a></pre>
+<pre>com.google.firebase.firestore.FirebaseFirestore <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.73">db</a></pre>
 </li>
 </ul>
 <a id="simpleDateFormat">
@@ -623,7 +629,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>simpleDateFormat</h4>
-<pre>java.text.SimpleDateFormat <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.73">simpleDateFormat</a></pre>
+<pre>java.text.SimpleDateFormat <a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.74">simpleDateFormat</a></pre>
 </li>
 </ul>
 </li>
@@ -642,7 +648,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>QRProfileActivity</h4>
-<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.50">QRProfileActivity</a>()</pre>
+<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.52">QRProfileActivity</a>()</pre>
 </li>
 </ul>
 </li>
@@ -661,12 +667,22 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>addComment</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.88">addComment</a>&#8203;(java.lang.String&nbsp;comment)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.89">addComment</a>&#8203;(java.lang.String&nbsp;comment)</pre>
 <div class="block">Add comment to the database</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>comment</code> - comment the user input.</dd>
 </dl>
+</li>
+</ul>
+<a id="displaySameQR(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>displaySameQR</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.118">displaySameQR</a>&#8203;(java.lang.String&nbsp;hash,
+                          java.lang.String&nbsp;username)</pre>
 </li>
 </ul>
 <a id="onCreate(android.os.Bundle)">
@@ -675,7 +691,7 @@ extends androidx.appcompat.app.AppCompatActivity</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>onCreate</h4>
-<pre class="methodSignature">protected&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.118">onCreate</a>&#8203;(android.os.Bundle&nbsp;savedInstanceState)</pre>
+<pre class="methodSignature">protected&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/qrProfile/QRProfileActivity.html#line.145">onCreate</a>&#8203;(android.os.Bundle&nbsp;savedInstanceState)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>onCreate</code>&nbsp;in class&nbsp;<code>androidx.fragment.app.FragmentActivity</code></dd>

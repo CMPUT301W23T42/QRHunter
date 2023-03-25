@@ -140,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>android.content.ComponentCallbacks</code>, <code>android.view.View.OnCreateContextMenuListener</code>, <code>androidx.activity.result.ActivityResultCaller</code>, <code>androidx.lifecycle.HasDefaultViewModelProviderFactory</code>, <code>androidx.lifecycle.LifecycleOwner</code>, <code>androidx.lifecycle.ViewModelStoreOwner</code>, <code>androidx.savedstate.SavedStateRegistryOwner</code></dd>
 </dl>
 <hr>
-<pre>public class <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.36">SearchedPlayerProfileFragment</a>
+<pre>public class <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.35">SearchedPlayerProfileFragment</a>
 extends androidx.fragment.app.Fragment</pre>
 <div class="block">Class for fragment that shows the profile of a player when searched for and clicked in the listview of Leaderboard fragment</div>
 </li>
@@ -181,36 +181,31 @@ extends androidx.fragment.app.Fragment</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>(package private) android.widget.ImageButton</code></td>
+<td class="colFirst"><code>(package private) android.widget.ImageView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#backButton">backButton</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>(package private) com.google.firebase.firestore.CollectionReference</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#collectionReference">collectionReference</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="altColor">
 <td class="colFirst"><code>(package private) com.google.firebase.firestore.FirebaseFirestore</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#db">db</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
+<tr class="altColor">
+<td class="colFirst"><code>(package private) android.widget.ArrayAdapter&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrAdapter">qrAdapter</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
 <tr class="rowColor">
-<td class="colFirst"><code>(package private) android.widget.ArrayAdapter</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrCodeAdapter">qrCodeAdapter</a></span></code></th>
+<td class="colFirst"><code>(package private) java.util.ArrayList&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrDataList">qrDataList</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>(package private) android.widget.ListView</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrCodeListView">qrCodeListView</a></span></code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrList">qrList</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>(package private) java.util.ArrayList&lt;<a href="../searchPlayer/QRCodeListItem.html" title="class in com.example.qrhunter.searchPlayer">QRCodeListItem</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#qrCodes">qrCodes</a></span></code></th>
-<td class="colLast">&nbsp;</td>
-</tr>
-<tr class="altColor">
 <td class="colFirst"><code>(package private) android.widget.TextView</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#usernameTextView">usernameTextView</a></span></code></th>
 <td class="colLast">&nbsp;</td>
@@ -307,16 +302,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>db</h4>
-<pre>final&nbsp;com.google.firebase.firestore.FirebaseFirestore <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.38">db</a></pre>
-</li>
-</ul>
-<a id="collectionReference">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>collectionReference</h4>
-<pre>final&nbsp;com.google.firebase.firestore.CollectionReference <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.39">collectionReference</a></pre>
+<pre>com.google.firebase.firestore.FirebaseFirestore <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.37">db</a></pre>
 </li>
 </ul>
 <a id="usernameTextView">
@@ -325,34 +311,34 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>usernameTextView</h4>
-<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.40">usernameTextView</a></pre>
+<pre>android.widget.TextView <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.38">usernameTextView</a></pre>
 </li>
 </ul>
-<a id="qrCodes">
+<a id="qrList">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>qrCodes</h4>
-<pre>java.util.ArrayList&lt;<a href="../searchPlayer/QRCodeListItem.html" title="class in com.example.qrhunter.searchPlayer">QRCodeListItem</a>&gt; <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.41">qrCodes</a></pre>
+<h4>qrList</h4>
+<pre>android.widget.ListView <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.39">qrList</a></pre>
 </li>
 </ul>
-<a id="qrCodeAdapter">
+<a id="qrAdapter">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>qrCodeAdapter</h4>
-<pre>android.widget.ArrayAdapter <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.42">qrCodeAdapter</a></pre>
+<h4>qrAdapter</h4>
+<pre>android.widget.ArrayAdapter&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt; <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.40">qrAdapter</a></pre>
 </li>
 </ul>
-<a id="qrCodeListView">
+<a id="qrDataList">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>qrCodeListView</h4>
-<pre>android.widget.ListView <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.43">qrCodeListView</a></pre>
+<h4>qrDataList</h4>
+<pre>java.util.ArrayList&lt;<a href="../QRCode.html" title="class in com.example.qrhunter">QRCode</a>&gt; <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.41">qrDataList</a></pre>
 </li>
 </ul>
 <a id="backButton">
@@ -361,7 +347,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>backButton</h4>
-<pre>android.widget.ImageButton <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.45">backButton</a></pre>
+<pre>android.widget.ImageView <a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.43">backButton</a></pre>
 </li>
 </ul>
 </li>
@@ -380,7 +366,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>SearchedPlayerProfileFragment</h4>
-<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.47">SearchedPlayerProfileFragment</a>()</pre>
+<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.45">SearchedPlayerProfileFragment</a>()</pre>
 </li>
 </ul>
 </li>
@@ -399,7 +385,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>onCreateView</h4>
-<pre class="methodSignature">public&nbsp;android.view.View&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.63">onCreateView</a>&#8203;(android.view.LayoutInflater&nbsp;inflater,
+<pre class="methodSignature">public&nbsp;android.view.View&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/SearchedPlayerProfileFragment.html#line.61">onCreateView</a>&#8203;(android.view.LayoutInflater&nbsp;inflater,
                                       android.view.ViewGroup&nbsp;container,
                                       android.os.Bundle&nbsp;savedInstanceState)</pre>
 <div class="block">Called to create the view hierarchy associated with the fragment. This method is responsible for
