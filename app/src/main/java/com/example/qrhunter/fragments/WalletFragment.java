@@ -111,7 +111,7 @@ public class WalletFragment extends Fragment {
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
-                    if (ownerName.equals("Roy")) {
+                    if (ownerName!=null && ownerName.equals("Roy")) {
                         Log.d(TAG, "Show list of QR codes");
                         String id = doc.getId();
                         String date = (String) doc.getData().get("date");
@@ -228,22 +228,46 @@ public class WalletFragment extends Fragment {
     }
 
 
-
-    public void deleteImageFromStorage(String docId){
-        String url = "image/"+docId;
+    /**
+     * Delete image stored when deleting the qr code
+     * @param docId
+     * The id of QR code.
+     */
+    public void deleteImageFromStorage(String docId) {
+        String url = "images/" + docId;
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        storageReference.child(url).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        storageReference.child(url).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                int countImage = 0;
+                for (StorageReference item : listResult.getItems()) {
+                    countImage = listResult.getItems().size();//will give you number of files present in your firebase storage folder
+                }
+                for (int i = 0; i < countImage; i++) {
+                    String imageurl = url + "/image" + String.valueOf(i);
+                    deleteImage(imageurl);
+                }
+            }
+        });
+    }
+
+    /**
+     * Delete a single file of the url position.
+     * @param imageurl
+     * The url position of the image.
+     */
+    public void deleteImage(String imageurl){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child(imageurl).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d(TAG,"Image storage deleted successfully");
-            }
-        })
+            }})
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG,"Image storage deleted fail"+e);
             }
         });
-
     }
 }
