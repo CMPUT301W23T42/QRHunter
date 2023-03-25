@@ -132,7 +132,7 @@
 <span class="sourceLineNo">123</span><a id="line.123"></a>
 <span class="sourceLineNo">124</span><a id="line.124">                for (QueryDocumentSnapshot doc: value) {</a>
 <span class="sourceLineNo">125</span><a id="line.125">                    String ownerName = (String) doc.getData().get("owner");</a>
-<span class="sourceLineNo">126</span><a id="line.126">                    if (ownerName.equals(userName)) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                    if (ownerName != null &amp;&amp; ownerName.equals(userName)) {</a>
 <span class="sourceLineNo">127</span><a id="line.127">                        Log.d(TAG, "Show list of QR codes");</a>
 <span class="sourceLineNo">128</span><a id="line.128">                        String id = doc.getId();</a>
 <span class="sourceLineNo">129</span><a id="line.129">                        String date = (String) doc.getData().get("date");</a>
