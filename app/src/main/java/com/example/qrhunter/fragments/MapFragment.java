@@ -7,6 +7,13 @@ import static androidx.core.content.ContextCompat.getSystemService;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.R;
 import com.example.qrhunter.searchPlayer.QRCodeAdapter;
@@ -48,6 +56,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener, OnMapsSdkInitializedCallback {
@@ -83,14 +92,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 Geocoder geocoder = new Geocoder(getActivity());
                 try {
                     addressList = geocoder.getFromLocationName(location, 1);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+
+                    Address address = addressList.get(0);
+
+                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Cannot find location with that name.", Toast.LENGTH_LONG).show();
+                    Log.d("Runtime exception", String.valueOf(e));
                 }
-                Address address = addressList.get(0);
 
-                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
                 return false;
             }
@@ -184,13 +196,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
                         double distance = myLocation.distanceTo(markerLocation);
 
-
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(lat, lng))
                                 .title(String.valueOf(Math.round(distance)) + "m")
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.custom_marker));
+                                .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.custom_marker, "100m")));
                         Marker locationMarker = googleMap.addMarker(markerOptions);
                         locationMarker.showInfoWindow();
+
+                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(@NonNull Marker marker) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("hash", document.getString("hash"));
+
+                                QrCodeMapProfileFragment qrCodeMapProfileFragment = new QrCodeMapProfileFragment();
+                                qrCodeMapProfileFragment.setArguments(bundle);
+
+                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.activity_main, qrCodeMapProfileFragment);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+
+                                return false;
+                            }
+                        });
 
                     }
                 } else {
@@ -207,5 +236,49 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         LatLng latLngmy = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate current = CameraUpdateFactory.newLatLngZoom(latLngmy,15);
         mMap.moveCamera(current);
+    }
+
+    private Bitmap writeTextOnDrawable(int drawableId, String text) {
+
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), drawableId)
+                .copy(Bitmap.Config.ARGB_8888, true);
+
+        Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.RED);
+        paint.setTypeface(tf);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(convertToPixels(getContext(), 11)*5);
+
+        Rect textRect = new Rect();
+        paint.getTextBounds(text, 0, text.length(), textRect);
+
+        Canvas canvas = new Canvas(bm);
+
+        //If the text is bigger than the canvas , reduce the font size
+        if(textRect.width() >= (canvas.getWidth() - 4))     //the padding on either sides is considered as 4, so as to appropriately fit in the text
+            paint.setTextSize(convertToPixels(getContext(), 7));        //Scaling needs to be used for different dpi's
+
+        //Calculate the positions
+        int xPos = (canvas.getWidth() / 2) - 2;     //-2 is for regulating the x position offset
+
+        //"- ((paint.descent() + paint.ascent()) / 2)" is the distance from the baseline to the center.
+        int yPos = (int) (canvas.getHeight() - (canvas.getHeight() / 1.1) ) ;
+
+        canvas.drawText(text, xPos, yPos, paint);
+
+        return  bm;
+    }
+
+
+
+    public static int convertToPixels(Context context, int nDP)
+    {
+        final float conversionScale = context.getResources().getDisplayMetrics().density;
+
+        return (int) ((nDP * conversionScale) + 0.5f) ;
+
     }
 }
