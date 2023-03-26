@@ -40,7 +40,7 @@ public class CameraActivity extends Activity {
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             intent.putExtra("image",byteArray);
             setResult(111,intent);
-            finish();
         }
+        finish();
     }
 }
