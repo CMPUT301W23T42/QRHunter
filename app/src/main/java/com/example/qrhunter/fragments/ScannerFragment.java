@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.CaptureAct;
+import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.QrCodeOnAddDialog;
 import com.example.qrhunter.R;
 import com.example.qrhunter.generators.QrCodeNameGenerator;
@@ -55,10 +56,14 @@ public class ScannerFragment extends Fragment{
     FirebaseFirestore db;
     FusedLocationProviderClient client;
     SimpleDateFormat simpleDateFormat;
-    String owner = "Roy";
+    String owner;
     int index = 0;
     public ScannerFragment() {
         // Required empty public constructor
+    }
+
+    public ScannerFragment(String name) {
+        owner = (MainActivity.DEBUG_ROY)?"Roy":name;
     }
 
     public static ScannerFragment newInstance() {
@@ -212,7 +217,7 @@ public class ScannerFragment extends Fragment{
      * Goes to wallet fragment
      */
     public void goToWallet() {
-        WalletFragment walletFragment = new WalletFragment();
+        WalletFragment walletFragment = new WalletFragment(owner);
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, walletFragment);

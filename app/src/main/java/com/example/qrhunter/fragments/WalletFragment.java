@@ -22,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.WalletCustomList;
 import com.example.qrhunter.QRCode;
 import com.example.qrhunter.qrProfile.QRProfileActivity;
@@ -52,11 +53,26 @@ public class WalletFragment extends Fragment {
     ArrayList<QRCode> qrDataList;
     TextView totalPoints;
     TextView totalScanned;
+    String userName;
 
     FloatingActionButton scanButton;
     final String TAG = "Sample";
     FirebaseFirestore db;
 
+    /**
+     * Default wallet fragment initializer
+     */
+    public WalletFragment() {
+
+    }
+
+    /**
+     * Wallet fragment initializer
+     * @param name String object representing player username
+     */
+    public WalletFragment(String name) {
+        userName = name;
+    }
 
     /**
      * Called to create the view hierarchy associated with the fragment. This method is responsible for
@@ -104,23 +120,26 @@ public class WalletFragment extends Fragment {
              */
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                qrDataList.clear();
+                qrDataList.clear();Log.d("Check name", userName);
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
-                    if (ownerName.equals("Roy")) {
-                        Log.d(TAG, "Show list of QR codes");
-                        String id = doc.getId();
-                        String date = (String) doc.getData().get("date");
-                        String hash = (String) doc.getData().get("hash");
-                        GeoPoint location = (GeoPoint) doc.getData().get("location");
-                        String name = (String) doc.getData().get("name");
+                    if (ownerName != null) {
+                        if ((MainActivity.DEBUG_ROY) ? (ownerName.equals("Roy")) :
+                                (ownerName.equals(userName))) {
+                            Log.d(TAG, "Show list of QR codes");
+                            String id = doc.getId();
+                            String date = (String) doc.getData().get("date");
+                            String hash = (String) doc.getData().get("hash");
+                            GeoPoint location = (GeoPoint) doc.getData().get("location");
+                            String name = (String) doc.getData().get("name");
 
-                        String owner = (String) doc.getData().get("owner");
-                        int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
-                        
+                            String owner = (String) doc.getData().get("owner");
+                            int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
 
-                        qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
+
+                            qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
+                        }
                     }
                 }
                 qrAdapter.notifyDataSetChanged();
@@ -135,7 +154,7 @@ public class WalletFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
-                ScannerFragment scannerFragment = new ScannerFragment();
+                ScannerFragment scannerFragment = new ScannerFragment(userName);
                 FragmentManager fragmentManager = getParentFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, scannerFragment);

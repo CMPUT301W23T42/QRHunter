@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,11 +15,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.QRCode;
 import com.example.qrhunter.R;
-import com.example.qrhunter.WalletCustomList;
 import com.example.qrhunter.searchPlayer.QRCodeAdapter;
-import com.example.qrhunter.searchPlayer.QRCodeListItem;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -98,19 +96,22 @@ public class SearchedPlayerProfileFragment extends Fragment {
 
                 for (QueryDocumentSnapshot doc: value) {
                     String ownerName = (String) doc.getData().get("owner");
-                    if (ownerName.equals("Roy")) {
-                        Log.d(TAG, "Show list of QR codes");
-                        String id = doc.getId();
-                        String date = (String) doc.getData().get("date");
-                        String hash = (String) doc.getData().get("hash");
-                        GeoPoint location = (GeoPoint) doc.getData().get("location");
-                        String name = (String) doc.getData().get("name");
+                    if (ownerName != null) {
+                        if ((MainActivity.DEBUG_ROY) ? (ownerName.equals("Roy")) :
+                                (ownerName.equals(username))) {
+                            Log.d(TAG, "Show list of QR codes");
+                            String id = doc.getId();
+                            String date = (String) doc.getData().get("date");
+                            String hash = (String) doc.getData().get("hash");
+                            GeoPoint location = (GeoPoint) doc.getData().get("location");
+                            String name = (String) doc.getData().get("name");
 
-                        String owner = (String) doc.getData().get("owner");
-                        int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
+                            String owner = (String) doc.getData().get("owner");
+                            int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
 
 
-                        qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
+                            qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
+                        }
                     }
                 }
                 qrAdapter.notifyDataSetChanged();

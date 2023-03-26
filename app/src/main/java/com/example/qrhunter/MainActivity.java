@@ -41,6 +41,7 @@ This is the main activity of the app. It is responsible for the tab layout and t
 */
 public class MainActivity extends AppCompatActivity { 
     private final String TAG = "Main";
+    public static Boolean DEBUG_ROY = true;
     private Boolean testing;
     private UserProfile profile;
     private TabManager tabManager;

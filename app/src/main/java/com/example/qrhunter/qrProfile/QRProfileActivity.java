@@ -125,11 +125,16 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for(QueryDocumentSnapshot document:queryDocumentSnapshots){
                             Map<String,Object> doc = document.getData();
-                            if (doc.get("owner").toString().compareTo(username) != 0){
-                                QRCode qrCode = new QRCode(doc.get("date").toString(),
-                                        doc.get("hash").toString(),doc.get("name").toString(),(GeoPoint) doc.get("location"),
-                                        doc.get("owner").toString(),Integer.parseInt(document.get("score").toString()),document.getId());
-                                sameQRDataList.add(qrCode);
+                            if (doc.get("owner") != null) {
+                                if (doc.get("owner").toString().compareTo(username) != 0) {
+                                    QRCode qrCode = new QRCode(doc.get("date").toString(),
+                                            doc.get("hash").toString(), doc.get("name").toString(), (GeoPoint) doc.get("location"),
+                                            doc.get("owner").toString(), Integer.parseInt(document.get("score").toString()), document.getId());
+                                    sameQRDataList.add(qrCode);
+                                }
+                            } else {
+                                Log.d(TAG, String.format("QRCode: %s. Missing owner name",
+                                        document.getId()));
                             }
                         }
                         sameQRAdapter.notifyDataSetChanged();
