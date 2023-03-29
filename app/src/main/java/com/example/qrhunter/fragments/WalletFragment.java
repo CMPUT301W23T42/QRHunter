@@ -37,6 +37,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -187,6 +190,7 @@ public class WalletFragment extends Fragment {
                     .setPositiveButton("Confirm", (dialog, which) -> {
                         String docID = qrAdapter.getItem(position).getId();
                         deleteData(docID);
+                        deleteImageFromStorage(docID);
                         radioGroup.clearCheck();
                         qrAdapter.notifyDataSetChanged();
                     })
@@ -242,4 +246,51 @@ public class WalletFragment extends Fragment {
         return points;
     }
 
+
+
+
+
+
+    /**
+     * Delete image stored when deleting the qr code
+     * @param docId
+     * The id of QR code.
+     */
+    public void deleteImageFromStorage(String docId) {
+        String url = "images/" + docId;
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child(url).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                int countImage = 0;
+                for (StorageReference item : listResult.getItems()) {
+                    countImage = listResult.getItems().size();//will give you number of files present in your firebase storage folder
+                }
+                for (int i = 0; i < countImage; i++) {
+                    String imageurl = url + "/image" + String.valueOf(i);
+                    deleteImage(imageurl);
+                }
+            }
+        });
+    }
+
+    /**
+     * Delete a single file of the url position.
+     * @param imageurl
+     * The url position of the image.
+     */
+    public void deleteImage(String imageurl){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child(imageurl).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG,"Image storage deleted successfully");
+                    }})
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG,"Image storage deleted fail"+e);
+                    }
+                });
+    }
 }
