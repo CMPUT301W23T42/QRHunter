@@ -19,8 +19,7 @@ public class QrCodeNameGenerator implements QrCodeRepresentative{
     public String createQRName(String hex_string) {
         String name = "";
         String bit_string = hex_to_bit(hex_string);
-        int first_val = bit_string.charAt(0) + 2*bit_string.charAt(1);
-        if (bit_string.charAt(2) + 2*bit_string.charAt(3) == first_val && bit_string.charAt(4) + 2*bit_string.charAt(5) == first_val) {
+        if (isPure(bit_string)) {
             name = name.concat("Pure ");
         }
         int i = 0;
@@ -53,5 +52,13 @@ public class QrCodeNameGenerator implements QrCodeRepresentative{
             i ++;
         }
         return bit_string;
+    }
+
+    public boolean isPure(String bit_string) {
+        int first_val = bit_string.charAt(0) + 2*bit_string.charAt(1);
+        if (bit_string.charAt(2) + 2*bit_string.charAt(3) == first_val && bit_string.charAt(4) + 2*bit_string.charAt(5) == first_val) {
+            return true;
+        }
+        return false;
     }
 }

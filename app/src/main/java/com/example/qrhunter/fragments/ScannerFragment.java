@@ -203,6 +203,11 @@ public class ScannerFragment extends Fragment {
         fragmentTransaction.replace(R.id.container, walletFragment);
         fragmentTransaction.commit();
     }
+
+    /**
+     * Evaluates the results of a scan
+     * @param result
+     */
     public void evaluateScanResult(ScanIntentResult result) {
         if (result.getContents() == null) { //User either went back or qrcode contents are empty
             goToWallet();
@@ -217,7 +222,11 @@ public class ScannerFragment extends Fragment {
         evaluateAddQRCode(hash);
     }
 
-    public void evaluateQRCodeOwned() {
+    /**
+     * Evaluation when qrcode hashed contents are already in the players wallet
+     * Displays a dialog and goes to wallet
+     */
+    private void evaluateQRCodeOwned() {
         new AlertDialog.Builder(this.getActivity())
                 .setTitle("QR Code already owned")
                 .setNegativeButton("Continue", null)
@@ -225,14 +234,17 @@ public class ScannerFragment extends Fragment {
         goToWallet();
     }
 
-    public void evaluateAddQRCode(String hash) {
+    /**
+     * Adds a qrcode to a players wallet
+     * @param hash: qr code content hash
+     */
+    private void evaluateAddQRCode(String hash) {
         GeoPoint geoPoint = getLocation();
         System.out.println(geoPoint);
         CollectionReference CodeList = db.collection("CodeList");
         owner_hashs.add(hash);
 
-        QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
-        int score = scoreGenerator.score_algorithm(hash);
+        int score = QrCodeScoreGenerator.score_algorithm(hash);
 
         QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
         String codeName = nameGenerator.createQRName(hash);
