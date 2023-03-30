@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.R;
 
+import java.io.ByteArrayOutputStream;
+
 /**
  * This class allows users to take a photo of their QRCode after scanning it
  */
@@ -32,8 +34,13 @@ public class CameraActivity extends Activity {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             image.setImageBitmap(photo);
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            intent.putExtra("image",byteArray);
+            setResult(111,intent);
         }
+        finish();
     }
 }

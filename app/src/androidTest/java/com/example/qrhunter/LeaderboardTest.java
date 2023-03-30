@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -17,8 +18,10 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.example.qrhunter.searchPlayer.SearchAdapter;
+import com.example.qrhunter.searchPlayer.UserListItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.AggregateQuerySnapshot;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
@@ -107,13 +110,15 @@ public class LeaderboardTest {
     }
 
     /**
-     * Tests if profile tab opens profile fragment
+     * Tests if search tab opens search fragment
      */
     @Test
     public void checkProfileSwitch() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        solo.clickOnView(solo.getView(R.id.search_tab));
+        TabLayout tabs = (TabLayout) solo.getView(R.id.tab_layout);
+        solo.clickOnView(tabs.getTabAt(2).view);
+
         View frag = solo.getView(R.id.fragment_leaderboard);
 
         assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
@@ -124,7 +129,14 @@ public class LeaderboardTest {
      */
     @Test
     public void checkListViewItems(){
-        TestCase.assertTrue(solo.waitForText("test 1", 1, 20000));
+        TabLayout tabs = (TabLayout) solo.getView(R.id.tab_layout);
+        solo.clickOnView(tabs.getTabAt(2).view);
+
+        View frag = solo.getView(R.id.fragment_leaderboard);
+
+        assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
+
+        TestCase.assertTrue(solo.waitForText("TestUsername1", 1, 20000));
     }
 
     /**
@@ -134,6 +146,13 @@ public class LeaderboardTest {
     public void checkAscendingSort() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
+        TabLayout tabs = (TabLayout) solo.getView(R.id.tab_layout);
+        solo.clickOnView(tabs.getTabAt(2).view);
+
+        View frag = solo.getView(R.id.fragment_leaderboard);
+
+        assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
+
         collectionReference.count().get(AggregateSource.SERVER).addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
@@ -141,14 +160,19 @@ public class LeaderboardTest {
                     // Count fetched successfully
                     AggregateQuerySnapshot snapshot = task.getResult();
                     lengthOfListView = Integer.parseInt(String.valueOf(snapshot.getCount()));
-                    solo.clickInList(lengthOfListView);
+                    System.out.println(lengthOfListView);
+                    ListView list = (ListView)solo.getView(R.id.player_list_list_view);
+                    UserListItem item = (UserListItem) list.getAdapter().getItem(lengthOfListView-1);
+                    String lastUser = item.getUsername();
+                    System.out.println(lastUser);
+                    assertTrue("Incorrect order", lastUser.equals("TestUsername3"));
                 } else {
                     Log.d(TAG, "Count failed: ", task.getException());
                 }
             }
         });
 
-        assertTrue(solo.waitForText("test 3"));
+        assertTrue(solo.waitForText("TestUsername3"));
     }
 
     /**
@@ -158,12 +182,18 @@ public class LeaderboardTest {
     public void checkClickListViewItem() {
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
+        TabLayout tabs = (TabLayout) solo.getView(R.id.tab_layout);
+        solo.clickOnView(tabs.getTabAt(2).view);
+
         View frag = solo.getView(R.id.fragment_leaderboard);
+
+        assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
+
         EditText editText = frag.findViewById(R.id.search_profile_edit_text);
-        editText.setText("test 1");
-        assertTrue(solo.waitForText("test 1", 1, 10000));
+        solo.typeText(editText, "TestUsername1");
+        solo.waitForText("TestUsername1", 2, 10000);
         solo.clickInList(0);
-        solo.waitForText("test 1", 1, 10000);
+        assertTrue(solo.waitForText("TestUsername1", 1, 10000));
     }
 
     /**

@@ -21,7 +21,8 @@
         android:text="Wallet"
         android:textColor="@color/white"
         android:textSize="30sp"
-        android:textStyle="bold"></TextView>
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_sort"

@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package com.example.qrhunter.fragments;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import android.app.AlertDialog;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import android.content.Intent;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import android.os.Bundle;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">import androidx.annotation.NonNull;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import androidx.annotation.Nullable;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import androidx.fragment.app.Fragment;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import androidx.fragment.app.FragmentManager;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import androidx.fragment.app.FragmentTransaction;</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">import android.util.Log;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import android.view.LayoutInflater;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import android.view.View;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import android.view.ViewGroup;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import android.widget.AdapterView;</a>
+<span class="sourceLineNo">018</span><a id="line.18">import android.widget.ArrayAdapter;</a>
+<span class="sourceLineNo">019</span><a id="line.19"></a>
+<span class="sourceLineNo">020</span><a id="line.20">import android.widget.ListView;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import android.widget.RadioButton;</a>
+<span class="sourceLineNo">022</span><a id="line.22">import android.widget.RadioGroup;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import android.widget.TextView;</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">import com.example.qrhunter.MainActivity;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import com.example.qrhunter.WalletCustomList;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import com.example.qrhunter.QRCode;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import com.example.qrhunter.qrProfile.QRProfileActivity;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import com.example.qrhunter.R;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import com.google.android.gms.tasks.OnFailureListener;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import com.google.android.gms.tasks.OnSuccessListener;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import com.google.android.material.floatingactionbutton.FloatingActionButton;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import com.google.firebase.firestore.CollectionReference;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import com.google.firebase.firestore.EventListener;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import com.google.firebase.firestore.FirebaseFirestore;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import com.google.firebase.firestore.FirebaseFirestoreException;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import com.google.firebase.firestore.GeoPoint;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import com.google.firebase.firestore.QueryDocumentSnapshot;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import com.google.firebase.firestore.QuerySnapshot;</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">import java.util.ArrayList;</a>
+<span class="sourceLineNo">042</span><a id="line.42">import java.util.Collections;</a>
+<span class="sourceLineNo">043</span><a id="line.43">import java.util.List;</a>
+<span class="sourceLineNo">044</span><a id="line.44"></a>
+<span class="sourceLineNo">045</span><a id="line.45">/**</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * This is a class for the fragment that shows the QRCodes in the database, allows us to remove a QRCode, shows the total no. scanned and total points, sorts QRCodes according to score and allows to add a QRCode.</a>
+<span class="sourceLineNo">047</span><a id="line.47"> */</a>
+<span class="sourceLineNo">048</span><a id="line.48">public class WalletFragment extends Fragment {</a>
+<span class="sourceLineNo">049</span><a id="line.49">    RadioGroup radioGroup;</a>
+<span class="sourceLineNo">050</span><a id="line.50">    RadioButton descendingSort, ascendingSort;</a>
+<span class="sourceLineNo">051</span><a id="line.51">    ListView qrList;</a>
+<span class="sourceLineNo">052</span><a id="line.52">    ArrayAdapter&lt;QRCode&gt; qrAdapter;</a>
+<span class="sourceLineNo">053</span><a id="line.53">    ArrayList&lt;QRCode&gt; qrDataList;</a>
+<span class="sourceLineNo">054</span><a id="line.54">    TextView totalPoints;</a>
+<span class="sourceLineNo">055</span><a id="line.55">    TextView totalScanned;</a>
+<span class="sourceLineNo">056</span><a id="line.56">    String userName;</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">    FloatingActionButton scanButton;</a>
+<span class="sourceLineNo">059</span><a id="line.59">    final String TAG = "Sample";</a>
+<span class="sourceLineNo">060</span><a id="line.60">    FirebaseFirestore db;</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">    /**</a>
+<span class="sourceLineNo">063</span><a id="line.63">     * Default wallet fragment initializer</a>
+<span class="sourceLineNo">064</span><a id="line.64">     */</a>
+<span class="sourceLineNo">065</span><a id="line.65">    public WalletFragment() {</a>
+<span class="sourceLineNo">066</span><a id="line.66"></a>
+<span class="sourceLineNo">067</span><a id="line.67">    }</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">    /**</a>
+<span class="sourceLineNo">070</span><a id="line.70">     * Wallet fragment initializer</a>
+<span class="sourceLineNo">071</span><a id="line.71">     * @param name String object representing player username</a>
+<span class="sourceLineNo">072</span><a id="line.72">     */</a>
+<span class="sourceLineNo">073</span><a id="line.73">    public WalletFragment(String name) {</a>
+<span class="sourceLineNo">074</span><a id="line.74">        userName = name;</a>
+<span class="sourceLineNo">075</span><a id="line.75">    }</a>
+<span class="sourceLineNo">076</span><a id="line.76"></a>
+<span class="sourceLineNo">077</span><a id="line.77">    /**</a>
+<span class="sourceLineNo">078</span><a id="line.78">     * Called to create the view hierarchy associated with the fragment. This method is responsible for</a>
+<span class="sourceLineNo">079</span><a id="line.79">     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment</a>
+<span class="sourceLineNo">080</span><a id="line.80">     * does not have a UI or does not need to display a view, you can return null from this method.</a>
+<span class="sourceLineNo">081</span><a id="line.81">     *</a>
+<span class="sourceLineNo">082</span><a id="line.82">     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.</a>
+<span class="sourceLineNo">083</span><a id="line.83">     * @param container          The parent view that the fragment's UI should be attached to. This value may be null</a>
+<span class="sourceLineNo">084</span><a id="line.84">     *                           if the fragment is not being attached to a parent view.</a>
+<span class="sourceLineNo">085</span><a id="line.85">     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null</a>
+<span class="sourceLineNo">086</span><a id="line.86">     *                           if the fragment is being instantiated for the first time.</a>
+<span class="sourceLineNo">087</span><a id="line.87">     * @return The View for the fragment's UI, or null.</a>
+<span class="sourceLineNo">088</span><a id="line.88">     */</a>
+<span class="sourceLineNo">089</span><a id="line.89">    @Override</a>
+<span class="sourceLineNo">090</span><a id="line.90">    public View onCreateView(LayoutInflater inflater, ViewGroup container,</a>
+<span class="sourceLineNo">091</span><a id="line.91">                             Bundle savedInstanceState) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">        // Inflate the layout for this fragment</a>
+<span class="sourceLineNo">093</span><a id="line.93">        View view = inflater.inflate(R.layout.fragment_wallet, container, false);</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">        descendingSort = view.findViewById(R.id.rb_descending);</a>
+<span class="sourceLineNo">096</span><a id="line.96">        ascendingSort = view.findViewById(R.id.rb_ascending);</a>
+<span class="sourceLineNo">097</span><a id="line.97">        radioGroup = view.findViewById(R.id.rg_sort);</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">        totalScanned = view.findViewById(R.id.tv_total_scanned);</a>
+<span class="sourceLineNo">100</span><a id="line.100">        totalPoints = view.findViewById(R.id.tv_total_points);</a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">        qrList = view.findViewById(R.id.qr_list);</a>
+<span class="sourceLineNo">103</span><a id="line.103">        qrDataList = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">104</span><a id="line.104">        qrAdapter = new WalletCustomList(this.getActivity(), qrDataList);</a>
+<span class="sourceLineNo">105</span><a id="line.105">        qrList.setAdapter(qrAdapter);</a>
+<span class="sourceLineNo">106</span><a id="line.106">        scanButton = view.findViewById(R.id.wallet_button_scan);</a>
+<span class="sourceLineNo">107</span><a id="line.107"></a>
+<span class="sourceLineNo">108</span><a id="line.108">        db = FirebaseFirestore.getInstance();</a>
+<span class="sourceLineNo">109</span><a id="line.109">        CollectionReference collectionReference = db.collection("CodeList");</a>
+<span class="sourceLineNo">110</span><a id="line.110"></a>
+<span class="sourceLineNo">111</span><a id="line.111">        collectionReference.addSnapshotListener(new EventListener&lt;QuerySnapshot&gt;() {</a>
+<span class="sourceLineNo">112</span><a id="line.112">            /**</a>
+<span class="sourceLineNo">113</span><a id="line.113">             * This method is called when the data in the specified query snapshot changes. This includes</a>
+<span class="sourceLineNo">114</span><a id="line.114">             * the initial data and any subsequent changes to the documents that match the query criteria.</a>
+<span class="sourceLineNo">115</span><a id="line.115">             * Clears the arraylist of QRCodes and adds again from the document.</a>
+<span class="sourceLineNo">116</span><a id="line.116">             *</a>
+<span class="sourceLineNo">117</span><a id="line.117">             * @param value The query snapshot representing the updated data.</a>
+<span class="sourceLineNo">118</span><a id="line.118">             * @param error The error, if any, that occurred while listening for changes. If the error is null,</a>
+<span class="sourceLineNo">119</span><a id="line.119">             *              no errors occurred during the listening operation.</a>
+<span class="sourceLineNo">120</span><a id="line.120">             */</a>
+<span class="sourceLineNo">121</span><a id="line.121">            @Override</a>
+<span class="sourceLineNo">122</span><a id="line.122">            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {</a>
+<span class="sourceLineNo">123</span><a id="line.123">                qrDataList.clear();Log.d("Check name", userName);</a>
+<span class="sourceLineNo">124</span><a id="line.124"></a>
+<span class="sourceLineNo">125</span><a id="line.125">                for (QueryDocumentSnapshot doc: value) {</a>
+<span class="sourceLineNo">126</span><a id="line.126">                    String ownerName = (String) doc.getData().get("owner");</a>
+<span class="sourceLineNo">127</span><a id="line.127">                    if (ownerName != null) {</a>
+<span class="sourceLineNo">128</span><a id="line.128">                        if ((MainActivity.DEBUG_ROY) ? (ownerName.equals("Roy")) :</a>
+<span class="sourceLineNo">129</span><a id="line.129">                                (ownerName.equals(userName))) {</a>
+<span class="sourceLineNo">130</span><a id="line.130">                            Log.d(TAG, "Show list of QR codes");</a>
+<span class="sourceLineNo">131</span><a id="line.131">                            String id = doc.getId();</a>
+<span class="sourceLineNo">132</span><a id="line.132">                            String date = (String) doc.getData().get("date");</a>
+<span class="sourceLineNo">133</span><a id="line.133">                            String hash = (String) doc.getData().get("hash");</a>
+<span class="sourceLineNo">134</span><a id="line.134">                            GeoPoint location = (GeoPoint) doc.getData().get("location");</a>
+<span class="sourceLineNo">135</span><a id="line.135">                            String name = (String) doc.getData().get("name");</a>
+<span class="sourceLineNo">136</span><a id="line.136"></a>
+<span class="sourceLineNo">137</span><a id="line.137">                            String owner = (String) doc.getData().get("owner");</a>
+<span class="sourceLineNo">138</span><a id="line.138">                            int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));</a>
+<span class="sourceLineNo">139</span><a id="line.139"></a>
+<span class="sourceLineNo">140</span><a id="line.140"></a>
+<span class="sourceLineNo">141</span><a id="line.141">                            qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));</a>
+<span class="sourceLineNo">142</span><a id="line.142">                        }</a>
+<span class="sourceLineNo">143</span><a id="line.143">                    }</a>
+<span class="sourceLineNo">144</span><a id="line.144">                }</a>
+<span class="sourceLineNo">145</span><a id="line.145">                qrAdapter.notifyDataSetChanged();</a>
+<span class="sourceLineNo">146</span><a id="line.146">                totalPoints.setText(Integer.toString(countPoints(qrDataList)));</a>
+<span class="sourceLineNo">147</span><a id="line.147">                totalScanned.setText(Integer.toString(qrDataList.size()));</a>
+<span class="sourceLineNo">148</span><a id="line.148">            }</a>
+<span class="sourceLineNo">149</span><a id="line.149">        });</a>
+<span class="sourceLineNo">150</span><a id="line.150">        scanButton.setOnClickListener(new View.OnClickListener() {</a>
+<span class="sourceLineNo">151</span><a id="line.151">            /**</a>
+<span class="sourceLineNo">152</span><a id="line.152">             * Called when the scan button is clicked and replaces the fragment with a scanner fragment.</a>
+<span class="sourceLineNo">153</span><a id="line.153">             * @param v The view that was clicked.</a>
+<span class="sourceLineNo">154</span><a id="line.154">             */</a>
+<span class="sourceLineNo">155</span><a id="line.155">            @Override</a>
+<span class="sourceLineNo">156</span><a id="line.156">            public void onClick(View v) {</a>
+<span class="sourceLineNo">157</span><a id="line.157">                ScannerFragment scannerFragment = new ScannerFragment(userName);</a>
+<span class="sourceLineNo">158</span><a id="line.158">                FragmentManager fragmentManager = getParentFragmentManager();</a>
+<span class="sourceLineNo">159</span><a id="line.159">                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();</a>
+<span class="sourceLineNo">160</span><a id="line.160">                fragmentTransaction.replace(R.id.container, scannerFragment);</a>
+<span class="sourceLineNo">161</span><a id="line.161">                fragmentTransaction.commit();</a>
+<span class="sourceLineNo">162</span><a id="line.162"></a>
+<span class="sourceLineNo">163</span><a id="line.163">            }</a>
+<span class="sourceLineNo">164</span><a id="line.164">        });</a>
+<span class="sourceLineNo">165</span><a id="line.165"></a>
+<span class="sourceLineNo">166</span><a id="line.166">        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {</a>
+<span class="sourceLineNo">167</span><a id="line.167">            /**</a>
+<span class="sourceLineNo">168</span><a id="line.168">             * Called when the checked radio button has changed in a radio group. Sorts the datalist according to the radio button checked. (Either ascending or descending)</a>
+<span class="sourceLineNo">169</span><a id="line.169">             * @param radioGroup The radio group in which the checked radio button has changed.</a>
+<span class="sourceLineNo">170</span><a id="line.170">             * @param i The unique identifier of the newly checked radio button.</a>
+<span class="sourceLineNo">171</span><a id="line.171">             */</a>
+<span class="sourceLineNo">172</span><a id="line.172">            @Override</a>
+<span class="sourceLineNo">173</span><a id="line.173">            public void onCheckedChanged(RadioGroup radioGroup, int i) {</a>
+<span class="sourceLineNo">174</span><a id="line.174">                if (i == R.id.rb_ascending) {</a>
+<span class="sourceLineNo">175</span><a id="line.175">                    Collections.sort(qrDataList, QRCode.ascendingOrder);</a>
+<span class="sourceLineNo">176</span><a id="line.176">                    qrAdapter.notifyDataSetChanged();</a>
+<span class="sourceLineNo">177</span><a id="line.177">                } else if (i == R.id.rb_descending) {</a>
+<span class="sourceLineNo">178</span><a id="line.178">                    Collections.sort(qrDataList, QRCode.descendingOrder);</a>
+<span class="sourceLineNo">179</span><a id="line.179">                    qrAdapter.notifyDataSetChanged();</a>
+<span class="sourceLineNo">180</span><a id="line.180">                }</a>
+<span class="sourceLineNo">181</span><a id="line.181">            }</a>
+<span class="sourceLineNo">182</span><a id="line.182">        });</a>
+<span class="sourceLineNo">183</span><a id="line.183"></a>
+<span class="sourceLineNo">184</span><a id="line.184">        qrList.setOnItemLongClickListener((parent, v, position, id) -&gt; {</a>
+<span class="sourceLineNo">185</span><a id="line.185">            new AlertDialog.Builder(this.getActivity())</a>
+<span class="sourceLineNo">186</span><a id="line.186">                    .setTitle("Do you want to delete this QR code?")</a>
+<span class="sourceLineNo">187</span><a id="line.187">                    .setPositiveButton("Confirm", (dialog, which) -&gt; {</a>
+<span class="sourceLineNo">188</span><a id="line.188">                        String docID = qrAdapter.getItem(position).getId();</a>
+<span class="sourceLineNo">189</span><a id="line.189">                        deleteData(docID);</a>
+<span class="sourceLineNo">190</span><a id="line.190">                        radioGroup.clearCheck();</a>
+<span class="sourceLineNo">191</span><a id="line.191">                        qrAdapter.notifyDataSetChanged();</a>
+<span class="sourceLineNo">192</span><a id="line.192">                    })</a>
+<span class="sourceLineNo">193</span><a id="line.193">                    .setNegativeButton("Cancel", null)</a>
+<span class="sourceLineNo">194</span><a id="line.194">                    .show();</a>
+<span class="sourceLineNo">195</span><a id="line.195">            return true;</a>
+<span class="sourceLineNo">196</span><a id="line.196">        });</a>
+<span class="sourceLineNo">197</span><a id="line.197"></a>
+<span class="sourceLineNo">198</span><a id="line.198">        qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {</a>
+<span class="sourceLineNo">199</span><a id="line.199">            /**</a>
+<span class="sourceLineNo">200</span><a id="line.200">             * Called when an item in the ListView has been clicked. Opens a new activity for the profile of the QR code clicked.</a>
+<span class="sourceLineNo">201</span><a id="line.201">             * @param adapterView The AdapterView where the click happened.</a>
+<span class="sourceLineNo">202</span><a id="line.202">             * @param view The view within the AdapterView that was clicked (this will be a view provided by the adapter).</a>
+<span class="sourceLineNo">203</span><a id="line.203">             * @param i The position of the view in the adapter.</a>
+<span class="sourceLineNo">204</span><a id="line.204">             * @param l The row id of the item that was clicked.</a>
+<span class="sourceLineNo">205</span><a id="line.205">             */</a>
+<span class="sourceLineNo">206</span><a id="line.206">            @Override</a>
+<span class="sourceLineNo">207</span><a id="line.207">            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {</a>
+<span class="sourceLineNo">208</span><a id="line.208">                Intent intent = new Intent(getActivity(), QRProfileActivity.class);</a>
+<span class="sourceLineNo">209</span><a id="line.209">                intent.putExtra("DOC_ID", qrDataList.get(i).getId());</a>
+<span class="sourceLineNo">210</span><a id="line.210">                intent.putExtra("OWNER_NAME", qrDataList.get(i).getOwner());</a>
+<span class="sourceLineNo">211</span><a id="line.211">                startActivity(intent);</a>
+<span class="sourceLineNo">212</span><a id="line.212">            }</a>
+<span class="sourceLineNo">213</span><a id="line.213">        });</a>
+<span class="sourceLineNo">214</span><a id="line.214"></a>
+<span class="sourceLineNo">215</span><a id="line.215">        return view;</a>
+<span class="sourceLineNo">216</span><a id="line.216">    }</a>
+<span class="sourceLineNo">217</span><a id="line.217"></a>
+<span class="sourceLineNo">218</span><a id="line.218"></a>
+<span class="sourceLineNo">219</span><a id="line.219">    private void deleteData(String id){</a>
+<span class="sourceLineNo">220</span><a id="line.220">        db.collection("CodeList").document(id)</a>
+<span class="sourceLineNo">221</span><a id="line.221">                .delete()</a>
+<span class="sourceLineNo">222</span><a id="line.222">                .addOnSuccessListener(new OnSuccessListener&lt;Void&gt;() {</a>
+<span class="sourceLineNo">223</span><a id="line.223">                    @Override</a>
+<span class="sourceLineNo">224</span><a id="line.224">                    public void onSuccess(Void aVoid) {</a>
+<span class="sourceLineNo">225</span><a id="line.225">                        Log.d(TAG, "DocumentSnapshot successfully deleted!");</a>
+<span class="sourceLineNo">226</span><a id="line.226">                    }</a>
+<span class="sourceLineNo">227</span><a id="line.227">                })</a>
+<span class="sourceLineNo">228</span><a id="line.228">                .addOnFailureListener(new OnFailureListener() {</a>
+<span class="sourceLineNo">229</span><a id="line.229">                    @Override</a>
+<span class="sourceLineNo">230</span><a id="line.230">                    public void onFailure(@NonNull Exception e) {</a>
+<span class="sourceLineNo">231</span><a id="line.231">                        Log.w(TAG, "Error deleting document", e);</a>
+<span class="sourceLineNo">232</span><a id="line.232">                    }</a>
+<span class="sourceLineNo">233</span><a id="line.233">                });</a>
+<span class="sourceLineNo">234</span><a id="line.234"></a>
+<span class="sourceLineNo">235</span><a id="line.235">    }</a>
+<span class="sourceLineNo">236</span><a id="line.236"></a>
+<span class="sourceLineNo">237</span><a id="line.237">    public int countPoints(ArrayList&lt;QRCode&gt; qrDataList) {</a>
+<span class="sourceLineNo">238</span><a id="line.238">        int points = 0;</a>
+<span class="sourceLineNo">239</span><a id="line.239">        for (int i = 0; i &lt; qrDataList.size(); i++) {</a>
+<span class="sourceLineNo">240</span><a id="line.240">            points += qrDataList.get(i).getScore();</a>
+<span class="sourceLineNo">241</span><a id="line.241">        }</a>
+<span class="sourceLineNo">242</span><a id="line.242">        return points;</a>
+<span class="sourceLineNo">243</span><a id="line.243">    }</a>
+<span class="sourceLineNo">244</span><a id="line.244"></a>
+<span class="sourceLineNo">245</span><a id="line.245">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

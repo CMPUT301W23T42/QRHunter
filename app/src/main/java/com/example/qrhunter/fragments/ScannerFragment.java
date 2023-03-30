@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.CaptureAct;
+import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.QrCodeOnAddDialog;
 import com.example.qrhunter.R;
 import com.example.qrhunter.generators.QrCodeNameGenerator;
@@ -57,17 +58,21 @@ import java.util.Map;
 /**
  * This class handles QRCode scanning using the zxing-android-embedded library
  */
-public class ScannerFragment extends Fragment {
+public class ScannerFragment extends Fragment{
     private final String TAG = "Scanner Fragment";
     private onCameraClose listener;
     ArrayList <String> owner_hashs = new ArrayList<>();
     FirebaseFirestore db;
     FusedLocationProviderClient client;
     SimpleDateFormat simpleDateFormat;
-    String owner = "Roy";
+    String owner;
     int index = 0;
     public ScannerFragment() {
         // Required empty public constructor
+    }
+
+    public ScannerFragment(String name) {
+        owner = (MainActivity.DEBUG_ROY)?"Roy":name;
     }
 
     public static ScannerFragment newInstance() {
@@ -137,52 +142,52 @@ public class ScannerFragment extends Fragment {
     /**
      * This method checks if app has permission for location access and ask if doesn't.
      */
-    private void askPermission() {
+    public void askPermission() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         }
     }
 
-    /**
-     * This method get the current location of the user.
-     * @return
-     * Return the geopoint of current location
-     */
-    @Nullable
-    private GeoPoint getLocation() {
-        //      Location location = null;
-        LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager == null) {
-            return null;
-        }
-        Location location = null;
-
-
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000L, 0f, new LocationListener() {
-
-                @Override
-                public void onLocationChanged(@NonNull Location location) {
-                }
-            });
-        }
-        List<String> providers = locationManager.getProviders(true);
-        for (String provider : providers) {
-            @SuppressLint("MissingPermission") Location l = locationManager.getLastKnownLocation(provider);
-            if (l == null){
-                continue;
-            }
-            if (location == null||location.getAccuracy() < l.getAccuracy()){
-                location = l;
-            }
-        }
-        if (location!= null){
-            GeoPoint geoPoint = new GeoPoint(location.getLatitude(),location.getLongitude());
-            return geoPoint;
-        }else{
-            return null;
-        }
-    }
+//    /**
+//     * This method get the current location of the user.
+//     * @return
+//     * Return the geopoint of current location
+//     */
+//    @Nullable
+//    public GeoPoint getLocation() {
+//        //      Location location = null;
+//        LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+//        if (locationManager == null) {
+//            return null;
+//        }
+//        Location location = null;
+//
+//
+//        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000L, 0f, new LocationListener() {
+//
+//                @Override
+//                public void onLocationChanged(@NonNull Location location) {
+//                }
+//            });
+//        }
+//        List<String> providers = locationManager.getProviders(true);
+//        for (String provider : providers) {
+//            @SuppressLint("MissingPermission") Location l = locationManager.getLastKnownLocation(provider);
+//            if (l == null){
+//                continue;
+//            }
+//            if (location == null||location.getAccuracy() < l.getAccuracy()){
+//                location = l;
+//            }
+//        }
+//        if (location!= null){
+//            GeoPoint geoPoint = new GeoPoint(location.getLatitude(),location.getLongitude());
+//            return geoPoint;
+//        }else{
+//            return null;
+//        }
+//    }
 
     public void setOnCameraCloseListener(onCameraClose listener) {
         this.listener = listener;
@@ -197,7 +202,7 @@ public class ScannerFragment extends Fragment {
      * Goes to wallet fragment
      */
     public void goToWallet() {
-        WalletFragment walletFragment = new WalletFragment();
+        WalletFragment walletFragment = new WalletFragment(owner);
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, walletFragment);
