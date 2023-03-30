@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_leaderboard"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/fragment_leaderboard"
-    android:background="@drawable/gradient_background">
+    android:background="@drawable/gradient_background"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
+        android:fontFamily="@font/rajdhani_bold"
         android:paddingStart="40dp"
         android:paddingEnd="40dp"
         android:text="@string/search_player"
         android:textColor="@color/white"
-        android:fontFamily="@font/rajdhani_bold"
         android:textSize="30sp"
         android:textStyle="bold">
     </TextView>
@@ -23,46 +24,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/search_profile_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:ems="10"
+            android:background="@drawable/search_player_edit_text_style"
             android:drawableLeft="@drawable/search_icon"
-            android:inputType="textPersonName"
+            android:ems="10"
             android:hint="Search Player"
-            android:background="@drawable/search_player_edit_text_style"/>
+            android:inputType="textPersonName" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Leaderboard: "
-            android:textSize="30sp"
             android:layout_marginTop="15dp"
+            android:fontFamily="@font/rajdhani_bold"
+            android:text="High Score QRs: "
             android:textColor="@color/white"
-            android:fontFamily="@font/rajdhani_bold">
+            android:textSize="30sp">
         </TextView>
-
-        <Button
-            android:id="@+id/sort_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="High Score QR Codes"
-            android:textSize="12sp"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/rajdhani_bold"/>
-
 
         <ListView
             android:id="@+id/player_list_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </ListView>
+
     </LinearLayout>
 
 </LinearLayout>
