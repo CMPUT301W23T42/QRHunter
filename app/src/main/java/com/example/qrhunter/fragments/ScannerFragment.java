@@ -2,12 +2,15 @@ package com.example.qrhunter.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,20 +29,27 @@ import com.example.qrhunter.generators.QrCodeNameGenerator;
 import com.example.qrhunter.generators.QrCodeScoreGenerator;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.AggregateQuery;
 import com.google.firebase.firestore.AggregateQuerySnapshot;
 import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanIntentResult;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,8 +61,7 @@ import java.util.Map;
 public class ScannerFragment extends Fragment{
     private final String TAG = "Scanner Fragment";
     private onCameraClose listener;
-
-
+    ArrayList <String> owner_hashs = new ArrayList<>();
     FirebaseFirestore db;
     FusedLocationProviderClient client;
     SimpleDateFormat simpleDateFormat;
@@ -89,6 +98,15 @@ public class ScannerFragment extends Fragment{
             }
         });
 
+        db.collection("CodeList").whereEqualTo("owner",owner).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    owner_hashs.add((String) doc.getData().get("hash"));
+                }
+            }
+        });
+
 
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
@@ -117,40 +135,7 @@ public class ScannerFragment extends Fragment{
      * Returns results of the QRCode scan.
      */
     private ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
-        if (result.getContents() == null) { //User either went back or qrcode contents are empty
-            goToWallet();
-        } else {
-//            GeoPoint geoPoint = getLocation();
-//            System.out.println(geoPoint);
-            // Generate hash from qrcode contents
-            String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
-
-//            QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
-//            int score = scoreGenerator.score_algorithm(hash);
-//
-//            QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
-//            String codeName = nameGenerator.createQRName(hash);
-//
-//            simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//            String date = simpleDateFormat.format(new Date());
-//            System.out.println(date);
-//
-//            // Put QRCode into database
-//            Map<String, Object> QRInfo = new HashMap<>();
-//            QRInfo.put("name", codeName);
-//            QRInfo.put("date", date);
-//            QRInfo.put("hash", hash);
-//            QRInfo.put("owner", owner);
-//            QRInfo.put("location", geoPoint);
-//            QRInfo.put("score", score);
-//            CollectionReference CodeList = db.collection("CodeList");
-//            CodeList.add(QRInfo);
-
-            // Open dialog showing user the qrcode they just scanned
-            QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity(),owner);
-            qrAddDialog.show(getParentFragmentManager(),"Test" );
-            goToWallet();
-        }
+        evaluateScanResult(result);
     });
 
 
@@ -223,6 +208,72 @@ public class ScannerFragment extends Fragment{
         fragmentTransaction.replace(R.id.container, walletFragment);
         fragmentTransaction.commit();
     }
+
+    /**
+     * Evaluates the results of a scan
+     * @param result
+     */
+    public void evaluateScanResult(ScanIntentResult result) {
+        if (result.getContents() == null) { //User either went back or qrcode contents are empty
+            goToWallet();
+            return;
+        }
+        // Generate hash from qrcode contents
+        String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
+        if (owner_hashs.contains(hash)) {
+            evaluateQRCodeOwned();
+            return;
+        }
+        evaluateAddQRCode(hash);
+    }
+
+    /**
+     * Evaluation when qrcode hashed contents are already in the players wallet
+     * Displays a dialog and goes to wallet
+     */
+    private void evaluateQRCodeOwned() {
+        new AlertDialog.Builder(this.getActivity())
+                .setTitle("QR Code already owned")
+                .setNegativeButton("Continue", null)
+                .show();
+        goToWallet();
+    }
+
+    /**
+     * Adds a qrcode to a players wallet
+     * @param hash: qr code content hash
+     */
+    private void evaluateAddQRCode(String hash) {
+        GeoPoint geoPoint = getLocation();
+        System.out.println(geoPoint);
+        CollectionReference CodeList = db.collection("CodeList");
+        owner_hashs.add(hash);
+
+        int score = QrCodeScoreGenerator.score_algorithm(hash);
+
+        QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
+        String codeName = nameGenerator.createQRName(hash);
+
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String date = simpleDateFormat.format(new Date());
+        System.out.println(date);
+
+        // Put QRCode into database
+        Map<String, Object> QRInfo = new HashMap<>();
+        QRInfo.put("name", codeName);
+        QRInfo.put("date", date);
+        QRInfo.put("hash", hash);
+        QRInfo.put("owner", owner);
+        QRInfo.put("location", geoPoint);
+        QRInfo.put("score", score);
+        CodeList.add(QRInfo);
+
+        // Open dialog showing user the qrcode they just scanned
+        QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity());
+        qrAddDialog.show(getParentFragmentManager(), "QRCodeOnAddDialog");
+        goToWallet();
+    }
+
 
 
 
