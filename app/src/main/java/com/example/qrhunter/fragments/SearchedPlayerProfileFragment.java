@@ -2,11 +2,13 @@ package com.example.qrhunter.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.qrhunter.MainActivity;
 import com.example.qrhunter.QRCode;
 import com.example.qrhunter.R;
+import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.example.qrhunter.searchPlayer.QRCodeAdapter;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -108,6 +111,16 @@ public class SearchedPlayerProfileFragment extends Fragment {
 
                             String owner = (String) doc.getData().get("owner");
                             int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
+
+                            qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Intent intent = new Intent(getActivity(), QRProfileActivity.class);
+                                    intent.putExtra("DOC_ID", doc.getId());
+                                    intent.putExtra("OWNER_NAME", doc.getString("owner"));
+                                    startActivity(intent);
+                                }
+                            });
 
 
                             qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
