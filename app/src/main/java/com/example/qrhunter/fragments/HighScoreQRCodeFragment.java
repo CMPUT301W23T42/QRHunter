@@ -218,7 +218,13 @@ public class HighScoreQRCodeFragment extends Fragment {
                 transaction.commit();
             }
         });
-
+        backButton = view.findViewById(R.id.searched_player_back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
 
         // sort the adapter automatically when view is created
 
