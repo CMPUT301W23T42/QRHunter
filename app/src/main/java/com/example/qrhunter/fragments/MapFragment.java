@@ -6,6 +6,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,10 +31,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.qrhunter.R;
+import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.example.qrhunter.searchPlayer.QRCodeAdapter;
 import com.example.qrhunter.searchPlayer.QRCodeListItem;
 import com.google.android.gms.maps.CameraUpdate;
@@ -198,24 +201,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(lat, lng))
-                                .title(String.valueOf(Math.round(distance)) + "m")
-                                .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.custom_marker, "100m")));
+                                .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.custom_marker, String.valueOf(Math.round(distance)) + "m")));
                         Marker locationMarker = googleMap.addMarker(markerOptions);
                         locationMarker.showInfoWindow();
 
                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                             @Override
                             public boolean onMarkerClick(@NonNull Marker marker) {
-                                Bundle bundle = new Bundle();
-                                bundle.putString("hash", document.getString("hash"));
-
-                                QrCodeMapProfileFragment qrCodeMapProfileFragment = new QrCodeMapProfileFragment();
-                                qrCodeMapProfileFragment.setArguments(bundle);
-
-                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.activity_main, qrCodeMapProfileFragment);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
+                                Intent intent = new Intent(getActivity(), QRProfileActivity.class);
+                                intent.putExtra("DOC_ID", document.getId());
+                                intent.putExtra("OWNER_NAME", document.getString("owner"));
+                                startActivity(intent);
 
                                 return false;
                             }
@@ -233,8 +229,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        LatLng latLngmy = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate current = CameraUpdateFactory.newLatLngZoom(latLngmy,15);
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraUpdate current = CameraUpdateFactory.newLatLngZoom(latLng,15);
         mMap.moveCamera(current);
     }
 
@@ -243,11 +239,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         Bitmap bm = BitmapFactory.decodeResource(getResources(), drawableId)
                 .copy(Bitmap.Config.ARGB_8888, true);
 
-        Typeface tf = Typeface.create("Helvetica", Typeface.BOLD);
+        Typeface tf = ResourcesCompat.getFont(getContext(), R.font.rajdhani_bold);
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.RED);
+        paint.setColor(Color.BLACK);
         paint.setTypeface(tf);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(convertToPixels(getContext(), 11)*5);
@@ -258,14 +254,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         Canvas canvas = new Canvas(bm);
 
         //If the text is bigger than the canvas , reduce the font size
-        if(textRect.width() >= (canvas.getWidth() - 4))     //the padding on either sides is considered as 4, so as to appropriately fit in the text
-            paint.setTextSize(convertToPixels(getContext(), 7));        //Scaling needs to be used for different dpi's
+        if(textRect.width() >= (canvas.getWidth() - 2))     //the padding on either sides is considered as 4, so as to appropriately fit in the text
+            paint.setTextSize(convertToPixels(getContext(), 13));        //Scaling needs to be used for different dpi's
 
         //Calculate the positions
-        int xPos = (canvas.getWidth() / 2) - 2;     //-2 is for regulating the x position offset
+        int xPos = (int) (canvas.getWidth() / 1.7) - 2;     //-2 is for regulating the x position offset
 
         //"- ((paint.descent() + paint.ascent()) / 2)" is the distance from the baseline to the center.
-        int yPos = (int) (canvas.getHeight() - (canvas.getHeight() / 1.1) ) ;
+        int yPos = (int) (canvas.getHeight() - (canvas.getHeight() / 1.295) ) ;
 
         canvas.drawText(text, xPos, yPos, paint);
 

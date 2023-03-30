@@ -75,28 +75,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:fontFamily="@font/rajdhani_bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/QR_profile_score"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/rajdhani_bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/QR_profile_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/rajdhani_bold"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/QR_profile_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/rajdhani_bold"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -107,8 +115,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5sp"
         android:layout_marginTop="5sp"
-        android:text="Comment:"
-        android:textSize="20dp" />
+        android:text="Comments:"
+        android:textSize="20dp"
+        android:fontFamily="@font/rajdhani_bold"
+        android:textColor="@color/black"/>
 
     <ListView
         android:id="@+id/comment_listview"
@@ -134,8 +144,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5sp"
-        android:text="Player who scaned same QR code:"
-        android:textSize="20sp" />
+        android:text="Players who scanned the same QR code:"
+        android:textSize="20sp"
+        android:fontFamily="@font/rajdhani_bold"
+        android:textColor="@color/black"/>
 
     <ListView
         android:id="@+id/same_QR_code_listview"

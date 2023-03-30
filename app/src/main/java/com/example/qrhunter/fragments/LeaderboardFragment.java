@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -134,10 +135,15 @@ public class LeaderboardFragment extends Fragment {
              */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);
-                String username = usernameObj.getUsername();
-                assert username != "";
-                Log.d("ans", username);
+                String username = "null";
+                try{
+                    UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);
+                    username = usernameObj.getUsername();
+                }catch (Exception e){
+                    Log.d("exception", String.valueOf(e));
+                    Toast.makeText(getContext(), "Nothing to select.", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
 
                 Bundle bundle = new Bundle();
                 bundle.putString("username", username);
