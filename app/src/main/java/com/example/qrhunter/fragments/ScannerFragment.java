@@ -244,8 +244,6 @@ public class ScannerFragment extends Fragment{
      * @param hash: qr code content hash
      */
     private void evaluateAddQRCode(String hash) {
-        GeoPoint geoPoint = getLocation();
-        System.out.println(geoPoint);
         CollectionReference CodeList = db.collection("CodeList");
         owner_hashs.add(hash);
 
@@ -264,12 +262,11 @@ public class ScannerFragment extends Fragment{
         QRInfo.put("date", date);
         QRInfo.put("hash", hash);
         QRInfo.put("owner", owner);
-        QRInfo.put("location", geoPoint);
         QRInfo.put("score", score);
         CodeList.add(QRInfo);
 
         // Open dialog showing user the qrcode they just scanned
-        QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity());
+        QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity(), owner);
         qrAddDialog.show(getParentFragmentManager(), "QRCodeOnAddDialog");
         goToWallet();
     }
