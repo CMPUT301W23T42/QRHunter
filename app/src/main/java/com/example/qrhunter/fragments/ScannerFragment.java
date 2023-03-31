@@ -244,7 +244,8 @@ public class ScannerFragment extends Fragment{
      * @param hash: qr code content hash
      */
     private void evaluateAddQRCode(String hash) {
-        QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity(), owner);
+        // Open dialog showing user the qrcode they just scanned
+        QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity(),owner);
         qrAddDialog.show(getParentFragmentManager(), "QRCodeOnAddDialog");
         goToWallet();
     }

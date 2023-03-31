@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,41 +30,37 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-/** Class for the fragment that shows the Leaderboard and Search Player functionality **/
-public class LeaderboardFragment extends Fragment {
+
+public class HighScoreQRCodeFragment extends Fragment {
 
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    final CollectionReference collectionReference = db.collection("Users");
+    final CollectionReference collectionReference = db.collection("CodeList");
     ListView playerListView;
     ArrayList<UserListItem> usernames;
     EditText searchEditText;
 
-    Button sortButton;
+    ImageView backButton;
+
     SearchAdapter usernamesArrayAdapter;
 
-    public LeaderboardFragment() {
+    public HighScoreQRCodeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Called to create the view hierarchy associated with the fragment. This method is responsible for
-     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment
-     * does not have a UI or does not need to display a view, you can return null from this method.
-     *
-     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
-     * @param container          The parent view that the fragment's UI should be attached to. This value may be null
-     *                           if the fragment is not being attached to a parent view.
-     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null
-     *                           if the fragment is being instantiated for the first time.
-     * @return The View for the fragment's UI, or null.
-     */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_high_score, container, false);
 
         playerListView = view.findViewById(R.id.player_list_list_view);
         searchEditText = view.findViewById(R.id.search_profile_edit_text);
@@ -82,12 +78,81 @@ public class LeaderboardFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    Map<String, Integer> highScores = new HashMap<>(); // to store the highest score for each owner
+                    Map<String, String> highestScoringCodes = new HashMap<>(); // to store the highest scoring code for each owner
+                    Map<String, List<String>> ownersByScore = new TreeMap<>(Collections.reverseOrder()); // to store the owners sorted by score
+                    Map<String, List<String>> ownersByAlpha = new TreeMap<>(); // to store the owners sorted alphabetically
+
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        String username = document.getString("UserName");
+                        String owner = document.getString("owner");
                         Long scoreLong = document.getLong("score");
                         int score = (scoreLong != null) ? scoreLong.intValue() : 0; // Set score to 0 if the value is null
-                        usernames.add(new UserListItem(username, score));
+                        String code = document.getId();
 
+                        if (highScores.containsKey(owner)) {
+                            if (score > highScores.get(owner)) {
+                                highScores.put(owner, score);
+                                highestScoringCodes.put(owner, code);
+                            } else if (score == highScores.get(owner)) {
+                                String currentCode = highestScoringCodes.get(owner);
+                                if (code.compareTo(currentCode) < 0) {
+                                    highestScoringCodes.put(owner, code);
+                                }
+                            }
+                        } else {
+                            highScores.put(owner, score);
+                            highestScoringCodes.put(owner, code);
+                        }
+                    }
+
+                    // group owners by score
+                    for (Map.Entry<String, Integer> entry : highScores.entrySet()) {
+                        String owner = entry.getKey();
+                        int score = entry.getValue();
+                        String code = highestScoringCodes.get(owner);
+
+                        if (!ownersByScore.containsKey(String.valueOf(score))) {
+                            ownersByScore.put(String.valueOf(score), new ArrayList<String>());
+                        }
+                        ownersByScore.get(String.valueOf(score)).add(owner + "#" + code);
+                    }
+
+                    // sort owners with same score alphabetically
+                    for (Map.Entry<String, List<String>> entry : ownersByScore.entrySet()) {
+                        String score = entry.getKey();
+                        List<String> owners = entry.getValue();
+
+                        Collections.sort(owners, new Comparator<String>() {
+                            @Override
+                            public int compare(String o1, String o2) {
+                                String[] parts1 = o1.split("#");
+                                String[] parts2 = o2.split("#");
+                                String owner1 = parts1[0];
+                                String code1 = parts1[1];
+                                String owner2 = parts2[0];
+                                String code2 = parts2[1];
+
+                                if (code1.equals(code2)) {
+                                    return owner1.compareToIgnoreCase(owner2);
+                                } else {
+                                    return code1.compareTo(code2);
+                                }
+                            }
+                        });
+
+                        ownersByAlpha.put(score, owners);
+                    }
+
+                    // add owners to the list adapter
+                    for (Map.Entry<String, List<String>> entry : ownersByAlpha.entrySet()) {
+                        List<String> owners = entry.getValue();
+
+                        for (String owner : owners) {
+                            String[] parts = owner.split("#");
+                            String username = parts[0];
+                            int score = Integer.parseInt(entry.getKey());
+                            usernames.add(new UserListItem(username, score));
+                        }
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -98,6 +163,7 @@ public class LeaderboardFragment extends Fragment {
                 usernamesArrayAdapter.notifyDataSetChanged();
                 playerListView.setAdapter(usernamesArrayAdapter);
             }
+
         });
 
         // Add a text change listener to the search EditText to filter the list
@@ -135,15 +201,10 @@ public class LeaderboardFragment extends Fragment {
              */
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String username = "null";
-                try{
-                    UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);
-                    username = usernameObj.getUsername();
-                }catch (Exception e){
-                    Log.d("exception", String.valueOf(e));
-                    Toast.makeText(getContext(), "Nothing to select.", Toast.LENGTH_SHORT).show();
-                    return ;
-                }
+                UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);
+                String username = usernameObj.getUsername();
+                assert username != "";
+                Log.d("ans", username);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("username", username);
@@ -157,20 +218,15 @@ public class LeaderboardFragment extends Fragment {
                 transaction.commit();
             }
         });
-
-        // sort the adapter automatically when view is created
-        sortButton = view.findViewById(R.id.sort_button);
-        sortButton.setOnClickListener(new View.OnClickListener() {
+        backButton = view.findViewById(R.id.searched_player_back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HighScoreQRCodeFragment highScoreQRCodeFragment = new HighScoreQRCodeFragment();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.activity_main, highScoreQRCodeFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                getParentFragmentManager().popBackStack();
             }
         });
 
+        // sort the adapter automatically when view is created
 
         return view;
     }
