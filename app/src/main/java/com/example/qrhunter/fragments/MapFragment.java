@@ -170,6 +170,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             mMap.getUiSettings().setZoomControlsEnabled(true);
 
             myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if (myLocation == null){
+                myLocation =  new Location("");
+                myLocation.setLatitude(53.52645254869654);
+                myLocation.setLongitude(-113.52084001893452);
+            }
+
         } else {
             // Request the missing location permission.
             ActivityCompat.requestPermissions(getActivity(),
@@ -197,7 +204,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                         markerLocation.setLatitude(lat);
                         markerLocation.setLongitude(lng);
 
-                        double distance = myLocation.distanceTo(markerLocation);
+                        double distance = 0.0;
+                        try{
+                            distance = myLocation.distanceTo(markerLocation);
+                        }catch(Exception e){
+                            Log.e("error 2 mylocation", String.valueOf(myLocation));
+                            Log.e("error 2 markerlocation", String.valueOf(markerLocation));
+                        }
+
 
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(lat, lng))
