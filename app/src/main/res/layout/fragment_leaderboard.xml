@@ -36,16 +36,36 @@
             android:inputType="textPersonName"
             android:hint="Search Player"
             android:background="@drawable/search_player_edit_text_style"/>
-
-        <TextView
+        
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Leaderboard: "
-            android:textSize="30sp"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/rajdhani_bold">
-        </TextView>
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Leaderboard: "
+                android:textSize="30sp"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/rajdhani_bold">
+            </TextView>
+
+            <Button
+                android:id="@+id/sort_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:fontFamily="@font/rajdhani_bold"
+                android:text="High Score QR Codes"
+                android:backgroundTint="@color/black"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
         <ListView
             android:id="@+id/player_list_list_view"
