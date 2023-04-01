@@ -62,7 +62,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_profile_edit, container, false);
 
-        editUserName = view.findViewById(R.id.user_name_edit);
+        //editUserName = view.findViewById(R.id.user_name_edit);
         editFullName = view.findViewById(R.id.full_name_edit);
         editEmail = view.findViewById(R.id.email_edit);
         editPhone = view.findViewById(R.id.phone_edit);
@@ -76,7 +76,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
         final CollectionReference collectionReference = db.collection("Users");
 
         saveProfileEdit.setOnClickListener(v -> {
-            String userName = editUserName.getText().toString();
+            String userName = profile.getUserName();
             String name = editFullName.getText().toString();
             String email = editEmail.getText().toString();
             String phone = editPhone.getText().toString();
@@ -96,6 +96,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
                         .addOnSuccessListener(unused -> {
                             Log.d(TAG, "Data has been added successfully!");
                             onChange();
+                            listener.onComplete();
                         })
                         .addOnFailureListener(e -> {
                             Log.d(TAG, "Data could not be added!" + e);
@@ -131,7 +132,6 @@ public class EditProfileFragment extends Fragment implements UserInfo {
     @Override
     public void onChange() {
         if (view != null) {
-            editUserName.setText(profile.getUserName());
             editFullName.setText(profile.getFullName());
             editEmail.setText(profile.getEmail());
             editPhone.setText(profile.getPhone());

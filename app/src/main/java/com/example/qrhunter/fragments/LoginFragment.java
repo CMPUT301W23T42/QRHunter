@@ -90,6 +90,7 @@ public class LoginFragment extends Fragment {
         signUpButton.setOnClickListener(v -> {
             final String ID = Settings.Secure.getString(getContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
+            Log.d(TAG, ID);
 
             final String userName = usernameEdit.getText().toString();
             final String name = nameEdit.getText().toString();
