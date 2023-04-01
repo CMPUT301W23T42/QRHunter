@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +16,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +58,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.acl.Owner;
 import java.text.SimpleDateFormat;
@@ -175,7 +183,7 @@ public class QrCodeOnAddDialog extends DialogFragment {
                         if (locationCheckBox.isChecked()){
                             geoPoint =  getLocation();
                         }
-                        System.out.println(geoPoint);
+                   //     System.out.println(geoPoint);
                         // Generate hash from qrcode contents
                         QrCodeScoreGenerator scoreGenerator = new QrCodeScoreGenerator();
                         int score = scoreGenerator.score_algorithm(hash);
@@ -212,6 +220,8 @@ public class QrCodeOnAddDialog extends DialogFragment {
 
                         for (int i = 0;i<byteArrayList.size();i++){
                             firebaseUploadBitmap(byteArrayList.get(i),id,i);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArrayList.get(i),0,byteArrayList.get(i).length);
+                            saveImage(bitmap,id);
                         }
 
                         Context context = getActivity().getApplicationContext();
@@ -305,5 +315,88 @@ public class QrCodeOnAddDialog extends DialogFragment {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
             }
         });
+    }
+
+
+
+    // reference: https://stackoverflow.com/a/64262046
+
+    /**
+     * Save a image locally into storage.
+     * @param bitmap
+     * The image to store.
+     * @param docName
+     * The QR code id to store.
+     */
+    private void saveImage(Bitmap bitmap, String docName) {
+        Context context = getActivity().getApplicationContext();
+        if (android.os.Build.VERSION.SDK_INT >= 29) {
+            ContentValues values = contentValues();
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/" + getString(R.string.app_name) + '/' + docName);
+            values.put(MediaStore.Images.Media.IS_PENDING, true);
+
+            Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            if (uri != null) {
+                try {
+                    saveImageToStream(bitmap, context.getContentResolver().openOutputStream(uri));
+                    values.put(MediaStore.Images.Media.IS_PENDING, false);
+                    context.getContentResolver().update(uri, values, null, null);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } else {
+            String url = Environment.getExternalStorageDirectory().toString() + '/' + getString(R.string.app_name) + '/' + docName;
+            File directory = new File(url);
+
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            String fileName = System.currentTimeMillis() + ".png";
+            File file = new File(directory, fileName);
+            try {
+                saveImageToStream(bitmap, new FileOutputStream(file));
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
+                context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    /**
+     * Put information of iamge into values.
+     * @return
+     * Return contentValues with image info.
+     */
+    private ContentValues contentValues() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        }
+        return values;
+    }
+
+    /**
+     * Save iamge to the output stream.
+     * @param bitmap
+     * The bitmap for the image
+     * @param outputStream
+     * The stream to output
+     */
+    private void saveImageToStream(Bitmap bitmap, OutputStream outputStream) {
+        if (outputStream != null) {
+            try {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
