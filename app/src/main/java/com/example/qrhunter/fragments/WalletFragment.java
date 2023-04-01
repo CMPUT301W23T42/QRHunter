@@ -1,7 +1,11 @@
 package com.example.qrhunter.fragments;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +47,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -192,6 +199,11 @@ public class WalletFragment extends Fragment {
                         String docID = qrAdapter.getItem(position).getId();
                         deleteData(docID);
                         deleteImageFromStorage(docID);
+                  //      String folderName = MediaStore.Images.Media.RELATIVE_PATH + '/' +  "Pictures/" + getString(R.string.app_name) + '/' + docID;
+                  //      System.out.println("!!!!!! folderName = "+ folderName);
+                   //     File fileOrDirectory = new File(folderName);
+                        deleteRecursive(docID);
+
                         radioGroup.clearCheck();
                         qrAdapter.notifyDataSetChanged();
                     })
@@ -293,5 +305,43 @@ public class WalletFragment extends Fragment {
                         Log.d(TAG,"Image storage deleted fail"+e);
                     }
                 });
+    }
+
+
+    /**
+     * Delete image locally from the storage.
+     * @param docName
+     * The id of the QR code.
+     */
+    void deleteRecursive(String docName) {
+        String url = Environment.getExternalStorageDirectory().toString() + "/Pictures" + '/' + getString(R.string.app_name) + '/' + docName;
+        File fileOrDirectory = new File(url);
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                refreshGallery(getContext(),child.getPath());
+
+        fileOrDirectory.delete();
+    }
+
+    /**
+     * Delete a single image and update the gallery.
+     * @param context
+     * The current context.
+     * @param path
+     * The path of the image to delete.
+     */
+    public static void refreshGallery(Context context, String path) {
+        File file = new File(path);
+        if (file.exists() && file.isFile()) {
+            file.delete();
+
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent intent= new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            intent.setData(Uri.fromFile(file));
+            context.sendBroadcast(intent);
+        } else {
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse(file.getAbsolutePath())));
+        }
     }
 }
