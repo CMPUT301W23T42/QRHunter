@@ -16,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
@@ -213,6 +215,28 @@ public class QrCodeOnAddDialog extends DialogFragment {
                         }
 
                         Context context = getActivity().getApplicationContext();
+                        db.collection("Users").document(Settings.Secure.getString(
+                                        context.getContentResolver(),
+                                        Settings.Secure.ANDROID_ID)).get()
+                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        Map<String, Object> userData = documentSnapshot.getData();
+                                        if (userData != null) {
+                                            userData.put("score",
+                                                    (userData.containsKey("score")) ?
+                                                            (Math.toIntExact(
+                                                                    (long)userData.get("score")
+                                                            ) + score) : score);
+                                            db.collection("Users").document(
+                                                    Settings.Secure.getString(
+                                                            context.getContentResolver(),
+                                                            Settings.Secure.ANDROID_ID)).set(userData);
+                                        } else {
+                                            Log.d(TAG, "Error retrieving user data");
+                                        }
+                                    }
+                                });
                         Toast toast = new Toast(context);
                         toast.setText("QR Code Added successfully!");
                         toast.setDuration(Toast.LENGTH_SHORT);

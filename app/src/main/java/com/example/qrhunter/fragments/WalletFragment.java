@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -44,6 +46,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is a class for the fragment that shows the QRCodes in the database, allows us to remove a QRCode, shows the total no. scanned and total points, sorts QRCodes according to score and allows to add a QRCode.
@@ -189,7 +192,29 @@ public class WalletFragment extends Fragment {
             new AlertDialog.Builder(this.getActivity())
                     .setTitle("Do you want to delete this QR code?")
                     .setPositiveButton("Confirm", (dialog, which) -> {
-                        String docID = qrAdapter.getItem(position).getId();
+                        QRCode code = qrAdapter.getItem(position);
+                        String docID = code.getId();
+                        int score = code.getScore();
+                        db.collection("Users").document(Settings.Secure.getString(
+                                        getContext().getContentResolver(),
+                                        Settings.Secure.ANDROID_ID)).get()
+                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        Map<String, Object> userData = documentSnapshot.getData();
+                                        if (userData != null) {
+                                            userData.put("score",
+                                                    (userData.containsKey("score")) ?
+                                                            ((Math.toIntExact(
+                                                                    (long)userData.get("score"))
+                                                            ) - score) : score);
+                                            db.collection("Users").document(
+                                                    Settings.Secure.getString(
+                                                            getContext().getContentResolver(),
+                                                            Settings.Secure.ANDROID_ID)).set(userData);
+                                        }
+                                    }
+                                });
                         deleteData(docID);
                         deleteImageFromStorage(docID);
                         radioGroup.clearCheck();
