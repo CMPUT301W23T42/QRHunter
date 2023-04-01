@@ -34,16 +34,17 @@
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
     </TextView>
-    <EditText
+    <TextView
         android:id="@+id/user_name_edit"
-        android:hint="@string/example_name"
+        android:textSize="25sp"
+        android:hint="John Doe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
-    </EditText>
+    </TextView>
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
