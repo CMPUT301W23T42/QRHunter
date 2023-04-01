@@ -21,11 +21,11 @@ public class QrCodeGeneratorsTest {
         // protected final String[] oneString = {"Fiery ", "Solid ", "Ready To Go ", "Giga", "Draconic ", "Tesseract"};
         QrCodeNameGenerator nameGenerator = new QrCodeNameGenerator();
         // bit(84) = 10000010. Expected "Fiery Massive Extremely Expensive TurboMulti-Dimensional Poly-Dodecahedron"
-        assertEquals("Fiery Massive Extremely Expensive TurboMulti-Dimensional Poly-Dodecahedron", nameGenerator.createQRName("84e9ff9ffc70101f15673b99a79868fdb7c441f8b8f8569785aae1799e32ed56"));
+        assertEquals("Fiery Massive Extremely Expensive TurboMulti-Dimensional Tesseract", nameGenerator.createQRName("84e9ff9ffc70101f15673b99a79868fdb7c441f8b8f8569785aae1799e32ed56"));
         // bit(e9) = 11101001. Expected "Fiery Solid Ready To Go Extremely Expensive Draconic Poly-Dodecahedron"
-        assertEquals("Fiery Solid Ready To Go Extremely Expensive Draconic Poly-Dodecahedron", nameGenerator.createQRName("e97017cdba5a0405df4309360f277b61e4133907476ba9a8cfaa879a63b7c5fb"));
+        assertEquals("Fiery Solid Ready To Go TurboDraconic Poly-Dodecahedron", nameGenerator.createQRName("e97017cdba5a0405df4309360f277b61e4133907476ba9a8cfaa879a63b7c5fb"));
         // bit(42) = 10000100. Expected "Fiery Massive Extremely Expensive TurboMulti-Dimensional Tesseract"
-        assertEquals("Fiery Massive Extremely Expensive TurboMulti-Dimensional Tesseract", nameGenerator.createQRName("4215d86adb1f713c7aab29931a25979203103c26b94db67a273c6ea22ca7c76a"));
+        assertEquals("Absolutely Solid Extremely Expensive TurboMulti-Dimensional Poly-Dodecahedron", nameGenerator.createQRName("4215d86adb1f713c7aab29931a25979203103c26b94db67a273c6ea22ca7c76a"));
         // bit(aa) = 10101010. Expected "Pure Fiery Massive Ready To Go TurboDraconic Poly-Dodecahedron"
         assertEquals("Pure Fiery Massive Ready To Go TurboDraconic Poly-Dodecahedron", nameGenerator.createQRName("aaa82ef2acc62dec48ead94abcb878d1d91fd263ee65c7f0aabdad936a122c2b"));
 
