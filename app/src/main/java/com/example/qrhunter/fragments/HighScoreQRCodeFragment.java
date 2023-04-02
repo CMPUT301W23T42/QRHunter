@@ -75,6 +75,7 @@ public class HighScoreQRCodeFragment extends Fragment {
         usernames = new ArrayList<UserListItem>();
 
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            Map<String, Integer> highScores;
 
             /**
              * Called when the query is able to execute, and get data from the database
@@ -85,7 +86,7 @@ public class HighScoreQRCodeFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Map<String, Integer> highScores = new HashMap<>(); // to store the highest score for each owner
+                    highScores = new HashMap<>(); // to store the highest score for each owner
                     Map<String, String> highestScoringCodes = new HashMap<>(); // to store the highest scoring code for each owner
                     Map<String, List<String>> ownersByScore = new TreeMap<>(Collections.reverseOrder()); // to store the owners sorted by score
                     Map<String, List<String>> ownersByAlpha = new TreeMap<>(); // to store the owners sorted alphabetically
@@ -164,32 +165,10 @@ public class HighScoreQRCodeFragment extends Fragment {
                         }
                     }
 
-                    final String ID = Settings.Secure.getString(getContext().getContentResolver(),
-                            Settings.Secure.ANDROID_ID);
+
 
                     // Retrieve the username from the "Users" collection in the database
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    DocumentReference userRef = db.collection("Users").document(ID);
-                    userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            String username = documentSnapshot.getString("UserName");
 
-                            // Retrieve the high score for this user from the hash map
-
-                            int highScore = 0;
-                            if (highScores.containsKey(username)) {
-                                highScore = highScores.get(username);
-                            }
-
-                            // Retrieve the position of username from usernames list
-                            int position = usernames.indexOf(new UserListItem(username, 0)) + 1;
-
-                            // Update the text view with the username and high score
-                            userHighScoreTextView.setText(position + " " + username + ": " + highScore);
-
-                        }
-                    });
                 }
 
                 else {
@@ -198,6 +177,44 @@ public class HighScoreQRCodeFragment extends Fragment {
 
                 usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
                 usernamesArrayAdapter.sortFilteredScores();
+
+                final String ID = Settings.Secure.getString(getContext().getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference userRef = db.collection("Users").document(ID);
+                userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String username = documentSnapshot.getString("UserName");
+
+                        // Retrieve the high score for this user from the hash map
+
+                        // Retrieve the high score for this user from the hash map
+
+                        int highScore = 0;
+                        if (highScores.containsKey(username)) {
+                            highScore = highScores.get(username);
+                        }
+
+
+
+                        // Retrieve the position of username from usernames list
+                        int position = 0;
+                        for (UserListItem usernameObj: usernames){
+                            if (usernameObj.getUsername().equalsIgnoreCase("zihan001")){
+                                Log.d("usernames size: ", String.valueOf(usernames.size()));
+                                Log.d("index of sam: ", String.valueOf(usernames.indexOf(usernameObj)));
+                                position = usernames.indexOf(usernameObj);
+                            }
+                        }
+
+
+                        // Update the text view with the username and high score
+                        userHighScoreTextView.setText(position + " " + username + ": " + highScore);
+
+                    }
+                });
                 usernamesArrayAdapter.notifyDataSetChanged();
                 playerListView.setAdapter(usernamesArrayAdapter);
             }
