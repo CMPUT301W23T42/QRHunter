@@ -109,17 +109,14 @@ public class LeaderboardFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (usernamesArrayAdapter != null) {
                     usernamesArrayAdapter.getFilter().filter(s);
-                    Log.d("Filter", usernamesArrayAdapter.getFilter().toString());
-                    usernamesArrayAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                usernamesArrayAdapter.sortOriginalScores();
-                usernamesArrayAdapter.notifyDataSetChanged();
             }
         });
+
 
         //open new profile fragment on clicking list item
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

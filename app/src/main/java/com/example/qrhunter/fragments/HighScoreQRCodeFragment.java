@@ -177,8 +177,6 @@ public class HighScoreQRCodeFragment extends Fragment {
 
                             // Retrieve the high score for this user from the hash map
 
-                            // Retrieve the high score for this user from the hash map
-
                             int highScore = 0;
                             if (highScores.containsKey(username)) {
                                 highScore = highScores.get(username);
