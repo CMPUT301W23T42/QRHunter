@@ -163,11 +163,8 @@ public class WalletFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             // Get the current score from the document
 
-                            Long scoreLong = document.getLong("score");
-                            int currentScore = (scoreLong == null) ? 0 : scoreLong.intValue();
-
                             // Calculate the new score by adding the points earned from the QR data
-                            int newScore = currentScore + countPoints(qrDataList);
+                            int newScore = countPoints(qrDataList);
 
                             // Update the score field in the document with the new score
                             document.getReference().update("score", newScore)
