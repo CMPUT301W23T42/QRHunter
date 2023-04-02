@@ -251,14 +251,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             }
         });
     }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate current = CameraUpdateFactory.newLatLngZoom(latLng,15);
-        mMap.moveCamera(current);
-    }
-
     private Bitmap writeTextOnDrawable(int drawableId, String text) {
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), drawableId)
