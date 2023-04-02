@@ -55,6 +55,8 @@ public class HighScoreQRCodeFragment extends Fragment {
 
     SearchAdapter usernamesArrayAdapter;
     TextView userHighScoreTextView;
+    TextView userNameTextView;
+    TextView userRankTextView;
 
     public HighScoreQRCodeFragment() {
         // Required empty public constructor
@@ -71,6 +73,8 @@ public class HighScoreQRCodeFragment extends Fragment {
         playerListView = view.findViewById(R.id.player_list_list_view);
         searchEditText = view.findViewById(R.id.search_profile_edit_text);
         userHighScoreTextView = view.findViewById(R.id.user_high_score);
+        userNameTextView = view.findViewById(R.id.user_name_text);
+        userRankTextView = view.findViewById(R.id.user_rank_text);
 
         usernames = new ArrayList<UserListItem>();
 
@@ -212,7 +216,9 @@ public class HighScoreQRCodeFragment extends Fragment {
                         }
 
                         // Update the text view with the username and high score
-                        userHighScoreTextView.setText(position + " " + username + ": " + highScore);
+                        userHighScoreTextView.setText(String.valueOf(highScore));
+                        userRankTextView.setText(String.valueOf(position) + ".");
+                        userNameTextView.setText(String.valueOf(username));
 
                     }
                 });

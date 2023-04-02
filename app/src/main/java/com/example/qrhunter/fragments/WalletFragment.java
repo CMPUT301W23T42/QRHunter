@@ -44,7 +44,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * This is a class for the fragment that shows the QRCodes in the database, allows us to remove a QRCode, shows the total no. scanned and total points, sorts QRCodes according to score and allows to add a QRCode.
@@ -100,8 +99,8 @@ public class WalletFragment extends Fragment {
         ascendingSort = view.findViewById(R.id.rb_ascending);
         radioGroup = view.findViewById(R.id.rg_sort);
 
-        totalScanned = view.findViewById(R.id.tv_total_scanned);
-        totalPoints = view.findViewById(R.id.tv_total_points);
+        totalScanned = view.findViewById(R.id.user_high_score);
+        totalPoints = view.findViewById(R.id.user_name_text);
 
         qrList = view.findViewById(R.id.qr_list);
         qrDataList = new ArrayList<>();
