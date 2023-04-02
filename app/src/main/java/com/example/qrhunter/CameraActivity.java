@@ -3,6 +3,8 @@ package com.example.qrhunter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.ImageView;
@@ -32,11 +34,14 @@ public class CameraActivity extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            image.setImageBitmap(photo);
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90); // base bitmap will be 90 degrees offset
+            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+            image.setImageBitmap(rotatedBitmap);
             Intent intent = new Intent();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+            rotatedBitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             intent.putExtra("image",byteArray);
             setResult(111,intent);
