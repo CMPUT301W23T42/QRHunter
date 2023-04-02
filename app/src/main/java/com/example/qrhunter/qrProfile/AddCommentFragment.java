@@ -19,6 +19,7 @@ import com.example.qrhunter.R;
  * This class defines a fragment used to add comments
  */
 public class AddCommentFragment extends DialogFragment {
+    Context mContext;
     interface AddCommentDialogListener{
         public void addComment(String comment);
     }
@@ -32,6 +33,7 @@ public class AddCommentFragment extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof AddCommentDialogListener){
             listener = (AddCommentDialogListener) context;
         }else{
@@ -42,9 +44,9 @@ public class AddCommentFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.add_comment_fragment,null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.add_comment_fragment,null);
         EditText comment = view.findViewById(R.id.user_comment_context);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         return builder
                 .setView(view)
                 .setTitle("Add new comment")

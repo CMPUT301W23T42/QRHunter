@@ -22,7 +22,6 @@ public class QRCommentAdapter extends ArrayAdapter<QRComment> {
     public QRCommentAdapter(Context context, ArrayList<QRComment> qrComments) {
         super(context, 0, qrComments);
     }
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

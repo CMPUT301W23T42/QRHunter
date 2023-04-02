@@ -2,6 +2,7 @@ package com.example.qrhunter.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -43,6 +44,7 @@ public class HighScoreQRCodeFragment extends Fragment {
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final CollectionReference collectionReference = db.collection("CodeList");
     ListView playerListView;
+    Context mContext;
     ArrayList<UserListItem> usernames;
     EditText searchEditText;
 
@@ -54,6 +56,11 @@ public class HighScoreQRCodeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -158,7 +165,7 @@ public class HighScoreQRCodeFragment extends Fragment {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
 
-                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
+                usernamesArrayAdapter = new SearchAdapter(mContext, usernames);
                 usernamesArrayAdapter.sortFilteredScores();
                 usernamesArrayAdapter.notifyDataSetChanged();
                 playerListView.setAdapter(usernamesArrayAdapter);

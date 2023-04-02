@@ -60,6 +60,7 @@ import java.util.Map;
  */
 public class WalletFragment extends Fragment {
     RadioGroup radioGroup;
+    Context mContext;
     RadioButton descendingSort, ascendingSort;
     ListView qrList;
     ArrayAdapter<QRCode> qrAdapter;
@@ -77,6 +78,12 @@ public class WalletFragment extends Fragment {
      */
     public WalletFragment() {
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     /**
@@ -203,7 +210,7 @@ public class WalletFragment extends Fragment {
                         String docID = code.getId();
                         int score = code.getScore();
                         db.collection("Users").document(Settings.Secure.getString(
-                                        getContext().getContentResolver(),
+                                        mContext.getContentResolver(),
                                         Settings.Secure.ANDROID_ID)).get()
                                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
@@ -217,7 +224,7 @@ public class WalletFragment extends Fragment {
                                                             ) - score) : score);
                                             db.collection("Users").document(
                                                     Settings.Secure.getString(
-                                                            getContext().getContentResolver(),
+                                                            mContext.getContentResolver(),
                                                             Settings.Secure.ANDROID_ID)).set(userData);
                                         }
                                     }
@@ -343,7 +350,7 @@ public class WalletFragment extends Fragment {
         File fileOrDirectory = new File(url);
         if (fileOrDirectory.isDirectory())
             for (File child : fileOrDirectory.listFiles())
-                refreshGallery(getContext(),child.getPath());
+                refreshGallery(mContext,child.getPath());
 
         fileOrDirectory.delete();
     }
