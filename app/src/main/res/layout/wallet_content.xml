@@ -36,6 +36,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/tv_qr_name_searched_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
             android:text="NAME OF QR CODE" />
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/tv_points_caption_searched_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,6 +52,7 @@
             android:text="QR Points:" />
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/tv_searched_player_points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

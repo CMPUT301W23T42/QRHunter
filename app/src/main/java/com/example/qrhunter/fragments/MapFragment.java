@@ -52,8 +52,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -221,21 +224,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(lat, lng))
                                 .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.custom_marker, String.valueOf(Math.round(distance)) + "m")));
-
                         Marker locationMarker = mMap.addMarker(markerOptions);
+                        locationMarker.setTag((String) document.getId());
                         locationMarker.showInfoWindow();
-
-                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                            @Override
-                            public boolean onMarkerClick(@NonNull Marker marker) {
-                                Intent intent = new Intent(getActivity(), QRProfileActivity.class);
-                                intent.putExtra("DOC_ID", document.getId());
-                                intent.putExtra("OWNER_NAME", document.getString("owner"));
-                                startActivity(intent);
-
-                                return false;
-                            }
-                        });
 
                     }
                 } else {
@@ -243,8 +234,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 }
             }
         });
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                db.collection("CodeList").document((String) marker.getTag()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Intent intent = new Intent(getActivity(), QRProfileActivity.class);
+                        intent.putExtra("DOC_ID", documentSnapshot.getId());
+                        intent.putExtra("OWNER_NAME", (String) documentSnapshot.get("owner"));
+                        startActivity(intent);
+                    }
+                });
+                return false;
+            }
+        });
     }
-
     private Bitmap writeTextOnDrawable(int drawableId, String text) {
 
         Bitmap bm = BitmapFactory.decodeResource(getResources(), drawableId)

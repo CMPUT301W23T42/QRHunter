@@ -148,47 +148,6 @@ public class ScannerFragment extends Fragment{
         }
     }
 
-//    /**
-//     * This method get the current location of the user.
-//     * @return
-//     * Return the geopoint of current location
-//     */
-//    @Nullable
-//    public GeoPoint getLocation() {
-//        //      Location location = null;
-//        LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-//        if (locationManager == null) {
-//            return null;
-//        }
-//        Location location = null;
-//
-//
-//        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000L, 0f, new LocationListener() {
-//
-//                @Override
-//                public void onLocationChanged(@NonNull Location location) {
-//                }
-//            });
-//        }
-//        List<String> providers = locationManager.getProviders(true);
-//        for (String provider : providers) {
-//            @SuppressLint("MissingPermission") Location l = locationManager.getLastKnownLocation(provider);
-//            if (l == null){
-//                continue;
-//            }
-//            if (location == null||location.getAccuracy() < l.getAccuracy()){
-//                location = l;
-//            }
-//        }
-//        if (location!= null){
-//            GeoPoint geoPoint = new GeoPoint(location.getLatitude(),location.getLongitude());
-//            return geoPoint;
-//        }else{
-//            return null;
-//        }
-//    }
-
     public void setOnCameraCloseListener(onCameraClose listener) {
         this.listener = listener;
     }
@@ -245,7 +204,8 @@ public class ScannerFragment extends Fragment{
      */
     private void evaluateAddQRCode(String hash) {
         // Open dialog showing user the qrcode they just scanned
-        QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity(),owner);
+        //QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity(),owner);
+        QrCodeOnAddDialog qrAddDialog = QrCodeOnAddDialog.newInstance(hash, getActivity(), owner);
         qrAddDialog.show(getParentFragmentManager(), "QRCodeOnAddDialog");
         goToWallet();
     }

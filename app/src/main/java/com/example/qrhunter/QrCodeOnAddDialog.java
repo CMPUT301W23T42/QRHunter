@@ -90,10 +90,15 @@ public class QrCodeOnAddDialog extends DialogFragment {
 
     ArrayList<byte[]> byteArrayList = new ArrayList<>();
 
-    public QrCodeOnAddDialog(String hash, Activity activity,String owner) {
-        this.hash = hash;
-        this.activity = activity;
-        this.owner = owner;
+    public QrCodeOnAddDialog() {
+    }
+
+    public static QrCodeOnAddDialog newInstance(String hash, Activity activity,String owner) {
+        QrCodeOnAddDialog qrCodeOnAddDialog = new QrCodeOnAddDialog();
+        qrCodeOnAddDialog.activity = activity;
+        qrCodeOnAddDialog.hash = hash;
+        qrCodeOnAddDialog.owner = owner;
+        return qrCodeOnAddDialog;
     }
 
     /**
