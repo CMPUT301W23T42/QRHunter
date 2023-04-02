@@ -109,11 +109,15 @@ public class LeaderboardFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (usernamesArrayAdapter != null) {
                     usernamesArrayAdapter.getFilter().filter(s);
+                    Log.d("Filter", usernamesArrayAdapter.getFilter().toString());
+                    usernamesArrayAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                usernamesArrayAdapter.sortOriginalScores();
+                usernamesArrayAdapter.notifyDataSetChanged();
             }
         });
 
@@ -149,7 +153,6 @@ public class LeaderboardFragment extends Fragment {
             }
         });
 
-        // sort the adapter automatically when view is created
         sortButton = view.findViewById(R.id.sort_button);
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
