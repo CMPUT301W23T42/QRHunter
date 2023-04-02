@@ -30,7 +30,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
     private final String ID = Settings.Secure.ANDROID_ID;
     private final String TAG = "Edit Profile Fragment";
     private View view = null;
-    private EditText editUserName;
+    private TextView editUserName;
     private EditText editFullName;
     private EditText editEmail;
     private EditText editPhone;
@@ -62,7 +62,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_profile_edit, container, false);
 
-        //editUserName = view.findViewById(R.id.user_name_edit);
+        editUserName = view.findViewById(R.id.user_name_edit);
         editFullName = view.findViewById(R.id.full_name_edit);
         editEmail = view.findViewById(R.id.email_edit);
         editPhone = view.findViewById(R.id.phone_edit);
@@ -132,6 +132,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
     @Override
     public void onChange() {
         if (view != null) {
+            editUserName.setText(profile.getUserName());
             editFullName.setText(profile.getFullName());
             editEmail.setText(profile.getEmail());
             editPhone.setText(profile.getPhone());
