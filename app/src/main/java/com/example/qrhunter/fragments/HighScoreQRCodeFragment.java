@@ -174,8 +174,8 @@ public class HighScoreQRCodeFragment extends Fragment {
                 else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
-
-                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
+                SearchAdapter searchAdapter = new SearchAdapter(getContext(), usernames);
+                usernamesArrayAdapter = searchAdapter;
                 usernamesArrayAdapter.sortFilteredScores();
 
                 final String ID = Settings.Secure.getString(getContext().getContentResolver(),
@@ -201,14 +201,15 @@ public class HighScoreQRCodeFragment extends Fragment {
 
                         // Retrieve the position of username from usernames list
                         int position = 0;
-                        for (UserListItem usernameObj: usernames){
-                            if (usernameObj.getUsername().equalsIgnoreCase("zihan001")){
-                                Log.d("usernames size: ", String.valueOf(usernames.size()));
-                                Log.d("index of sam: ", String.valueOf(usernames.indexOf(usernameObj)));
-                                position = usernames.indexOf(usernameObj);
+                        for (UserListItem usernameObj: searchAdapter.getFilteredList()){
+                            Log.d("username ", usernameObj.getUsername());
+                            if (usernameObj.getUsername().equalsIgnoreCase(username)){
+                                Log.d("usernames size: ", String.valueOf(searchAdapter.getFilteredList().size()));
+                                Log.d("index: ", String.valueOf(searchAdapter.getFilteredList().indexOf(usernameObj)));
+                                position = searchAdapter.getFilteredList().indexOf(usernameObj) + 1;
+                                Log.d("position: ", String.valueOf(position));
                             }
                         }
-
 
                         // Update the text view with the username and high score
                         userHighScoreTextView.setText(position + " " + username + ": " + highScore);

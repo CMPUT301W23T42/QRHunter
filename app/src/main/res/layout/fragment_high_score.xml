@@ -67,9 +67,11 @@
 
         <TextView
             android:id="@+id/user_high_score"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            android:background="#CCD6DD"
             android:fontFamily="@font/rajdhani_bold"
             android:text="Username "
             android:textColor="@color/black">
