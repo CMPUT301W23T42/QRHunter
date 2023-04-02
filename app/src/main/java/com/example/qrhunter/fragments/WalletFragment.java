@@ -35,6 +35,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -148,6 +149,41 @@ public class WalletFragment extends Fragment {
                 qrAdapter.notifyDataSetChanged();
                 totalPoints.setText(Integer.toString(countPoints(qrDataList)));
                 totalScanned.setText(Integer.toString(qrDataList.size()));
+
+                // Get a reference to the Users collection in the database
+                CollectionReference usersRef = FirebaseFirestore.getInstance().collection("Users");
+
+                // Build a query to find the document with the given owner name
+                Query query = usersRef.whereEqualTo("UserName", userName);
+
+                // Execute the query asynchronously
+                query.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Loop through the documents returned by the query
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Get the current score from the document
+
+                            Long scoreLong = document.getLong("score");
+                            int currentScore = (scoreLong == null) ? 0 : scoreLong.intValue();
+
+                            // Calculate the new score by adding the points earned from the QR data
+                            int newScore = currentScore + countPoints(qrDataList);
+
+                            // Update the score field in the document with the new score
+                            document.getReference().update("score", newScore)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d(TAG, "Score updated for owner: " + userName);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.w(TAG, "Error updating score for owner: " + userName, e);
+                                    });
+                        }
+                    } else {
+                        Log.w(TAG, "Error getting documents for owner: " + userName, task.getException());
+                    }
+                });
+
+
             }
         });
         scanButton.setOnClickListener(new View.OnClickListener() {
@@ -245,10 +281,6 @@ public class WalletFragment extends Fragment {
         }
         return points;
     }
-
-
-
-
 
 
     /**

@@ -3,6 +3,7 @@ package com.example.qrhunter.fragments;
 import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,8 +25,11 @@ import com.example.qrhunter.searchPlayer.SearchAdapter;
 import com.example.qrhunter.R;
 import com.example.qrhunter.searchPlayer.UserListItem;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,6 +54,7 @@ public class HighScoreQRCodeFragment extends Fragment {
     ImageView backButton;
 
     SearchAdapter usernamesArrayAdapter;
+    TextView userHighScoreTextView;
 
     public HighScoreQRCodeFragment() {
         // Required empty public constructor
@@ -64,6 +70,7 @@ public class HighScoreQRCodeFragment extends Fragment {
 
         playerListView = view.findViewById(R.id.player_list_list_view);
         searchEditText = view.findViewById(R.id.search_profile_edit_text);
+        userHighScoreTextView = view.findViewById(R.id.user_high_score);
 
         usernames = new ArrayList<UserListItem>();
 
@@ -154,7 +161,40 @@ public class HighScoreQRCodeFragment extends Fragment {
                             usernames.add(new UserListItem(username, score));
                         }
                     }
-                } else {
+
+                    final String ID = Settings.Secure.getString(getContext().getContentResolver(),
+                            Settings.Secure.ANDROID_ID);
+
+                    // Retrieve the username from the "Users" collection in the database
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference userRef = db.collection("Users").document(ID);
+                    userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            String username = documentSnapshot.getString("UserName");
+
+                            // Retrieve the high score for this user from the hash map
+                            int highScore = 0;
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                highScore = highScores.getOrDefault(ID, 0);
+                            }
+
+                            // Update the text view with the username and high score
+                            // Assuming ownerName is the name of the owner you want to retrieve the position for
+                            int position = 1;
+                            for (Map.Entry<String, List<String>> entry : ownersByAlpha.entrySet()) {
+                                if (entry.getKey().equals(username)) {
+                                    break;
+                                }
+                                position++;
+                            }
+
+                            userHighScoreTextView.setText(position + username + ": " + highScore);
+                        }
+                    });
+                }
+
+                else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
 

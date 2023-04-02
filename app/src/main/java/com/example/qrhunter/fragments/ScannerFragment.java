@@ -224,9 +224,4 @@ public class ScannerFragment extends Fragment{
         fragmentTransaction.commit();
     }
 
-
-
-
-
-
 }
