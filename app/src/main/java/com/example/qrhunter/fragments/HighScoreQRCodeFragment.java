@@ -159,6 +159,8 @@ public class HighScoreQRCodeFragment extends Fragment {
                             String username = parts[0];
                             int score = Integer.parseInt(entry.getKey());
                             usernames.add(new UserListItem(username, score));
+                            // Debug log to print out the usernames
+                            Log.d("DEBUG", "Added username: " + username);
                         }
                     }
 
@@ -174,22 +176,20 @@ public class HighScoreQRCodeFragment extends Fragment {
                             String username = documentSnapshot.getString("UserName");
 
                             // Retrieve the high score for this user from the hash map
+
+                            // Retrieve the high score for this user from the hash map
+
                             int highScore = 0;
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                highScore = highScores.getOrDefault(ID, 0);
+                            if (highScores.containsKey(username)) {
+                                highScore = highScores.get(username);
                             }
+
+                            // Retrieve the position of username from usernames list
+                            int position = usernames.indexOf(new UserListItem(username, 0)) + 1;
 
                             // Update the text view with the username and high score
-                            // Assuming ownerName is the name of the owner you want to retrieve the position for
-                            int position = 1;
-                            for (Map.Entry<String, List<String>> entry : ownersByAlpha.entrySet()) {
-                                if (entry.getKey().equals(username)) {
-                                    break;
-                                }
-                                position++;
-                            }
+                            userHighScoreTextView.setText(position + " " + username + ": " + highScore);
 
-                            userHighScoreTextView.setText(position + username + ": " + highScore);
                         }
                     });
                 }
