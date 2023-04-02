@@ -2,6 +2,7 @@ package com.example.qrhunter.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -40,8 +41,16 @@ public class LeaderboardFragment extends Fragment {
     ArrayList<UserListItem> usernames;
     EditText searchEditText;
 
+    Context mContext;
+
     Button sortButton;
     SearchAdapter usernamesArrayAdapter;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     public LeaderboardFragment() {
         // Required empty public constructor
@@ -93,7 +102,7 @@ public class LeaderboardFragment extends Fragment {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
 
-                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
+                usernamesArrayAdapter = new SearchAdapter(mContext, usernames);
                 usernamesArrayAdapter.sortFilteredScores();
                 usernamesArrayAdapter.notifyDataSetChanged();
                 playerListView.setAdapter(usernamesArrayAdapter);
@@ -141,7 +150,7 @@ public class LeaderboardFragment extends Fragment {
                     username = usernameObj.getUsername();
                 }catch (Exception e){
                     Log.d("exception", String.valueOf(e));
-                    Toast.makeText(getContext(), "Nothing to select.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Nothing to select.", Toast.LENGTH_SHORT).show();
                     return ;
                 }
 
