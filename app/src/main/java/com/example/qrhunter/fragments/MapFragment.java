@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.Address;
@@ -70,8 +71,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private GoogleMap mMap;
     private LocationManager locationManager;
     private Location myLocation;
-    private static final long MIN_TIME = 400;
-    private static final float MIN_DISTANCE = 1000;
+    private static final long MIN_TIME = 60;
+    private static final float MIN_DISTANCE = 10;
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
     @Nullable
@@ -169,15 +170,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
 
-            myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         } else {
             // Request the missing location permission.
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
         }
-
         //adding qr code markers
+
+
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraUpdate current = CameraUpdateFactory.newLatLngZoom(latLng,15);
+        System.out.println("hey location changed");
+        mMap.moveCamera(current);
+        mMap.clear();
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -197,12 +208,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                         markerLocation.setLatitude(lat);
                         markerLocation.setLongitude(lng);
 
-                        double distance = myLocation.distanceTo(markerLocation);
+                        double distance = 0.0;
+                        try{
+                            distance = location.distanceTo(markerLocation);
+                            Log.d("distance ", String.valueOf(distance));
+                        }catch(Exception e){
+                            Log.e("error 2 mylocation", String.valueOf(myLocation));
+                            Log.e("error 2 markerlocation", String.valueOf(markerLocation));
+                        }
+
 
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(lat, lng))
                                 .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.custom_marker, String.valueOf(Math.round(distance)) + "m")));
-                        Marker locationMarker = googleMap.addMarker(markerOptions);
+
+                        Marker locationMarker = mMap.addMarker(markerOptions);
                         locationMarker.showInfoWindow();
 
                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -223,15 +243,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                 }
             }
         });
-
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-    }
-
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate current = CameraUpdateFactory.newLatLngZoom(latLng,15);
-        mMap.moveCamera(current);
     }
 
     private Bitmap writeTextOnDrawable(int drawableId, String text) {
@@ -267,7 +278,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         return  bm;
     }
-
 
 
     public static int convertToPixels(Context context, int nDP)
