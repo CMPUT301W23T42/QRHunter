@@ -224,9 +224,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(lat, lng))
                                 .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.custom_marker, String.valueOf(Math.round(distance)) + "m")));
-
-                        locationMarker.setTag((String) document.getId());
                         Marker locationMarker = mMap.addMarker(markerOptions);
+                        locationMarker.setTag((String) document.getId());
                         locationMarker.showInfoWindow();
 
                     }
