@@ -84,7 +84,7 @@ public class TabManager implements UserInfo {
                 editProfileFragment.setOnCompleteListener(new EditProfileFragment.onCompleteListener() {
                     @Override
                     public void onComplete() {
-                        switchFragment(4);
+                        switchFragment(3);
                     }
                 });
                 transactionTAG = "Edit Profile Fragment";
