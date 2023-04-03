@@ -43,6 +43,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ This is the HighScoreQRCodeFragment class which extends Fragment class.
+ This class is responsible for displaying the list of users and their QR code high scores
+ from the database in the high score fragment.
+ */
 
 public class HighScoreQRCodeFragment extends Fragment {
 
@@ -52,9 +57,7 @@ public class HighScoreQRCodeFragment extends Fragment {
     Context mContext;
     ArrayList<UserListItem> usernames;
     EditText searchEditText;
-
     ImageView backButton;
-
     SearchAdapter usernamesArrayAdapter;
     TextView userHighScoreTextView;
     TextView userNameTextView;
@@ -64,12 +67,30 @@ public class HighScoreQRCodeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Called when the Fragment is attached to its context. Sets the mContext variable to the context passed in.
+     *
+     * @param context the context that the Fragment is being attached to
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
     }
 
+
+    /**
+     * Called to create the Fragment's view. Inflates the layout and sets up the ListView and EditText. Retrieves the
+     * data from the Firestore database and sets up the adapter to display the data in the ListView.
+     *
+     * @param inflater           the LayoutInflater object that can be used to inflate any views in the Fragment
+     * @param container          if non-null, this is the parent view that the fragment's UI should be attached to. The
+     *                           fragment should not add the view itself, but this can be used to generate the
+     *                           LayoutParams of the view.
+     * @param savedInstanceState if non-null, this fragment is being re-constructed from a previous saved state as
+     *                           given here.
+     * @return the view for the Fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,15 +106,10 @@ public class HighScoreQRCodeFragment extends Fragment {
 
         usernames = new ArrayList<UserListItem>();
 
+        // Retrieve data from the Firestore database and set up the adapter to display the data in the ListView
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             Map<String, Integer> highScores;
 
-            /**
-             * Called when the query is able to execute, and get data from the database
-             *
-             * @param task Has a task object that has all the documents required
-             * @return None
-             */
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -176,10 +192,6 @@ public class HighScoreQRCodeFragment extends Fragment {
                         }
                     }
 
-
-
-                    // Retrieve the username from the "Users" collection in the database
-
                 }
 
                 else {
@@ -197,9 +209,9 @@ public class HighScoreQRCodeFragment extends Fragment {
                 userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String username = documentSnapshot.getString("UserName");
+                        // Retrieve the username from the "Users" collection in the database
 
-                        // Retrieve the high score for this user from the hash map
+                        String username = documentSnapshot.getString("UserName");
 
                         // Retrieve the high score for this user from the hash map
 
@@ -207,8 +219,6 @@ public class HighScoreQRCodeFragment extends Fragment {
                         if (highScores.containsKey(username)) {
                             highScore = highScores.get(username);
                         }
-
-
 
                         // Retrieve the position of username from usernames list
                         int position = 0;
@@ -237,10 +247,26 @@ public class HighScoreQRCodeFragment extends Fragment {
 
         // Add a text change listener to the search EditText to filter the list
         searchEditText.addTextChangedListener(new TextWatcher() {
+            /**
+             * This method is called to notify the listener that the text is about to be changed.
+             *
+             * @param s the text before it is changed
+             * @param start the position of the first character that will be changed
+             * @param count the number of characters that will be changed
+             * @param after the number of characters that will replace the changed characters
+             */
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
+            /**
+             * This method is called to notify the listener that the text has changed.
+             *
+             * @param s the new text
+             * @param start the position of the first character that was changed
+             * @param before the number of characters that were replaced
+             * @param count the number of characters that were added
+             */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (usernamesArrayAdapter != null) {
@@ -250,6 +276,11 @@ public class HighScoreQRCodeFragment extends Fragment {
                 }
             }
 
+            /**
+             * This method is called to notify the listener that the text has been changed.
+             *
+             * @param s the new text
+             */
             @Override
             public void afterTextChanged(Editable s) {
                 usernamesArrayAdapter.sortOriginalScores();
@@ -263,7 +294,7 @@ public class HighScoreQRCodeFragment extends Fragment {
              * Called when an item in the listview is clicked on
              *
              * @param adapterView Has a task object that has all the documents required
-             * @param view The veiw of the item clciked on
+             * @param view The view of the item clicked on
              * @param i Position of the item clicked
              * @param l ID of the item clicked
              * @return None
@@ -287,6 +318,7 @@ public class HighScoreQRCodeFragment extends Fragment {
                 transaction.commit();
             }
         });
+
         backButton = view.findViewById(R.id.searched_player_back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,8 +326,6 @@ public class HighScoreQRCodeFragment extends Fragment {
                 getParentFragmentManager().popBackStack();
             }
         });
-
-        // sort the adapter automatically when view is created
 
         return view;
     }

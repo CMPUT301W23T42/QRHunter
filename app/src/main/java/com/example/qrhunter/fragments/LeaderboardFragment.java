@@ -34,15 +34,12 @@ import java.util.ArrayList;
 
 /** Class for the fragment that shows the Leaderboard and Search Player functionality **/
 public class LeaderboardFragment extends Fragment {
-
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final CollectionReference collectionReference = db.collection("Users");
     ListView playerListView;
     ArrayList<UserListItem> usernames;
     EditText searchEditText;
-
     Context mContext;
-
     Button sortButton;
     SearchAdapter usernamesArrayAdapter;
 
@@ -111,10 +108,28 @@ public class LeaderboardFragment extends Fragment {
 
         // Add a text change listener to the search EditText to filter the list
         searchEditText.addTextChangedListener(new TextWatcher() {
+
+            /**
+             * This method is called to notify the listener that the text is about to be changed.
+             *
+             * @param s the text before it is changed
+             * @param start the position of the first character that will be changed
+             * @param count the number of characters that will be changed
+             * @param after the number of characters that will replace the changed characters
+             */
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
+
+            /**
+             * This method is called to notify the listener that the text has changed.
+             *
+             * @param s the new text
+             * @param start the position of the first character that was changed
+             * @param before the number of characters that were replaced
+             * @param count the number of characters that were added
+             */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (usernamesArrayAdapter != null) {
@@ -124,6 +139,11 @@ public class LeaderboardFragment extends Fragment {
                 }
             }
 
+            /**
+             * This method is called to notify the listener that the text has been changed.
+             *
+             * @param s the new text
+             */
             @Override
             public void afterTextChanged(Editable s) {
                 usernamesArrayAdapter.sortOriginalScores();
