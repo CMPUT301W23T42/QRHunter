@@ -114,7 +114,13 @@ public class QRProfileActivity extends AppCompatActivity implements AddCommentFr
                  });
     }
 
-
+    /**
+     * Display the same QR code other people scanned.
+     * @param hash
+     * The hash of current QR code.
+     * @param username
+     * Current user that is using the App.
+     */
     public void displaySameQR(String hash,String username){
         // deal with the same QR code scanned by other player.
         db.collection("CodeList")
