@@ -167,5 +167,46 @@ public class ScannerFragment extends Fragment{
         fragmentTransaction.replace(R.id.container, walletFragment);
         fragmentTransaction.commit();
     }
+    /**
+     * Evaluates the results of a scan
+     * @param result
+     */
+    public void evaluateScanResult(ScanIntentResult result) {
+        if (result.getContents() == null) { //User either went back or qrcode contents are empty
+            goToWallet();
+            return;
+        }
+        // Generate hash from qrcode contents
+        String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
+        if (owner_hashs.contains(hash)) {
+            evaluateQRCodeOwned();
+            return;
+        }
+        evaluateAddQRCode(hash);
+    }
+
+    /**
+     * Evaluation when qrcode hashed contents are already in the players wallet
+     * Displays a dialog and goes to wallet
+     */
+    private void evaluateQRCodeOwned() {
+        new AlertDialog.Builder(this.getActivity())
+                .setTitle("QR Code already owned")
+                .setNegativeButton("Continue", null)
+                .show();
+        goToWallet();
+    }
+
+    /**
+     * Adds a qrcode to a players wallet
+     * @param hash: qr code content hash
+     */
+    private void evaluateAddQRCode(String hash) {
+        // Open dialog showing user the qrcode they just scanned
+        //QrCodeOnAddDialog qrAddDialog = new QrCodeOnAddDialog(hash, getActivity(),owner);
+        QrCodeOnAddDialog qrAddDialog = QrCodeOnAddDialog.newInstance(hash, getActivity(), owner);
+        qrAddDialog.show(getParentFragmentManager(), "QRCodeOnAddDialog");
+        goToWallet();
+    }
 
 }
