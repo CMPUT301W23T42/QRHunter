@@ -86,7 +86,7 @@
         <ListView
             android:id="@+id/qr_codes_list_view"
             android:layout_width="match_parent"
-            android:layout_height="398dp"></ListView>
+            android:layout_height="wrap_content"></ListView>
     </LinearLayout>
 
     <Space

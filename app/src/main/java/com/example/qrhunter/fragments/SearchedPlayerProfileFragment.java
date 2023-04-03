@@ -143,7 +143,6 @@ public class SearchedPlayerProfileFragment extends Fragment {
                                 }
                             });
 
-
                             qrDataList.add(new QRCode(date, hash, name, location, owner, score, id));
                         }
                     }
@@ -151,7 +150,22 @@ public class SearchedPlayerProfileFragment extends Fragment {
                 qrAdapter.notifyDataSetChanged();
             }
         });
-
+        qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * Called when an item in the ListView has been clicked. Opens a new activity for the profile of the QR code clicked.
+             * @param adapterView The AdapterView where the click happened.
+             * @param view The view within the AdapterView that was clicked (this will be a view provided by the adapter).
+             * @param i The position of the view in the adapter.
+             * @param l The row id of the item that was clicked.
+             */
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), QRProfileActivity.class);
+                intent.putExtra("DOC_ID", qrDataList.get(i).getId());
+                intent.putExtra("OWNER_NAME", qrDataList.get(i).getOwner());
+                startActivity(intent);
+            }
+        });
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
