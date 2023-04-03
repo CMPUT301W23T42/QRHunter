@@ -167,7 +167,6 @@ public class ScannerFragment extends Fragment{
         fragmentTransaction.replace(R.id.container, walletFragment);
         fragmentTransaction.commit();
     }
-
     /**
      * Evaluates the results of a scan
      * @param result
@@ -209,11 +208,5 @@ public class ScannerFragment extends Fragment{
         qrAddDialog.show(getParentFragmentManager(), "QRCodeOnAddDialog");
         goToWallet();
     }
-
-
-
-
-
-
 
 }

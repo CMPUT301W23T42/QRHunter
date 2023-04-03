@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_leaderboard"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -30,6 +31,7 @@
             android:fontFamily="@font/rajdhani_bold"
             android:textSize="30sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -60,9 +62,70 @@
         <ListView
             android:id="@+id/player_list_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#CCD6DD"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <TextView
+                android:id="@+id/user_rank_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:textColor="@color/black"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/user_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/user_rank_text"
+                android:textColor="@color/black"
+                android:text="Name" />
+
+            <Space
+                android:id="@+id/wallet_spacer"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/user_name_text" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="32dp"
+                android:layout_toRightOf="@id/wallet_spacer"
+                android:textColor="@color/black"
+                android:text="High Score: " />
+
+            <TextView
+                android:id="@+id/user_high_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_toRightOf="@id/textView10"
+                android:textColor="@color/black"
+                android:text="0" />
+        </RelativeLayout>
     </LinearLayout>
+
 
 </LinearLayout>
