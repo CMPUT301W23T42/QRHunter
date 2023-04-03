@@ -178,6 +178,10 @@ public class ScannerFragment extends Fragment{
         }
         // Generate hash from qrcode contents
         String hash = Hashing.sha256().hashString(result.getContents(), StandardCharsets.UTF_8).toString();
+        if (hash.length() != 64) {
+            goToWallet();
+            return;
+        }
         if (owner_hashs.contains(hash)) {
             evaluateQRCodeOwned();
             return;
