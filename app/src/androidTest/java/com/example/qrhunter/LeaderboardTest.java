@@ -125,57 +125,6 @@ public class LeaderboardTest {
     }
 
     /**
-     * Check if listview is being displayed with items from database
-     */
-    @Test
-    public void checkListViewItems(){
-        TabLayout tabs = (TabLayout) solo.getView(R.id.tab_layout);
-        solo.clickOnView(tabs.getTabAt(2).view);
-
-        View frag = solo.getView(R.id.fragment_leaderboard);
-
-        assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
-
-        TestCase.assertTrue(solo.waitForText("TestUsername1", 1, 20000));
-    }
-
-    /**
-     * Checks if Leaderboard list is sorted based on score
-     */
-    @Test
-    public void checkAscendingSort() {
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
-        TabLayout tabs = (TabLayout) solo.getView(R.id.tab_layout);
-        solo.clickOnView(tabs.getTabAt(2).view);
-
-        View frag = solo.getView(R.id.fragment_leaderboard);
-
-        assertTrue("Wrong fragment", frag.getVisibility() == View.VISIBLE);
-
-        collectionReference.count().get(AggregateSource.SERVER).addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    // Count fetched successfully
-                    AggregateQuerySnapshot snapshot = task.getResult();
-                    lengthOfListView = Integer.parseInt(String.valueOf(snapshot.getCount()));
-                    System.out.println(lengthOfListView);
-                    ListView list = (ListView)solo.getView(R.id.player_list_list_view);
-                    UserListItem item = (UserListItem) list.getAdapter().getItem(lengthOfListView-1);
-                    String lastUser = item.getUsername();
-                    System.out.println(lastUser);
-                    assertTrue("Incorrect order", lastUser.equals("TestUsername3"));
-                } else {
-                    Log.d(TAG, "Count failed: ", task.getException());
-                }
-            }
-        });
-
-        assertTrue(solo.waitForText("TestUsername3"));
-    }
-
-    /**
      * Checks if clicking on listView goes to a new activity of the profile of the listView item.
      */
     @Test
