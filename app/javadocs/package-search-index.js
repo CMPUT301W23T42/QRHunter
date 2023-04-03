@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.example.qrhunter"},{"l":"com.example.qrhunter.fragments"},{"l":"com.example.qrhunter.generators"},{"l":"com.example.qrhunter.qrProfile"},{"l":"com.example.qrhunter.searchPlayer"}]
