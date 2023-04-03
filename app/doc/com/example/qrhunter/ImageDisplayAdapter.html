@@ -136,8 +136,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <hr>
-<pre>public class <a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.15">ImageDisplayAdapter</a>
+<pre>public class <a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.18">ImageDisplayAdapter</a>
 extends androidx.recyclerview.widget.RecyclerView.Adapter&lt;com.example.qrhunter.ImageDisplayAdapter.ImageHolder&gt;</pre>
+<div class="block">An adapter to display the image user taken on adding the QR code.</div>
 </li>
 </ul>
 </div>
@@ -205,19 +206,25 @@ extends androidx.recyclerview.widget.RecyclerView.Adapter&lt;com.example.qrhunte
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getItemCount()">getItemCount</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Get the size of item.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onBindViewHolder(com.example.qrhunter.ImageDisplayAdapter.ImageHolder,int)">onBindViewHolder</a></span>&#8203;(com.example.qrhunter.ImageDisplayAdapter.ImageHolder&nbsp;holder,
                 int&nbsp;position)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Bind image to the holder</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>com.example.qrhunter.ImageDisplayAdapter.ImageHolder</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onCreateViewHolder(android.view.ViewGroup,int)">onCreateViewHolder</a></span>&#8203;(android.view.ViewGroup&nbsp;parent,
                   int&nbsp;viewType)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Create view</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -256,7 +263,7 @@ extends androidx.recyclerview.widget.RecyclerView.Adapter&lt;com.example.qrhunte
 <ul class="blockListLast">
 <li class="blockList">
 <h4>images</h4>
-<pre>java.util.ArrayList&lt;byte[]&gt; <a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.17">images</a></pre>
+<pre>java.util.ArrayList&lt;byte[]&gt; <a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.20">images</a></pre>
 </li>
 </ul>
 </li>
@@ -275,7 +282,7 @@ extends androidx.recyclerview.widget.RecyclerView.Adapter&lt;com.example.qrhunte
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ImageDisplayAdapter</h4>
-<pre>public&nbsp;<a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.20">ImageDisplayAdapter</a>&#8203;(java.util.ArrayList&lt;byte[]&gt;&nbsp;images)</pre>
+<pre>public&nbsp;<a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.23">ImageDisplayAdapter</a>&#8203;(java.util.ArrayList&lt;byte[]&gt;&nbsp;images)</pre>
 </li>
 </ul>
 </li>
@@ -295,12 +302,18 @@ extends androidx.recyclerview.widget.RecyclerView.Adapter&lt;com.example.qrhunte
 <li class="blockList">
 <h4>onCreateViewHolder</h4>
 <pre class="methodSignature">@NonNull
-public&nbsp;com.example.qrhunter.ImageDisplayAdapter.ImageHolder&nbsp;<a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.24">onCreateViewHolder</a>&#8203;(@NonNull
+public&nbsp;com.example.qrhunter.ImageDisplayAdapter.ImageHolder&nbsp;<a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.35">onCreateViewHolder</a>&#8203;(@NonNull
                                                                                android.view.ViewGroup&nbsp;parent,
                                                                                int&nbsp;viewType)</pre>
+<div class="block">Create view</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>onCreateViewHolder</code>&nbsp;in class&nbsp;<code>androidx.recyclerview.widget.RecyclerView.Adapter&lt;com.example.qrhunter.ImageDisplayAdapter.ImageHolder&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>parent</code> - The ViewGroup into which the new View will be added after it is bound to
+               an adapter position.</dd>
+<dd><code>viewType</code> - The view type of the new View.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
 </dl>
 </li>
 </ul>
@@ -310,12 +323,17 @@ public&nbsp;com.example.qrhunter.ImageDisplayAdapter.ImageHolder&nbsp;<a href=".
 <ul class="blockList">
 <li class="blockList">
 <h4>onBindViewHolder</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.31">onBindViewHolder</a>&#8203;(@NonNull
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.48">onBindViewHolder</a>&#8203;(@NonNull
                              com.example.qrhunter.ImageDisplayAdapter.ImageHolder&nbsp;holder,
                              int&nbsp;position)</pre>
+<div class="block">Bind image to the holder</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>onBindViewHolder</code>&nbsp;in class&nbsp;<code>androidx.recyclerview.widget.RecyclerView.Adapter&lt;com.example.qrhunter.ImageDisplayAdapter.ImageHolder&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>holder</code> - The ViewHolder which should be updated to represent the contents of the
+        item at the given position in the data set.</dd>
+<dd><code>position</code> - The position of the item within the adapter's data set.</dd>
 </dl>
 </li>
 </ul>
@@ -325,10 +343,12 @@ public&nbsp;com.example.qrhunter.ImageDisplayAdapter.ImageHolder&nbsp;<a href=".
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getItemCount</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;<a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.37">getItemCount</a>()</pre>
+<pre class="methodSignature">public&nbsp;int&nbsp;<a href="../../../src-html/com/example/qrhunter/ImageDisplayAdapter.html#line.58">getItemCount</a>()</pre>
+<div class="block">Get the size of item.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getItemCount</code>&nbsp;in class&nbsp;<code>androidx.recyclerview.widget.RecyclerView.Adapter&lt;com.example.qrhunter.ImageDisplayAdapter.ImageHolder&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
 </dl>
 </li>
 </ul>

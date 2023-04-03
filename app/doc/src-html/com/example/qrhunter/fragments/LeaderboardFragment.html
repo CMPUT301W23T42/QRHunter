@@ -11,162 +11,209 @@
 <span class="sourceLineNo">002</span><a id="line.2"></a>
 <span class="sourceLineNo">003</span><a id="line.3">import static android.content.ContentValues.TAG;</a>
 <span class="sourceLineNo">004</span><a id="line.4"></a>
-<span class="sourceLineNo">005</span><a id="line.5">import android.os.Bundle;</a>
-<span class="sourceLineNo">006</span><a id="line.6">import android.text.Editable;</a>
-<span class="sourceLineNo">007</span><a id="line.7">import android.text.TextWatcher;</a>
-<span class="sourceLineNo">008</span><a id="line.8">import android.util.Log;</a>
-<span class="sourceLineNo">009</span><a id="line.9">import android.view.LayoutInflater;</a>
-<span class="sourceLineNo">010</span><a id="line.10">import android.view.View;</a>
-<span class="sourceLineNo">011</span><a id="line.11">import android.view.ViewGroup;</a>
-<span class="sourceLineNo">012</span><a id="line.12">import android.widget.AdapterView;</a>
-<span class="sourceLineNo">013</span><a id="line.13">import android.widget.Button;</a>
-<span class="sourceLineNo">014</span><a id="line.14">import android.widget.EditText;</a>
-<span class="sourceLineNo">015</span><a id="line.15">import android.widget.ListView;</a>
-<span class="sourceLineNo">016</span><a id="line.16"></a>
-<span class="sourceLineNo">017</span><a id="line.17">import androidx.annotation.NonNull;</a>
-<span class="sourceLineNo">018</span><a id="line.18">import androidx.fragment.app.Fragment;</a>
-<span class="sourceLineNo">019</span><a id="line.19">import androidx.fragment.app.FragmentTransaction;</a>
-<span class="sourceLineNo">020</span><a id="line.20"></a>
-<span class="sourceLineNo">021</span><a id="line.21">import com.example.qrhunter.searchPlayer.SearchAdapter;</a>
-<span class="sourceLineNo">022</span><a id="line.22">import com.example.qrhunter.R;</a>
-<span class="sourceLineNo">023</span><a id="line.23">import com.example.qrhunter.searchPlayer.UserListItem;</a>
-<span class="sourceLineNo">024</span><a id="line.24">import com.google.android.gms.tasks.OnCompleteListener;</a>
-<span class="sourceLineNo">025</span><a id="line.25">import com.google.android.gms.tasks.Task;</a>
-<span class="sourceLineNo">026</span><a id="line.26">import com.google.firebase.firestore.CollectionReference;</a>
-<span class="sourceLineNo">027</span><a id="line.27">import com.google.firebase.firestore.FirebaseFirestore;</a>
-<span class="sourceLineNo">028</span><a id="line.28">import com.google.firebase.firestore.QueryDocumentSnapshot;</a>
-<span class="sourceLineNo">029</span><a id="line.29">import com.google.firebase.firestore.QuerySnapshot;</a>
-<span class="sourceLineNo">030</span><a id="line.30"></a>
-<span class="sourceLineNo">031</span><a id="line.31">import java.util.ArrayList;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import android.content.Context;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import android.os.Bundle;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import android.text.Editable;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import android.text.TextWatcher;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import android.util.Log;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import android.view.LayoutInflater;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import android.view.View;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import android.view.ViewGroup;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import android.widget.AdapterView;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import android.widget.Button;</a>
+<span class="sourceLineNo">015</span><a id="line.15">import android.widget.EditText;</a>
+<span class="sourceLineNo">016</span><a id="line.16">import android.widget.ListView;</a>
+<span class="sourceLineNo">017</span><a id="line.17">import android.widget.Toast;</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">import androidx.annotation.NonNull;</a>
+<span class="sourceLineNo">020</span><a id="line.20">import androidx.fragment.app.Fragment;</a>
+<span class="sourceLineNo">021</span><a id="line.21">import androidx.fragment.app.FragmentTransaction;</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">import com.example.qrhunter.searchPlayer.SearchAdapter;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import com.example.qrhunter.R;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import com.example.qrhunter.searchPlayer.UserListItem;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import com.google.android.gms.tasks.OnCompleteListener;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import com.google.android.gms.tasks.Task;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import com.google.firebase.firestore.CollectionReference;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import com.google.firebase.firestore.FirebaseFirestore;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import com.google.firebase.firestore.QueryDocumentSnapshot;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import com.google.firebase.firestore.QuerySnapshot;</a>
 <span class="sourceLineNo">032</span><a id="line.32"></a>
-<span class="sourceLineNo">033</span><a id="line.33">/** Class for the fragment that shows the Leaderboard and Search Player functionality **/</a>
-<span class="sourceLineNo">034</span><a id="line.34">public class LeaderboardFragment extends Fragment {</a>
-<span class="sourceLineNo">035</span><a id="line.35"></a>
-<span class="sourceLineNo">036</span><a id="line.36">    final FirebaseFirestore db = FirebaseFirestore.getInstance();</a>
-<span class="sourceLineNo">037</span><a id="line.37">    final CollectionReference collectionReference = db.collection("Users");</a>
-<span class="sourceLineNo">038</span><a id="line.38">    ListView playerListView;</a>
-<span class="sourceLineNo">039</span><a id="line.39">    ArrayList&lt;UserListItem&gt; usernames;</a>
-<span class="sourceLineNo">040</span><a id="line.40">    EditText searchEditText;</a>
-<span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">    Button sortButton;</a>
-<span class="sourceLineNo">043</span><a id="line.43">    SearchAdapter usernamesArrayAdapter;</a>
-<span class="sourceLineNo">044</span><a id="line.44"></a>
-<span class="sourceLineNo">045</span><a id="line.45">    public LeaderboardFragment() {</a>
-<span class="sourceLineNo">046</span><a id="line.46">        // Required empty public constructor</a>
-<span class="sourceLineNo">047</span><a id="line.47">    }</a>
-<span class="sourceLineNo">048</span><a id="line.48"></a>
-<span class="sourceLineNo">049</span><a id="line.49">    /**</a>
-<span class="sourceLineNo">050</span><a id="line.50">     * Called to create the view hierarchy associated with the fragment. This method is responsible for</a>
-<span class="sourceLineNo">051</span><a id="line.51">     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment</a>
-<span class="sourceLineNo">052</span><a id="line.52">     * does not have a UI or does not need to display a view, you can return null from this method.</a>
-<span class="sourceLineNo">053</span><a id="line.53">     *</a>
-<span class="sourceLineNo">054</span><a id="line.54">     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.</a>
-<span class="sourceLineNo">055</span><a id="line.55">     * @param container          The parent view that the fragment's UI should be attached to. This value may be null</a>
-<span class="sourceLineNo">056</span><a id="line.56">     *                           if the fragment is not being attached to a parent view.</a>
-<span class="sourceLineNo">057</span><a id="line.57">     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null</a>
-<span class="sourceLineNo">058</span><a id="line.58">     *                           if the fragment is being instantiated for the first time.</a>
-<span class="sourceLineNo">059</span><a id="line.59">     * @return The View for the fragment's UI, or null.</a>
-<span class="sourceLineNo">060</span><a id="line.60">     */</a>
-<span class="sourceLineNo">061</span><a id="line.61">    @Override</a>
-<span class="sourceLineNo">062</span><a id="line.62">    public View onCreateView(LayoutInflater inflater, ViewGroup container,</a>
-<span class="sourceLineNo">063</span><a id="line.63">                             Bundle savedInstanceState) {</a>
-<span class="sourceLineNo">064</span><a id="line.64"></a>
-<span class="sourceLineNo">065</span><a id="line.65">        // Inflate the layout for this fragment</a>
-<span class="sourceLineNo">066</span><a id="line.66">        View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);</a>
-<span class="sourceLineNo">067</span><a id="line.67"></a>
-<span class="sourceLineNo">068</span><a id="line.68">        playerListView = view.findViewById(R.id.player_list_list_view);</a>
-<span class="sourceLineNo">069</span><a id="line.69">        searchEditText = view.findViewById(R.id.search_profile_edit_text);</a>
-<span class="sourceLineNo">070</span><a id="line.70"></a>
-<span class="sourceLineNo">071</span><a id="line.71">        usernames = new ArrayList&lt;UserListItem&gt;();</a>
-<span class="sourceLineNo">072</span><a id="line.72"></a>
-<span class="sourceLineNo">073</span><a id="line.73">        collectionReference.get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</a>
+<span class="sourceLineNo">033</span><a id="line.33">import java.util.ArrayList;</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">/** Class for the fragment that shows the Leaderboard and Search Player functionality **/</a>
+<span class="sourceLineNo">036</span><a id="line.36">public class LeaderboardFragment extends Fragment {</a>
+<span class="sourceLineNo">037</span><a id="line.37">    final FirebaseFirestore db = FirebaseFirestore.getInstance();</a>
+<span class="sourceLineNo">038</span><a id="line.38">    final CollectionReference collectionReference = db.collection("Users");</a>
+<span class="sourceLineNo">039</span><a id="line.39">    ListView playerListView;</a>
+<span class="sourceLineNo">040</span><a id="line.40">    ArrayList&lt;UserListItem&gt; usernames;</a>
+<span class="sourceLineNo">041</span><a id="line.41">    EditText searchEditText;</a>
+<span class="sourceLineNo">042</span><a id="line.42">    Context mContext;</a>
+<span class="sourceLineNo">043</span><a id="line.43">    Button sortButton;</a>
+<span class="sourceLineNo">044</span><a id="line.44">    SearchAdapter usernamesArrayAdapter;</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">    @Override</a>
+<span class="sourceLineNo">047</span><a id="line.47">    public void onAttach(@NonNull Context context) {</a>
+<span class="sourceLineNo">048</span><a id="line.48">        super.onAttach(context);</a>
+<span class="sourceLineNo">049</span><a id="line.49">        mContext = context;</a>
+<span class="sourceLineNo">050</span><a id="line.50">    }</a>
+<span class="sourceLineNo">051</span><a id="line.51"></a>
+<span class="sourceLineNo">052</span><a id="line.52">    public LeaderboardFragment() {</a>
+<span class="sourceLineNo">053</span><a id="line.53">        // Required empty public constructor</a>
+<span class="sourceLineNo">054</span><a id="line.54">    }</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">    /**</a>
+<span class="sourceLineNo">057</span><a id="line.57">     * Called to create the view hierarchy associated with the fragment. This method is responsible for</a>
+<span class="sourceLineNo">058</span><a id="line.58">     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment</a>
+<span class="sourceLineNo">059</span><a id="line.59">     * does not have a UI or does not need to display a view, you can return null from this method.</a>
+<span class="sourceLineNo">060</span><a id="line.60">     *</a>
+<span class="sourceLineNo">061</span><a id="line.61">     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.</a>
+<span class="sourceLineNo">062</span><a id="line.62">     * @param container          The parent view that the fragment's UI should be attached to. This value may be null</a>
+<span class="sourceLineNo">063</span><a id="line.63">     *                           if the fragment is not being attached to a parent view.</a>
+<span class="sourceLineNo">064</span><a id="line.64">     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null</a>
+<span class="sourceLineNo">065</span><a id="line.65">     *                           if the fragment is being instantiated for the first time.</a>
+<span class="sourceLineNo">066</span><a id="line.66">     * @return The View for the fragment's UI, or null.</a>
+<span class="sourceLineNo">067</span><a id="line.67">     */</a>
+<span class="sourceLineNo">068</span><a id="line.68">    @Override</a>
+<span class="sourceLineNo">069</span><a id="line.69">    public View onCreateView(LayoutInflater inflater, ViewGroup container,</a>
+<span class="sourceLineNo">070</span><a id="line.70">                             Bundle savedInstanceState) {</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">        // Inflate the layout for this fragment</a>
+<span class="sourceLineNo">073</span><a id="line.73">        View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);</a>
 <span class="sourceLineNo">074</span><a id="line.74"></a>
-<span class="sourceLineNo">075</span><a id="line.75">            /**</a>
-<span class="sourceLineNo">076</span><a id="line.76">             * Called when the query is able to execute, and get data from the database</a>
-<span class="sourceLineNo">077</span><a id="line.77">             *</a>
-<span class="sourceLineNo">078</span><a id="line.78">             * @param task Has a task object that has all the documents required</a>
-<span class="sourceLineNo">079</span><a id="line.79">             * @return None</a>
-<span class="sourceLineNo">080</span><a id="line.80">             */</a>
-<span class="sourceLineNo">081</span><a id="line.81">            @Override</a>
-<span class="sourceLineNo">082</span><a id="line.82">            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {</a>
-<span class="sourceLineNo">083</span><a id="line.83">                if (task.isSuccessful()) {</a>
-<span class="sourceLineNo">084</span><a id="line.84">                    for (QueryDocumentSnapshot document : task.getResult()) {</a>
-<span class="sourceLineNo">085</span><a id="line.85">                        String username = document.getString("UserName");</a>
-<span class="sourceLineNo">086</span><a id="line.86">                        Long scoreLong = document.getLong("score");</a>
-<span class="sourceLineNo">087</span><a id="line.87">                        int score = (scoreLong != null) ? scoreLong.intValue() : 0; // Set score to 0 if the value is null</a>
-<span class="sourceLineNo">088</span><a id="line.88">                        usernames.add(new UserListItem(username, score));</a>
-<span class="sourceLineNo">089</span><a id="line.89"></a>
-<span class="sourceLineNo">090</span><a id="line.90">                    }</a>
-<span class="sourceLineNo">091</span><a id="line.91">                } else {</a>
-<span class="sourceLineNo">092</span><a id="line.92">                    Log.d(TAG, "Error getting documents: ", task.getException());</a>
-<span class="sourceLineNo">093</span><a id="line.93">                }</a>
-<span class="sourceLineNo">094</span><a id="line.94"></a>
-<span class="sourceLineNo">095</span><a id="line.95">                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);</a>
-<span class="sourceLineNo">096</span><a id="line.96">                usernamesArrayAdapter.sortFilteredScores();</a>
-<span class="sourceLineNo">097</span><a id="line.97">                usernamesArrayAdapter.notifyDataSetChanged();</a>
-<span class="sourceLineNo">098</span><a id="line.98">                playerListView.setAdapter(usernamesArrayAdapter);</a>
-<span class="sourceLineNo">099</span><a id="line.99">            }</a>
-<span class="sourceLineNo">100</span><a id="line.100">        });</a>
+<span class="sourceLineNo">075</span><a id="line.75">        playerListView = view.findViewById(R.id.player_list_list_view);</a>
+<span class="sourceLineNo">076</span><a id="line.76">        searchEditText = view.findViewById(R.id.search_profile_edit_text);</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">        usernames = new ArrayList&lt;UserListItem&gt;();</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">        collectionReference.get().addOnCompleteListener(new OnCompleteListener&lt;QuerySnapshot&gt;() {</a>
+<span class="sourceLineNo">081</span><a id="line.81"></a>
+<span class="sourceLineNo">082</span><a id="line.82">            /**</a>
+<span class="sourceLineNo">083</span><a id="line.83">             * Called when the query is able to execute, and get data from the database</a>
+<span class="sourceLineNo">084</span><a id="line.84">             *</a>
+<span class="sourceLineNo">085</span><a id="line.85">             * @param task Has a task object that has all the documents required</a>
+<span class="sourceLineNo">086</span><a id="line.86">             * @return None</a>
+<span class="sourceLineNo">087</span><a id="line.87">             */</a>
+<span class="sourceLineNo">088</span><a id="line.88">            @Override</a>
+<span class="sourceLineNo">089</span><a id="line.89">            public void onComplete(@NonNull Task&lt;QuerySnapshot&gt; task) {</a>
+<span class="sourceLineNo">090</span><a id="line.90">                if (task.isSuccessful()) {</a>
+<span class="sourceLineNo">091</span><a id="line.91">                    for (QueryDocumentSnapshot document : task.getResult()) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">                        String username = document.getString("UserName");</a>
+<span class="sourceLineNo">093</span><a id="line.93">                        Long scoreLong = document.getLong("score");</a>
+<span class="sourceLineNo">094</span><a id="line.94">                        int score = (scoreLong != null) ? scoreLong.intValue() : 0; // Set score to 0 if the value is null</a>
+<span class="sourceLineNo">095</span><a id="line.95">                        usernames.add(new UserListItem(username, score));</a>
+<span class="sourceLineNo">096</span><a id="line.96"></a>
+<span class="sourceLineNo">097</span><a id="line.97">                    }</a>
+<span class="sourceLineNo">098</span><a id="line.98">                } else {</a>
+<span class="sourceLineNo">099</span><a id="line.99">                    Log.d(TAG, "Error getting documents: ", task.getException());</a>
+<span class="sourceLineNo">100</span><a id="line.100">                }</a>
 <span class="sourceLineNo">101</span><a id="line.101"></a>
-<span class="sourceLineNo">102</span><a id="line.102">        // Add a text change listener to the search EditText to filter the list</a>
-<span class="sourceLineNo">103</span><a id="line.103">        searchEditText.addTextChangedListener(new TextWatcher() {</a>
-<span class="sourceLineNo">104</span><a id="line.104">            @Override</a>
-<span class="sourceLineNo">105</span><a id="line.105">            public void beforeTextChanged(CharSequence s, int start, int count, int after) {</a>
+<span class="sourceLineNo">102</span><a id="line.102">                usernamesArrayAdapter = new SearchAdapter(mContext, usernames);</a>
+<span class="sourceLineNo">103</span><a id="line.103">                usernamesArrayAdapter.sortFilteredScores();</a>
+<span class="sourceLineNo">104</span><a id="line.104">                usernamesArrayAdapter.notifyDataSetChanged();</a>
+<span class="sourceLineNo">105</span><a id="line.105">                playerListView.setAdapter(usernamesArrayAdapter);</a>
 <span class="sourceLineNo">106</span><a id="line.106">            }</a>
-<span class="sourceLineNo">107</span><a id="line.107"></a>
-<span class="sourceLineNo">108</span><a id="line.108">            @Override</a>
-<span class="sourceLineNo">109</span><a id="line.109">            public void onTextChanged(CharSequence s, int start, int before, int count) {</a>
-<span class="sourceLineNo">110</span><a id="line.110">                if (usernamesArrayAdapter != null) {</a>
-<span class="sourceLineNo">111</span><a id="line.111">                    usernamesArrayAdapter.getFilter().filter(s);</a>
-<span class="sourceLineNo">112</span><a id="line.112">                    Log.d("Filter", usernamesArrayAdapter.getFilter().toString());</a>
-<span class="sourceLineNo">113</span><a id="line.113">                    usernamesArrayAdapter.notifyDataSetChanged();</a>
-<span class="sourceLineNo">114</span><a id="line.114">                }</a>
-<span class="sourceLineNo">115</span><a id="line.115">            }</a>
-<span class="sourceLineNo">116</span><a id="line.116"></a>
-<span class="sourceLineNo">117</span><a id="line.117">            @Override</a>
-<span class="sourceLineNo">118</span><a id="line.118">            public void afterTextChanged(Editable s) {</a>
-<span class="sourceLineNo">119</span><a id="line.119">                usernamesArrayAdapter.sortOriginalScores();</a>
-<span class="sourceLineNo">120</span><a id="line.120">                usernamesArrayAdapter.notifyDataSetChanged();</a>
-<span class="sourceLineNo">121</span><a id="line.121">            }</a>
-<span class="sourceLineNo">122</span><a id="line.122">        });</a>
+<span class="sourceLineNo">107</span><a id="line.107">        });</a>
+<span class="sourceLineNo">108</span><a id="line.108"></a>
+<span class="sourceLineNo">109</span><a id="line.109">        // Add a text change listener to the search EditText to filter the list</a>
+<span class="sourceLineNo">110</span><a id="line.110">        searchEditText.addTextChangedListener(new TextWatcher() {</a>
+<span class="sourceLineNo">111</span><a id="line.111"></a>
+<span class="sourceLineNo">112</span><a id="line.112">            /**</a>
+<span class="sourceLineNo">113</span><a id="line.113">             * This method is called to notify the listener that the text is about to be changed.</a>
+<span class="sourceLineNo">114</span><a id="line.114">             *</a>
+<span class="sourceLineNo">115</span><a id="line.115">             * @param s the text before it is changed</a>
+<span class="sourceLineNo">116</span><a id="line.116">             * @param start the position of the first character that will be changed</a>
+<span class="sourceLineNo">117</span><a id="line.117">             * @param count the number of characters that will be changed</a>
+<span class="sourceLineNo">118</span><a id="line.118">             * @param after the number of characters that will replace the changed characters</a>
+<span class="sourceLineNo">119</span><a id="line.119">             */</a>
+<span class="sourceLineNo">120</span><a id="line.120">            @Override</a>
+<span class="sourceLineNo">121</span><a id="line.121">            public void beforeTextChanged(CharSequence s, int start, int count, int after) {</a>
+<span class="sourceLineNo">122</span><a id="line.122">            }</a>
 <span class="sourceLineNo">123</span><a id="line.123"></a>
-<span class="sourceLineNo">124</span><a id="line.124">        //open new profile fragment on clicking list item</a>
-<span class="sourceLineNo">125</span><a id="line.125">        playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {</a>
-<span class="sourceLineNo">126</span><a id="line.126">            /**</a>
-<span class="sourceLineNo">127</span><a id="line.127">             * Called when an item in the listview is clicked on</a>
-<span class="sourceLineNo">128</span><a id="line.128">             *</a>
-<span class="sourceLineNo">129</span><a id="line.129">             * @param adapterView Has a task object that has all the documents required</a>
-<span class="sourceLineNo">130</span><a id="line.130">             * @param view The veiw of the item clciked on</a>
-<span class="sourceLineNo">131</span><a id="line.131">             * @param i Position of the item clicked</a>
-<span class="sourceLineNo">132</span><a id="line.132">             * @param l ID of the item clicked</a>
-<span class="sourceLineNo">133</span><a id="line.133">             * @return None</a>
-<span class="sourceLineNo">134</span><a id="line.134">             */</a>
-<span class="sourceLineNo">135</span><a id="line.135">            @Override</a>
-<span class="sourceLineNo">136</span><a id="line.136">            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {</a>
-<span class="sourceLineNo">137</span><a id="line.137">                UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);</a>
-<span class="sourceLineNo">138</span><a id="line.138">                String username = usernameObj.getUsername();</a>
-<span class="sourceLineNo">139</span><a id="line.139">                assert username != "";</a>
-<span class="sourceLineNo">140</span><a id="line.140">                Log.d("ans", username);</a>
+<span class="sourceLineNo">124</span><a id="line.124"></a>
+<span class="sourceLineNo">125</span><a id="line.125">            /**</a>
+<span class="sourceLineNo">126</span><a id="line.126">             * This method is called to notify the listener that the text has changed.</a>
+<span class="sourceLineNo">127</span><a id="line.127">             *</a>
+<span class="sourceLineNo">128</span><a id="line.128">             * @param s the new text</a>
+<span class="sourceLineNo">129</span><a id="line.129">             * @param start the position of the first character that was changed</a>
+<span class="sourceLineNo">130</span><a id="line.130">             * @param before the number of characters that were replaced</a>
+<span class="sourceLineNo">131</span><a id="line.131">             * @param count the number of characters that were added</a>
+<span class="sourceLineNo">132</span><a id="line.132">             */</a>
+<span class="sourceLineNo">133</span><a id="line.133">            @Override</a>
+<span class="sourceLineNo">134</span><a id="line.134">            public void onTextChanged(CharSequence s, int start, int before, int count) {</a>
+<span class="sourceLineNo">135</span><a id="line.135">                if (usernamesArrayAdapter != null) {</a>
+<span class="sourceLineNo">136</span><a id="line.136">                    usernamesArrayAdapter.getFilter().filter(s);</a>
+<span class="sourceLineNo">137</span><a id="line.137">                    Log.d("Filter", usernamesArrayAdapter.getFilter().toString());</a>
+<span class="sourceLineNo">138</span><a id="line.138">                    usernamesArrayAdapter.notifyDataSetChanged();</a>
+<span class="sourceLineNo">139</span><a id="line.139">                }</a>
+<span class="sourceLineNo">140</span><a id="line.140">            }</a>
 <span class="sourceLineNo">141</span><a id="line.141"></a>
-<span class="sourceLineNo">142</span><a id="line.142">                Bundle bundle = new Bundle();</a>
-<span class="sourceLineNo">143</span><a id="line.143">                bundle.putString("username", username);</a>
-<span class="sourceLineNo">144</span><a id="line.144"></a>
-<span class="sourceLineNo">145</span><a id="line.145">                SearchedPlayerProfileFragment searchedPlayerProfileFragment = new SearchedPlayerProfileFragment();</a>
-<span class="sourceLineNo">146</span><a id="line.146">                searchedPlayerProfileFragment.setArguments(bundle);</a>
-<span class="sourceLineNo">147</span><a id="line.147"></a>
-<span class="sourceLineNo">148</span><a id="line.148">                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();</a>
-<span class="sourceLineNo">149</span><a id="line.149">                transaction.replace(R.id.activity_main, searchedPlayerProfileFragment);</a>
-<span class="sourceLineNo">150</span><a id="line.150">                transaction.addToBackStack(null);</a>
-<span class="sourceLineNo">151</span><a id="line.151">                transaction.commit();</a>
-<span class="sourceLineNo">152</span><a id="line.152">            }</a>
-<span class="sourceLineNo">153</span><a id="line.153">        });</a>
+<span class="sourceLineNo">142</span><a id="line.142">            /**</a>
+<span class="sourceLineNo">143</span><a id="line.143">             * This method is called to notify the listener that the text has been changed.</a>
+<span class="sourceLineNo">144</span><a id="line.144">             *</a>
+<span class="sourceLineNo">145</span><a id="line.145">             * @param s the new text</a>
+<span class="sourceLineNo">146</span><a id="line.146">             */</a>
+<span class="sourceLineNo">147</span><a id="line.147">            @Override</a>
+<span class="sourceLineNo">148</span><a id="line.148">            public void afterTextChanged(Editable s) {</a>
+<span class="sourceLineNo">149</span><a id="line.149">                usernamesArrayAdapter.sortOriginalScores();</a>
+<span class="sourceLineNo">150</span><a id="line.150">                usernamesArrayAdapter.notifyDataSetChanged();</a>
+<span class="sourceLineNo">151</span><a id="line.151">            }</a>
+<span class="sourceLineNo">152</span><a id="line.152">        });</a>
+<span class="sourceLineNo">153</span><a id="line.153"></a>
 <span class="sourceLineNo">154</span><a id="line.154"></a>
-<span class="sourceLineNo">155</span><a id="line.155">        // sort the adapter automatically when view is created</a>
-<span class="sourceLineNo">156</span><a id="line.156"></a>
-<span class="sourceLineNo">157</span><a id="line.157">        return view;</a>
-<span class="sourceLineNo">158</span><a id="line.158">    }</a>
-<span class="sourceLineNo">159</span><a id="line.159"></a>
-<span class="sourceLineNo">160</span><a id="line.160">}</a>
+<span class="sourceLineNo">155</span><a id="line.155">        //open new profile fragment on clicking list item</a>
+<span class="sourceLineNo">156</span><a id="line.156">        playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {</a>
+<span class="sourceLineNo">157</span><a id="line.157">            /**</a>
+<span class="sourceLineNo">158</span><a id="line.158">             * Called when an item in the listview is clicked on</a>
+<span class="sourceLineNo">159</span><a id="line.159">             *</a>
+<span class="sourceLineNo">160</span><a id="line.160">             * @param adapterView Has a task object that has all the documents required</a>
+<span class="sourceLineNo">161</span><a id="line.161">             * @param view The veiw of the item clciked on</a>
+<span class="sourceLineNo">162</span><a id="line.162">             * @param i Position of the item clicked</a>
+<span class="sourceLineNo">163</span><a id="line.163">             * @param l ID of the item clicked</a>
+<span class="sourceLineNo">164</span><a id="line.164">             * @return None</a>
+<span class="sourceLineNo">165</span><a id="line.165">             */</a>
+<span class="sourceLineNo">166</span><a id="line.166">            @Override</a>
+<span class="sourceLineNo">167</span><a id="line.167">            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) {</a>
+<span class="sourceLineNo">168</span><a id="line.168">                String username = "null";</a>
+<span class="sourceLineNo">169</span><a id="line.169">                try{</a>
+<span class="sourceLineNo">170</span><a id="line.170">                    UserListItem usernameObj = (UserListItem) usernamesArrayAdapter.getFilteredList().get(i);</a>
+<span class="sourceLineNo">171</span><a id="line.171">                    username = usernameObj.getUsername();</a>
+<span class="sourceLineNo">172</span><a id="line.172">                }catch (Exception e){</a>
+<span class="sourceLineNo">173</span><a id="line.173">                    Log.d("exception", String.valueOf(e));</a>
+<span class="sourceLineNo">174</span><a id="line.174">                    Toast.makeText(mContext, "Nothing to select.", Toast.LENGTH_SHORT).show();</a>
+<span class="sourceLineNo">175</span><a id="line.175">                    return ;</a>
+<span class="sourceLineNo">176</span><a id="line.176">                }</a>
+<span class="sourceLineNo">177</span><a id="line.177"></a>
+<span class="sourceLineNo">178</span><a id="line.178">                Bundle bundle = new Bundle();</a>
+<span class="sourceLineNo">179</span><a id="line.179">                bundle.putString("username", username);</a>
+<span class="sourceLineNo">180</span><a id="line.180"></a>
+<span class="sourceLineNo">181</span><a id="line.181">                SearchedPlayerProfileFragment searchedPlayerProfileFragment = new SearchedPlayerProfileFragment();</a>
+<span class="sourceLineNo">182</span><a id="line.182">                searchedPlayerProfileFragment.setArguments(bundle);</a>
+<span class="sourceLineNo">183</span><a id="line.183"></a>
+<span class="sourceLineNo">184</span><a id="line.184">                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();</a>
+<span class="sourceLineNo">185</span><a id="line.185">                transaction.replace(R.id.activity_main, searchedPlayerProfileFragment);</a>
+<span class="sourceLineNo">186</span><a id="line.186">                transaction.addToBackStack(null);</a>
+<span class="sourceLineNo">187</span><a id="line.187">                transaction.commit();</a>
+<span class="sourceLineNo">188</span><a id="line.188">            }</a>
+<span class="sourceLineNo">189</span><a id="line.189">        });</a>
+<span class="sourceLineNo">190</span><a id="line.190"></a>
+<span class="sourceLineNo">191</span><a id="line.191">        sortButton = view.findViewById(R.id.sort_button);</a>
+<span class="sourceLineNo">192</span><a id="line.192">        sortButton.setOnClickListener(new View.OnClickListener() {</a>
+<span class="sourceLineNo">193</span><a id="line.193">            @Override</a>
+<span class="sourceLineNo">194</span><a id="line.194">            public void onClick(View v) {</a>
+<span class="sourceLineNo">195</span><a id="line.195">                HighScoreQRCodeFragment highScoreQRCodeFragment = new HighScoreQRCodeFragment();</a>
+<span class="sourceLineNo">196</span><a id="line.196">                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();</a>
+<span class="sourceLineNo">197</span><a id="line.197">                transaction.replace(R.id.activity_main, highScoreQRCodeFragment);</a>
+<span class="sourceLineNo">198</span><a id="line.198">                transaction.addToBackStack(null);</a>
+<span class="sourceLineNo">199</span><a id="line.199">                transaction.commit();</a>
+<span class="sourceLineNo">200</span><a id="line.200">            }</a>
+<span class="sourceLineNo">201</span><a id="line.201">        });</a>
+<span class="sourceLineNo">202</span><a id="line.202"></a>
+<span class="sourceLineNo">203</span><a id="line.203"></a>
+<span class="sourceLineNo">204</span><a id="line.204">        return view;</a>
+<span class="sourceLineNo">205</span><a id="line.205">    }</a>
+<span class="sourceLineNo">206</span><a id="line.206"></a>
+<span class="sourceLineNo">207</span><a id="line.207">}</a>
 
 
 

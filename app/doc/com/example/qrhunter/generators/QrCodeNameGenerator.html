@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10};
+var data = {"i0":10,"i1":10,"i2":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -228,6 +228,13 @@ implements <a href="QrCodeRepresentative.html" title="interface in com.example.q
 <div class="block">Converts a hexadecimal string into a bitstring of @maxBits</div>
 </td>
 </tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isPure(java.lang.String)">isPure</a></span>&#8203;(java.lang.String&nbsp;bit_string)</code></th>
+<td class="colLast">
+<div class="block">Returns whether a QRCode is "pure" or not.</div>
+</td>
+</tr>
 </table>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -328,10 +335,10 @@ implements <a href="QrCodeRepresentative.html" title="interface in com.example.q
 <a id="hex_to_bit(java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>hex_to_bit</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;<a href="../../../../src-html/com/example/qrhunter/generators/QrCodeNameGenerator.html#line.43">hex_to_bit</a>&#8203;(java.lang.String&nbsp;hex_string)</pre>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;<a href="../../../../src-html/com/example/qrhunter/generators/QrCodeNameGenerator.html#line.42">hex_to_bit</a>&#8203;(java.lang.String&nbsp;hex_string)</pre>
 <div class="block">Converts a hexadecimal string into a bitstring of @maxBits</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -340,6 +347,23 @@ implements <a href="QrCodeRepresentative.html" title="interface in com.example.q
 <dd><code>hex_string</code> - </dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>bit_string</dd>
+</dl>
+</li>
+</ul>
+<a id="isPure(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>isPure</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;<a href="../../../../src-html/com/example/qrhunter/generators/QrCodeNameGenerator.html#line.64">isPure</a>&#8203;(java.lang.String&nbsp;bit_string)</pre>
+<div class="block">Returns whether a QRCode is "pure" or not.
+ Its pure if in base 4, the first three digits are the same.
+ Corresponds to the image being all one color</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>bit_string</code> - </dd>
+<dt><span class="returnLabel">Returns:</span></dt>
 </dl>
 </li>
 </ul>
