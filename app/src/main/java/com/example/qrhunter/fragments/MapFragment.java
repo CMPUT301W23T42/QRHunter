@@ -67,6 +67,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Class for the fragment that shows the Leaderboard and Search Player functionality **/
 public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener, OnMapsSdkInitializedCallback {
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final CollectionReference collectionReference = db.collection("CodeList");
@@ -86,6 +87,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         mContext = context;
     }
 
+    /**
+     * Called to create the view hierarchy associated with the fragment. This method is responsible for
+     * inflating the fragment's layout and returning the root View of the inflated layout. If the fragment
+     * does not have a UI or does not need to display a view, you can return null from this method.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container          The parent view that the fragment's UI should be attached to. This value may be null
+     *                           if the fragment is not being attached to a parent view.
+     * @param savedInstanceState A Bundle containing any saved state information for the fragment. This value may be null
+     *                           if the fragment is being instantiated for the first time.
+     * @return The View for the fragment's UI, or null.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -96,8 +109,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         view = inflater.inflate(R.layout.fragment_map, container, false);
         searchView = view.findViewById(R.id.search_view_map);
-        //implemtning searhing for locations
+
+        //implemnting searhing for locations
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            /**
+             * Called when the query is input in the search view
+             *
+             * @param s String of the query input
+             * @return None
+             */
             @Override
             public boolean onQueryTextSubmit(String s) {
                 String location = searchView.getQuery().toString();
@@ -145,6 +165,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         return view;
     }
 
+    /**
+     * Initilizes the map with the latest renderer
+     *
+     * @param renderer renderer object
+     * @return None
+     */
     @Override
     public void onMapsSdkInitialized(MapsInitializer.Renderer renderer) {
         switch (renderer) {
@@ -157,6 +183,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         }
     }
 
+    /**
+     * Hnadle permission request either accpeted or denied
+     *
+     * @param requestCode request code passed in the functions
+     * @param permissions array of all the permissions requested
+     * @param grantResults The grant results for the corresponding permissions which is either PERMISSION_GRANTED or PERMISSION_DENIED.
+     * @return None
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
@@ -170,6 +204,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         }
     }
 
+    /**
+     * Called when map is ready to be used
+     *
+     * @param googleMap A non-null instance of a GoogleMap associated with the MapFragment.
+     * @return None
+     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
@@ -186,23 +226,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
         }
-        //adding qr code markers
-
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
+    /**
+     * Called when lcoation of the user changes by a certain distance and time
+     *
+     * @param location current updated location of user
+     * @return true or false
+     */
     @Override
     public void onLocationChanged(@NonNull Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate current = CameraUpdateFactory.newLatLngZoom(latLng,15);
-        System.out.println("hey location changed");
         if (mMap == null) {
             return;
         }
         mMap.moveCamera(current);
         mMap.clear();
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            /**
+             * Called when the query is able to execute, and get data from the database
+             *
+             * @param task Has a task object that has all the documents required
+             * @return None
+             */
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -233,7 +282,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(new LatLng(lat, lng))
-                                .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.custom_marker, String.valueOf(Math.round(distance)) + "m")));
+                                .icon(BitmapDescriptorFactory.fromBitmap(writeTextOnDrawable(R.drawable.custom_marker, (distance == 0.0) ? "-" : (String.valueOf(Math.round(distance)) + "m") )));
                         Marker locationMarker = mMap.addMarker(markerOptions);
                         locationMarker.setTag((String) document.getId());
                         locationMarker.showInfoWindow();
@@ -249,6 +298,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 db.collection("CodeList").document((String) marker.getTag()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    /**
+                     * Called when the query is able to execute, and get data from the database
+                     *
+                     * @param documentSnapshot Has a documentSnapshot object that has all the documents required
+                     * @return None
+                     */
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Intent intent = new Intent(getActivity(), QRProfileActivity.class);
@@ -261,6 +316,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             }
         });
     }
+
+    /**
+     * Called to draw text on marker drawable of google map
+     *
+     * @param drawableId drawable id of the drawbel text needs to be written
+     * @param text text that needs to be written
+     * @return Bitmap
+     */
     private Bitmap writeTextOnDrawable(int drawableId, String text) {
 
         Bitmap bm = BitmapFactory.decodeResource(mContext.getResources(), drawableId)
@@ -295,7 +358,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         return  bm;
     }
 
-
+    /**
+     * Converts a value from Density-independent Pixels to Pixels according to the device's display density.
+     *
+     * @param context The context of the application.
+     * @param nDP The value to convert, specified in Density-independent Pixels.
+     * @return An integer value equivalent to the input value in Pixels.
+     */
     public static int convertToPixels(Context context, int nDP)
     {
         final float conversionScale = context.getResources().getDisplayMetrics().density;
