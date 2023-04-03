@@ -7,14 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:id="@+id/activity_main">
+    android:id="@+id/activity_main"
+    >
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tab_layout"
         android:layout_alignParentBottom="true"
         android:background="@color/black"
-        app:tabIconTint="@color/white">
+        app:tabIconTint="@color/white"
+        >
         <com.google.android.material.tabs.TabItem
             android:id="@+id/home_tab"
             android:layout_width="match_parent"
