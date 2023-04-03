@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -22,7 +24,10 @@ import com.example.qrhunter.QRCode;
 import com.example.qrhunter.R;
 import com.example.qrhunter.qrProfile.QRProfileActivity;
 import com.example.qrhunter.searchPlayer.QRCodeAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -31,6 +36,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /** Class for fragment that shows the profile of a player when searched for and clicked in the listview of Leaderboard fragment**/
 public class SearchedPlayerProfileFragment extends Fragment {
@@ -42,6 +48,8 @@ public class SearchedPlayerProfileFragment extends Fragment {
     ArrayList<QRCode> qrDataList;
 
     ImageView backButton;
+
+    String current_user_name;
 
     public SearchedPlayerProfileFragment() {
         // Required empty public constructor
@@ -81,6 +89,20 @@ public class SearchedPlayerProfileFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("CodeList");
+        final String ID = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        db.collection("Users").document(ID)
+                        .get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            DocumentSnapshot document = task.getResult();
+                                            Map<String, Object> userinfo = document.getData();
+                                            current_user_name = userinfo.get("UserName").toString();
+                                        }
+                                    }
+                                });
 
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             /**
@@ -111,13 +133,12 @@ public class SearchedPlayerProfileFragment extends Fragment {
 
                             String owner = (String) doc.getData().get("owner");
                             int score = Integer.parseInt(String.valueOf(doc.getData().get("score")));
-
                             qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     Intent intent = new Intent(getActivity(), QRProfileActivity.class);
-                                    intent.putExtra("DOC_ID", doc.getId());
-                                    intent.putExtra("OWNER_NAME", doc.getString("owner"));
+                                    intent.putExtra("DOC_ID", qrDataList.get(i).getId());
+                                    intent.putExtra("OWNER_NAME",current_user_name);
                                     startActivity(intent);
                                 }
                             });
