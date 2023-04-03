@@ -296,7 +296,11 @@ public class WalletFragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * Deletes comment from database when deleting the qr code
+     * @param docId
+     * The id of the QR code.
+     */
     private void deleteData(String id){
         db.collection("CodeList").document(id)
                 .delete()
