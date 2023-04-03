@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -70,6 +71,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final CollectionReference collectionReference = db.collection("CodeList");
     private View view;
+    private Context mContext;
     private SearchView searchView;
     private GoogleMap mMap;
     private LocationManager locationManager;
@@ -77,6 +79,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private static final long MIN_TIME = 60;
     private static final float MIN_DISTANCE = 10;
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Nullable
     @Override
@@ -88,7 +96,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         view = inflater.inflate(R.layout.fragment_map, container, false);
         searchView = view.findViewById(R.id.search_view_map);
-
         //implemtning searhing for locations
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -106,7 +113,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 } catch (Exception e) {
-                    Toast.makeText(getContext(), "Cannot find location with that name.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Cannot find location with that name.", Toast.LENGTH_LONG).show();
                     Log.d("Runtime exception", String.valueOf(e));
                 }
 
@@ -125,14 +132,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         mapFragment.getMapAsync(this);
 
         //check for location access and ask for permission if not
-        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getContext(), "First enable LOCATION ACCESS", Toast.LENGTH_LONG).show();
+        if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(mContext, "First enable LOCATION ACCESS", Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
                     MY_PERMISSIONS_REQUEST_LOCATION);
             return null;
         }
 
-        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
 
         return view;
@@ -167,8 +174,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         // Adding current location markers and zoom in/out functionality
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -190,6 +197,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate current = CameraUpdateFactory.newLatLngZoom(latLng,15);
         System.out.println("hey location changed");
+        if (mMap == null) {
+            return;
+        }
         mMap.moveCamera(current);
         mMap.clear();
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -253,17 +263,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     }
     private Bitmap writeTextOnDrawable(int drawableId, String text) {
 
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), drawableId)
+        Bitmap bm = BitmapFactory.decodeResource(mContext.getResources(), drawableId)
                 .copy(Bitmap.Config.ARGB_8888, true);
 
-        Typeface tf = ResourcesCompat.getFont(getContext(), R.font.rajdhani_bold);
+        Typeface tf = ResourcesCompat.getFont(mContext, R.font.rajdhani_bold);
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.BLACK);
         paint.setTypeface(tf);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(convertToPixels(getContext(), 11)*5);
+        paint.setTextSize(convertToPixels(mContext, 11)*5);
 
         Rect textRect = new Rect();
         paint.getTextBounds(text, 0, text.length(), textRect);
@@ -272,7 +282,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         //If the text is bigger than the canvas , reduce the font size
         if(textRect.width() >= (canvas.getWidth() - 2))     //the padding on either sides is considered as 4, so as to appropriately fit in the text
-            paint.setTextSize(convertToPixels(getContext(), 13));        //Scaling needs to be used for different dpi's
+            paint.setTextSize(convertToPixels(mContext, 13));        //Scaling needs to be used for different dpi's
 
         //Calculate the positions
         int xPos = (int) (canvas.getWidth() / 1.7) - 2;     //-2 is for regulating the x position offset
