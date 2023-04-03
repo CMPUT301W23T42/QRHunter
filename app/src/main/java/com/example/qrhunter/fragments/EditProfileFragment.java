@@ -28,7 +28,7 @@ import java.util.HashMap;
 public class EditProfileFragment extends Fragment implements UserInfo {
     private onCompleteListener listener;
     private UserProfile profile;
-    private final String ID = Settings.Secure.ANDROID_ID;
+    private final String ID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
     private final String TAG = "Edit Profile Fragment";
     private View view = null;
     private TextView editUserName;
