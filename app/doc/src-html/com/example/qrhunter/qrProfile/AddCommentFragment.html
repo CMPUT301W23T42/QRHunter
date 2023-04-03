@@ -28,45 +28,47 @@
 <span class="sourceLineNo">019</span><a id="line.19"> * This class defines a fragment used to add comments</a>
 <span class="sourceLineNo">020</span><a id="line.20"> */</a>
 <span class="sourceLineNo">021</span><a id="line.21">public class AddCommentFragment extends DialogFragment {</a>
-<span class="sourceLineNo">022</span><a id="line.22">    interface AddCommentDialogListener{</a>
-<span class="sourceLineNo">023</span><a id="line.23">        public void addComment(String comment);</a>
-<span class="sourceLineNo">024</span><a id="line.24">    }</a>
-<span class="sourceLineNo">025</span><a id="line.25"></a>
-<span class="sourceLineNo">026</span><a id="line.26">    public AddCommentFragment(){</a>
-<span class="sourceLineNo">027</span><a id="line.27">        super();</a>
-<span class="sourceLineNo">028</span><a id="line.28">    }</a>
-<span class="sourceLineNo">029</span><a id="line.29"></a>
-<span class="sourceLineNo">030</span><a id="line.30">    private AddCommentDialogListener listener;</a>
-<span class="sourceLineNo">031</span><a id="line.31"></a>
-<span class="sourceLineNo">032</span><a id="line.32">    @Override</a>
-<span class="sourceLineNo">033</span><a id="line.33">    public void onAttach(@NonNull Context context) {</a>
-<span class="sourceLineNo">034</span><a id="line.34">        super.onAttach(context);</a>
-<span class="sourceLineNo">035</span><a id="line.35">        if (context instanceof AddCommentDialogListener){</a>
-<span class="sourceLineNo">036</span><a id="line.36">            listener = (AddCommentDialogListener) context;</a>
-<span class="sourceLineNo">037</span><a id="line.37">        }else{</a>
-<span class="sourceLineNo">038</span><a id="line.38">            throw new RuntimeException(context+"must implement AddCommentDialogListener");</a>
-<span class="sourceLineNo">039</span><a id="line.39">        }</a>
-<span class="sourceLineNo">040</span><a id="line.40">    }</a>
-<span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">    @NonNull</a>
-<span class="sourceLineNo">043</span><a id="line.43">    @Override</a>
-<span class="sourceLineNo">044</span><a id="line.44">    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {</a>
-<span class="sourceLineNo">045</span><a id="line.45">        View view = LayoutInflater.from(getContext()).inflate(R.layout.add_comment_fragment,null);</a>
-<span class="sourceLineNo">046</span><a id="line.46">        EditText comment = view.findViewById(R.id.user_comment_context);</a>
-<span class="sourceLineNo">047</span><a id="line.47">        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());</a>
-<span class="sourceLineNo">048</span><a id="line.48">        return builder</a>
-<span class="sourceLineNo">049</span><a id="line.49">                .setView(view)</a>
-<span class="sourceLineNo">050</span><a id="line.50">                .setTitle("Add new comment")</a>
-<span class="sourceLineNo">051</span><a id="line.51">                .setNegativeButton("Cancel",null)</a>
-<span class="sourceLineNo">052</span><a id="line.52">                .setPositiveButton("Add", new DialogInterface.OnClickListener() {</a>
-<span class="sourceLineNo">053</span><a id="line.53">                    @Override</a>
-<span class="sourceLineNo">054</span><a id="line.54">                    public void onClick(DialogInterface dialog, int which) {</a>
-<span class="sourceLineNo">055</span><a id="line.55">                        String commentText = comment.getText().toString();</a>
-<span class="sourceLineNo">056</span><a id="line.56">                        listener.addComment(commentText);</a>
-<span class="sourceLineNo">057</span><a id="line.57">                    }</a>
-<span class="sourceLineNo">058</span><a id="line.58">                }).create();</a>
-<span class="sourceLineNo">059</span><a id="line.59">    }</a>
-<span class="sourceLineNo">060</span><a id="line.60">}</a>
+<span class="sourceLineNo">022</span><a id="line.22">    Context mContext;</a>
+<span class="sourceLineNo">023</span><a id="line.23">    interface AddCommentDialogListener{</a>
+<span class="sourceLineNo">024</span><a id="line.24">        public void addComment(String comment);</a>
+<span class="sourceLineNo">025</span><a id="line.25">    }</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">    public AddCommentFragment(){</a>
+<span class="sourceLineNo">028</span><a id="line.28">        super();</a>
+<span class="sourceLineNo">029</span><a id="line.29">    }</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">    private AddCommentDialogListener listener;</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">    @Override</a>
+<span class="sourceLineNo">034</span><a id="line.34">    public void onAttach(@NonNull Context context) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">        super.onAttach(context);</a>
+<span class="sourceLineNo">036</span><a id="line.36">        mContext = context;</a>
+<span class="sourceLineNo">037</span><a id="line.37">        if (context instanceof AddCommentDialogListener){</a>
+<span class="sourceLineNo">038</span><a id="line.38">            listener = (AddCommentDialogListener) context;</a>
+<span class="sourceLineNo">039</span><a id="line.39">        }else{</a>
+<span class="sourceLineNo">040</span><a id="line.40">            throw new RuntimeException(context+"must implement AddCommentDialogListener");</a>
+<span class="sourceLineNo">041</span><a id="line.41">        }</a>
+<span class="sourceLineNo">042</span><a id="line.42">    }</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">    @NonNull</a>
+<span class="sourceLineNo">045</span><a id="line.45">    @Override</a>
+<span class="sourceLineNo">046</span><a id="line.46">    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">        View view = LayoutInflater.from(mContext).inflate(R.layout.add_comment_fragment,null);</a>
+<span class="sourceLineNo">048</span><a id="line.48">        EditText comment = view.findViewById(R.id.user_comment_context);</a>
+<span class="sourceLineNo">049</span><a id="line.49">        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);</a>
+<span class="sourceLineNo">050</span><a id="line.50">        return builder</a>
+<span class="sourceLineNo">051</span><a id="line.51">                .setView(view)</a>
+<span class="sourceLineNo">052</span><a id="line.52">                .setTitle("Add new comment")</a>
+<span class="sourceLineNo">053</span><a id="line.53">                .setNegativeButton("Cancel",null)</a>
+<span class="sourceLineNo">054</span><a id="line.54">                .setPositiveButton("Add", new DialogInterface.OnClickListener() {</a>
+<span class="sourceLineNo">055</span><a id="line.55">                    @Override</a>
+<span class="sourceLineNo">056</span><a id="line.56">                    public void onClick(DialogInterface dialog, int which) {</a>
+<span class="sourceLineNo">057</span><a id="line.57">                        String commentText = comment.getText().toString();</a>
+<span class="sourceLineNo">058</span><a id="line.58">                        listener.addComment(commentText);</a>
+<span class="sourceLineNo">059</span><a id="line.59">                    }</a>
+<span class="sourceLineNo">060</span><a id="line.60">                }).create();</a>
+<span class="sourceLineNo">061</span><a id="line.61">    }</a>
+<span class="sourceLineNo">062</span><a id="line.62">}</a>
 
 
 

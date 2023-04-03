@@ -27,8 +27,8 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var data = {"i0":10,"i1":9,"i2":10};
+var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -145,7 +145,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>android.content.ComponentCallbacks</code>, <code>android.content.DialogInterface.OnCancelListener</code>, <code>android.content.DialogInterface.OnDismissListener</code>, <code>android.view.View.OnCreateContextMenuListener</code>, <code>androidx.activity.result.ActivityResultCaller</code>, <code>androidx.lifecycle.HasDefaultViewModelProviderFactory</code>, <code>androidx.lifecycle.LifecycleOwner</code>, <code>androidx.lifecycle.ViewModelStoreOwner</code>, <code>androidx.savedstate.SavedStateRegistryOwner</code></dd>
 </dl>
 <hr>
-<pre>public class <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.69">QrCodeOnAddDialog</a>
+<pre>public class <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.79">QrCodeOnAddDialog</a>
 extends androidx.fragment.app.DialogFragment</pre>
 <div class="block">Creates a dialog fragment that shows the user the
  name, score, and picture of the QRCode that they just scanned
@@ -272,9 +272,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,android.app.Activity,java.lang.String)">QrCodeOnAddDialog</a></span>&#8203;(java.lang.String&nbsp;hash,
-                 android.app.Activity&nbsp;activity,
-                 java.lang.String&nbsp;owner)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E()">QrCodeOnAddDialog</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -289,7 +287,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colSecond" scope="col">Method</th>
@@ -303,6 +301,13 @@ extends androidx.fragment.app.DialogFragment</pre>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>static <a href="QrCodeOnAddDialog.html" title="class in com.example.qrhunter">QrCodeOnAddDialog</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#newInstance(java.lang.String,android.app.Activity,java.lang.String)">newInstance</a></span>&#8203;(java.lang.String&nbsp;hash,
+           android.app.Activity&nbsp;activity,
+           java.lang.String&nbsp;owner)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>android.app.Dialog</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onCreateDialog(android.os.Bundle)">onCreateDialog</a></span>&#8203;(android.os.Bundle&nbsp;savedInstanceState)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -358,7 +363,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>hash</h4>
-<pre>java.lang.String <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.70">hash</a></pre>
+<pre>java.lang.String <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.80">hash</a></pre>
 </li>
 </ul>
 <a id="activity">
@@ -367,7 +372,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>activity</h4>
-<pre>android.app.Activity <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.71">activity</a></pre>
+<pre>android.app.Activity <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.81">activity</a></pre>
 </li>
 </ul>
 <a id="owner">
@@ -376,7 +381,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>owner</h4>
-<pre>java.lang.String <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.72">owner</a></pre>
+<pre>java.lang.String <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.82">owner</a></pre>
 </li>
 </ul>
 <a id="simpleDateFormat">
@@ -385,7 +390,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>simpleDateFormat</h4>
-<pre>java.text.SimpleDateFormat <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.73">simpleDateFormat</a></pre>
+<pre>java.text.SimpleDateFormat <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.83">simpleDateFormat</a></pre>
 </li>
 </ul>
 <a id="db">
@@ -394,7 +399,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>db</h4>
-<pre>com.google.firebase.firestore.FirebaseFirestore <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.74">db</a></pre>
+<pre>com.google.firebase.firestore.FirebaseFirestore <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.84">db</a></pre>
 </li>
 </ul>
 <a id="fbs">
@@ -403,7 +408,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>fbs</h4>
-<pre>com.google.firebase.storage.FirebaseStorage <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.75">fbs</a></pre>
+<pre>com.google.firebase.storage.FirebaseStorage <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.85">fbs</a></pre>
 </li>
 </ul>
 <a id="TAG">
@@ -412,7 +417,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>TAG</h4>
-<pre>java.lang.String <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.76">TAG</a></pre>
+<pre>java.lang.String <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.86">TAG</a></pre>
 </li>
 </ul>
 <a id="totalPhotoNumber">
@@ -421,7 +426,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>totalPhotoNumber</h4>
-<pre>int <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.77">totalPhotoNumber</a></pre>
+<pre>int <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.87">totalPhotoNumber</a></pre>
 </li>
 </ul>
 <a id="photoNumberText">
@@ -430,7 +435,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>photoNumberText</h4>
-<pre>android.widget.TextView <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.78">photoNumberText</a></pre>
+<pre>android.widget.TextView <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.88">photoNumberText</a></pre>
 </li>
 </ul>
 <a id="imageDisplayAdapter">
@@ -439,7 +444,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>imageDisplayAdapter</h4>
-<pre><a href="ImageDisplayAdapter.html" title="class in com.example.qrhunter">ImageDisplayAdapter</a> <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.79">imageDisplayAdapter</a></pre>
+<pre><a href="ImageDisplayAdapter.html" title="class in com.example.qrhunter">ImageDisplayAdapter</a> <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.89">imageDisplayAdapter</a></pre>
 </li>
 </ul>
 <a id="byteArrayList">
@@ -448,7 +453,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>byteArrayList</h4>
-<pre>java.util.ArrayList&lt;byte[]&gt; <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.81">byteArrayList</a></pre>
+<pre>java.util.ArrayList&lt;byte[]&gt; <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.91">byteArrayList</a></pre>
 </li>
 </ul>
 <a id="activityResultLauncher">
@@ -457,7 +462,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>activityResultLauncher</h4>
-<pre>androidx.activity.result.ActivityResultLauncher&lt;android.content.Intent&gt; <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.240">activityResultLauncher</a></pre>
+<pre>androidx.activity.result.ActivityResultLauncher&lt;android.content.Intent&gt; <a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.279">activityResultLauncher</a></pre>
 </li>
 </ul>
 </li>
@@ -470,15 +475,13 @@ extends androidx.fragment.app.DialogFragment</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String,android.app.Activity,java.lang.String)">
+<a id="&lt;init&gt;()">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>QrCodeOnAddDialog</h4>
-<pre>public&nbsp;<a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.83">QrCodeOnAddDialog</a>&#8203;(java.lang.String&nbsp;hash,
-                         android.app.Activity&nbsp;activity,
-                         java.lang.String&nbsp;owner)</pre>
+<pre>public&nbsp;<a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.93">QrCodeOnAddDialog</a>()</pre>
 </li>
 </ul>
 </li>
@@ -491,6 +494,17 @@ extends androidx.fragment.app.DialogFragment</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="newInstance(java.lang.String,android.app.Activity,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>newInstance</h4>
+<pre class="methodSignature">public static&nbsp;<a href="QrCodeOnAddDialog.html" title="class in com.example.qrhunter">QrCodeOnAddDialog</a>&nbsp;<a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.96">newInstance</a>&#8203;(java.lang.String&nbsp;hash,
+                                            android.app.Activity&nbsp;activity,
+                                            java.lang.String&nbsp;owner)</pre>
+</li>
+</ul>
 <a id="getLocation()">
 <!--   -->
 </a>
@@ -498,7 +512,7 @@ extends androidx.fragment.app.DialogFragment</pre>
 <li class="blockList">
 <h4>getLocation</h4>
 <pre class="methodSignature">@Nullable
-public&nbsp;com.google.firebase.firestore.GeoPoint&nbsp;<a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.94">getLocation</a>()</pre>
+public&nbsp;com.google.firebase.firestore.GeoPoint&nbsp;<a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.109">getLocation</a>()</pre>
 <div class="block">This method get the current location of the user.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -513,7 +527,7 @@ public&nbsp;com.google.firebase.firestore.GeoPoint&nbsp;<a href="../../../src-ht
 <li class="blockList">
 <h4>onCreateDialog</h4>
 <pre class="methodSignature">@NonNull
-public&nbsp;android.app.Dialog&nbsp;<a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.134">onCreateDialog</a>&#8203;(@Nullable
+public&nbsp;android.app.Dialog&nbsp;<a href="../../../src-html/com/example/qrhunter/QrCodeOnAddDialog.html#line.149">onCreateDialog</a>&#8203;(@Nullable
                                          android.os.Bundle&nbsp;savedInstanceState)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>

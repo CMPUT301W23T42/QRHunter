@@ -27,8 +27,8 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
+var data = {"i0":9};
+var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -169,14 +169,14 @@ extends java.lang.Object</pre>
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colSecond" scope="col">Method</th>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>int</code></td>
+<td class="colFirst"><code>static int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#score_algorithm(java.lang.String)">score_algorithm</a></span>&#8203;(java.lang.String&nbsp;hash)</code></th>
 <td class="colLast">
 <div class="block">Generates the score of a QRCode by counting repeated characters in a sha-256 hash
@@ -235,7 +235,7 @@ extends java.lang.Object</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>score_algorithm</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;<a href="../../../../src-html/com/example/qrhunter/generators/QrCodeScoreGenerator.html#line.16">score_algorithm</a>&#8203;(java.lang.String&nbsp;hash)</pre>
+<pre class="methodSignature">public static&nbsp;int&nbsp;<a href="../../../../src-html/com/example/qrhunter/generators/QrCodeScoreGenerator.html#line.16">score_algorithm</a>&#8203;(java.lang.String&nbsp;hash)</pre>
 <div class="block">Generates the score of a QRCode by counting repeated characters in a sha-256 hash
  and adding the sums of the powers of the value of that hash
  Example: hash = 25cce1b3f4ff0cee487dddddd029041014cf695b85daff02652fab7d308dc802

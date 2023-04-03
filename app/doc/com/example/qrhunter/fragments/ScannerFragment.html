@@ -27,7 +27,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":9,"i3":10,"i4":10,"i5":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":9,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -140,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>android.content.ComponentCallbacks</code>, <code>android.view.View.OnCreateContextMenuListener</code>, <code>androidx.activity.result.ActivityResultCaller</code>, <code>androidx.lifecycle.HasDefaultViewModelProviderFactory</code>, <code>androidx.lifecycle.LifecycleOwner</code>, <code>androidx.lifecycle.ViewModelStoreOwner</code>, <code>androidx.savedstate.SavedStateRegistryOwner</code></dd>
 </dl>
 <hr>
-<pre>public class <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.50">ScannerFragment</a>
+<pre>public class <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.61">ScannerFragment</a>
 extends androidx.fragment.app.Fragment</pre>
 <div class="block">This class handles QRCode scanning using the zxing-android-embedded library</div>
 </li>
@@ -214,6 +214,11 @@ extends androidx.fragment.app.Fragment</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>(package private) java.util.ArrayList&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#owner_hashs">owner_hashs</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>(package private) java.text.SimpleDateFormat</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#simpleDateFormat">simpleDateFormat</a></span></code></th>
 <td class="colLast">&nbsp;</td>
@@ -270,29 +275,36 @@ extends androidx.fragment.app.Fragment</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#evaluateScanResult(com.journeyapps.barcodescanner.ScanIntentResult)">evaluateScanResult</a></span>&#8203;(com.journeyapps.barcodescanner.ScanIntentResult&nbsp;result)</code></th>
+<td class="colLast">
+<div class="block">Evaluates the results of a scan</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#goToWallet()">goToWallet</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Goes to wallet fragment</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>static <a href="ScannerFragment.html" title="class in com.example.qrhunter.fragments">ScannerFragment</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#newInstance()">newInstance</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onCreate(android.os.Bundle)">onCreate</a></span>&#8203;(android.os.Bundle&nbsp;savedInstanceState)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#scanCode()">scanCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Sets up options of QRCode camera scanner and launchs scanner</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOnCameraCloseListener(com.example.qrhunter.fragments.ScannerFragment.onCameraClose)">setOnCameraCloseListener</a></span>&#8203;(<a href="ScannerFragment.onCameraClose.html" title="interface in com.example.qrhunter.fragments">ScannerFragment.onCameraClose</a>&nbsp;listener)</code></th>
 <td class="colLast">&nbsp;</td>
@@ -335,13 +347,22 @@ extends androidx.fragment.app.Fragment</pre>
 <!--   -->
 </a>
 <h3>Field Detail</h3>
+<a id="owner_hashs">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>owner_hashs</h4>
+<pre>java.util.ArrayList&lt;java.lang.String&gt; <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.64">owner_hashs</a></pre>
+</li>
+</ul>
 <a id="db">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>db</h4>
-<pre>com.google.firebase.firestore.FirebaseFirestore <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.55">db</a></pre>
+<pre>com.google.firebase.firestore.FirebaseFirestore <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.65">db</a></pre>
 </li>
 </ul>
 <a id="client">
@@ -350,7 +371,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>client</h4>
-<pre>com.google.android.gms.location.FusedLocationProviderClient <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.56">client</a></pre>
+<pre>com.google.android.gms.location.FusedLocationProviderClient <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.66">client</a></pre>
 </li>
 </ul>
 <a id="simpleDateFormat">
@@ -359,7 +380,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>simpleDateFormat</h4>
-<pre>java.text.SimpleDateFormat <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.57">simpleDateFormat</a></pre>
+<pre>java.text.SimpleDateFormat <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.67">simpleDateFormat</a></pre>
 </li>
 </ul>
 <a id="owner">
@@ -368,7 +389,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>owner</h4>
-<pre>java.lang.String <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.58">owner</a></pre>
+<pre>java.lang.String <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.68">owner</a></pre>
 </li>
 </ul>
 <a id="index">
@@ -377,7 +398,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>index</h4>
-<pre>int <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.59">index</a></pre>
+<pre>int <a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.69">index</a></pre>
 </li>
 </ul>
 </li>
@@ -396,7 +417,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>ScannerFragment</h4>
-<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.60">ScannerFragment</a>()</pre>
+<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.70">ScannerFragment</a>()</pre>
 </li>
 </ul>
 <a id="&lt;init&gt;(java.lang.String)">
@@ -405,7 +426,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ScannerFragment</h4>
-<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.64">ScannerFragment</a>&#8203;(java.lang.String&nbsp;name)</pre>
+<pre>public&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.74">ScannerFragment</a>&#8203;(java.lang.String&nbsp;name)</pre>
 </li>
 </ul>
 </li>
@@ -424,7 +445,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>newInstance</h4>
-<pre class="methodSignature">public static&nbsp;<a href="ScannerFragment.html" title="class in com.example.qrhunter.fragments">ScannerFragment</a>&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.68">newInstance</a>()</pre>
+<pre class="methodSignature">public static&nbsp;<a href="ScannerFragment.html" title="class in com.example.qrhunter.fragments">ScannerFragment</a>&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.78">newInstance</a>()</pre>
 </li>
 </ul>
 <a id="onCreate(android.os.Bundle)">
@@ -433,7 +454,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>onCreate</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.73">onCreate</a>&#8203;(android.os.Bundle&nbsp;savedInstanceState)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.83">onCreate</a>&#8203;(android.os.Bundle&nbsp;savedInstanceState)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code>onCreate</code>&nbsp;in class&nbsp;<code>androidx.fragment.app.Fragment</code></dd>
@@ -446,7 +467,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>scanCode</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.106">scanCode</a>()</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.125">scanCode</a>()</pre>
 <div class="block">Sets up options of QRCode camera scanner and launchs scanner</div>
 </li>
 </ul>
@@ -456,7 +477,7 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>askPermission</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.159">askPermission</a>()</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.145">askPermission</a>()</pre>
 <div class="block">This method checks if app has permission for location access and ask if doesn't.</div>
 </li>
 </ul>
@@ -466,17 +487,31 @@ extends androidx.fragment.app.Fragment</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setOnCameraCloseListener</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.206">setOnCameraCloseListener</a>&#8203;(<a href="ScannerFragment.onCameraClose.html" title="interface in com.example.qrhunter.fragments">ScannerFragment.onCameraClose</a>&nbsp;listener)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.151">setOnCameraCloseListener</a>&#8203;(<a href="ScannerFragment.onCameraClose.html" title="interface in com.example.qrhunter.fragments">ScannerFragment.onCameraClose</a>&nbsp;listener)</pre>
 </li>
 </ul>
 <a id="goToWallet()">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>goToWallet</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.218">goToWallet</a>()</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.163">goToWallet</a>()</pre>
 <div class="block">Goes to wallet fragment</div>
+</li>
+</ul>
+<a id="evaluateScanResult(com.journeyapps.barcodescanner.ScanIntentResult)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>evaluateScanResult</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;<a href="../../../../src-html/com/example/qrhunter/fragments/ScannerFragment.html#line.174">evaluateScanResult</a>&#8203;(com.journeyapps.barcodescanner.ScanIntentResult&nbsp;result)</pre>
+<div class="block">Evaluates the results of a scan</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>result</code> - </dd>
+</dl>
 </li>
 </ul>
 </li>
