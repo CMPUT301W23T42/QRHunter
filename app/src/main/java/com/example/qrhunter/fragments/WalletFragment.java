@@ -296,11 +296,6 @@ public class WalletFragment extends Fragment {
         return view;
     }
 
-    /**
-     * Deletes comment from database when deleting the qr code
-     * @param docId
-     * The id of the QR code.
-     */
     private void deleteData(String id){
         db.collection("CodeList").document(id)
                 .delete()
@@ -408,7 +403,11 @@ public class WalletFragment extends Fragment {
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse(file.getAbsolutePath())));
         }
     }
-
+    /**
+     * Deletes comment from database when deleting the qr code
+     * @param docId
+     * The id of the QR code.
+     */
     public void deleteComments(String docId) {
         db.collection("Comments").document(docId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
