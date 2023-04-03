@@ -122,6 +122,7 @@ public class LeaderboardFragment extends Fragment {
             }
         });
 
+
         //open new profile fragment on clicking list item
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
@@ -158,7 +159,6 @@ public class LeaderboardFragment extends Fragment {
             }
         });
 
-        // sort the adapter automatically when view is created
         sortButton = view.findViewById(R.id.sort_button);
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override

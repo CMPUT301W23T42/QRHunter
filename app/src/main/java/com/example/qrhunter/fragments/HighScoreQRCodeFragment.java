@@ -3,6 +3,7 @@ package com.example.qrhunter.fragments;
 import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,8 +25,11 @@ import com.example.qrhunter.searchPlayer.SearchAdapter;
 import com.example.qrhunter.R;
 import com.example.qrhunter.searchPlayer.UserListItem;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,6 +54,9 @@ public class HighScoreQRCodeFragment extends Fragment {
     ImageView backButton;
 
     SearchAdapter usernamesArrayAdapter;
+    TextView userHighScoreTextView;
+    TextView userNameTextView;
+    TextView userRankTextView;
 
     public HighScoreQRCodeFragment() {
         // Required empty public constructor
@@ -64,10 +72,14 @@ public class HighScoreQRCodeFragment extends Fragment {
 
         playerListView = view.findViewById(R.id.player_list_list_view);
         searchEditText = view.findViewById(R.id.search_profile_edit_text);
+        userHighScoreTextView = view.findViewById(R.id.user_high_score);
+        userNameTextView = view.findViewById(R.id.user_name_text);
+        userRankTextView = view.findViewById(R.id.user_rank_text);
 
         usernames = new ArrayList<UserListItem>();
 
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            Map<String, Integer> highScores;
 
             /**
              * Called when the query is able to execute, and get data from the database
@@ -78,7 +90,7 @@ public class HighScoreQRCodeFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Map<String, Integer> highScores = new HashMap<>(); // to store the highest score for each owner
+                    highScores = new HashMap<>(); // to store the highest score for each owner
                     Map<String, String> highestScoringCodes = new HashMap<>(); // to store the highest scoring code for each owner
                     Map<String, List<String>> ownersByScore = new TreeMap<>(Collections.reverseOrder()); // to store the owners sorted by score
                     Map<String, List<String>> ownersByAlpha = new TreeMap<>(); // to store the owners sorted alphabetically
@@ -152,14 +164,64 @@ public class HighScoreQRCodeFragment extends Fragment {
                             String username = parts[0];
                             int score = Integer.parseInt(entry.getKey());
                             usernames.add(new UserListItem(username, score));
+                            // Debug log to print out the usernames
+                            Log.d("DEBUG", "Added username: " + username);
                         }
                     }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+
+
+
+                    // Retrieve the username from the "Users" collection in the database
+
                 }
 
-                usernamesArrayAdapter = new SearchAdapter(getContext(), usernames);
+                else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+                SearchAdapter searchAdapter = new SearchAdapter(getContext(), usernames);
+                usernamesArrayAdapter = searchAdapter;
                 usernamesArrayAdapter.sortFilteredScores();
+
+                final String ID = Settings.Secure.getString(getContext().getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference userRef = db.collection("Users").document(ID);
+                userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String username = documentSnapshot.getString("UserName");
+
+                        // Retrieve the high score for this user from the hash map
+
+                        // Retrieve the high score for this user from the hash map
+
+                        int highScore = 0;
+                        if (highScores.containsKey(username)) {
+                            highScore = highScores.get(username);
+                        }
+
+
+
+                        // Retrieve the position of username from usernames list
+                        int position = 0;
+                        for (UserListItem usernameObj: searchAdapter.getFilteredList()){
+                            Log.d("username ", usernameObj.getUsername());
+                            if (usernameObj.getUsername().equalsIgnoreCase(username)){
+                                Log.d("usernames size: ", String.valueOf(searchAdapter.getFilteredList().size()));
+                                Log.d("index: ", String.valueOf(searchAdapter.getFilteredList().indexOf(usernameObj)));
+                                position = searchAdapter.getFilteredList().indexOf(usernameObj) + 1;
+                                Log.d("position: ", String.valueOf(position));
+                            }
+                        }
+
+                        // Update the text view with the username and high score
+                        userHighScoreTextView.setText(String.valueOf(highScore));
+                        userRankTextView.setText(String.valueOf(position) + ".");
+                        userNameTextView.setText(String.valueOf(username));
+
+                    }
+                });
                 usernamesArrayAdapter.notifyDataSetChanged();
                 playerListView.setAdapter(usernamesArrayAdapter);
             }
