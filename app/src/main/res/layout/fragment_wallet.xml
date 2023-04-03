@@ -31,6 +31,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="11dp"
         android:text="SORT BY:"
+        android:fontFamily="@font/rajdhani_semibold"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/banner" />
@@ -50,12 +51,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/rajdhani_medium"
             android:text="Lowest QR Code" />
 
         <RadioButton
             android:id="@+id/rb_descending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rajdhani_medium"
             android:layout_weight="1"
             android:text="Highest QR Code" />
     </RadioGroup>
@@ -93,6 +96,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
+            android:fontFamily="@font/rajdhani_medium"
             android:textColor="@color/black"
             android:text="Total Points: " />
 
@@ -104,6 +108,7 @@
             android:layout_marginTop="32dp"
             android:layout_toRightOf="@id/user_rank_text"
             android:textColor="@color/black"
+            android:fontFamily="@font/rajdhani_medium"
             android:text="Points" />
 
         <Space
@@ -120,7 +125,8 @@
             android:layout_marginTop="32dp"
             android:layout_toRightOf="@id/wallet_spacer"
             android:textColor="@color/black"
-            android:text="QR Code Scanned: " />
+            android:text="QR Code Scanned: "
+            android:fontFamily="@font/rajdhani_medium"/>
 
         <TextView
             android:id="@+id/user_high_score"
@@ -130,6 +136,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:layout_toRightOf="@id/textView10"
+            android:fontFamily="@font/rajdhani_medium"
             android:textColor="@color/black"
             android:text="Scanned" />
     </RelativeLayout>

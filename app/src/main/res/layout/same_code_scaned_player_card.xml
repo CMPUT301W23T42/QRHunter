@@ -45,20 +45,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="@font/rajdhani_semibold"/>
 
             <TextView
                 android:id="@+id/same_QR_code_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="@font/rajdhani_semibold"/>
 
             <TextView
                 android:id="@+id/same_QR_code_owner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="@font/rajdhani_semibold"/>
 
         </LinearLayout>
 

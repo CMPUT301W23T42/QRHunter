@@ -43,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/rajdhani_bold"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="25sp"
@@ -69,6 +70,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rajdhani_bold"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"/>
     <LinearLayout
@@ -82,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="40dp"
+            android:fontFamily="@font/rajdhani_bold"
             android:paddingEnd="20dp"
             android:layout_weight="2"/>
         <TextView
@@ -98,15 +101,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
-            android:text="@string/email"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:fontFamily="@font/rajdhani_bold"
             android:paddingStart="40dp"
             android:paddingEnd="20dp"
-            android:layout_weight="2"/>
+            android:text="@string/email"
+            android:textSize="20sp"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/email_text"
             android:layout_width="match_parent"
@@ -121,19 +126,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
-            android:text="@string/phone"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
             android:paddingStart="40dp"
             android:paddingEnd="20dp"
-            android:layout_weight="2"/>
+            android:text="@string/phone"
+            android:textSize="20sp"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/phone_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/rajdhani_bold"
             android:textSize="20sp"
             android:textStyle="bold"
             android:paddingStart="20dp"

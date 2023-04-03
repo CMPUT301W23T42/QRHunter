@@ -11,6 +11,7 @@
         android:ems="10"
         android:gravity="top"
         android:hint="Comment"
+        android:fontFamily="@font/rajdhani_semibold"
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:minLines="5" />

@@ -40,21 +40,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="NAME OF QR CODE" />
+            android:text="NAME OF QR CODE"
+            android:fontFamily="@font/rajdhani_semibold"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/tv_points_caption_searched_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="QR Points:" />
+            android:text="QR Points:"
+            android:fontFamily="@font/rajdhani_medium"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/tv_searched_player_points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Points" />
+            android:text="Points"
+            android:fontFamily="@font/rajdhani_medium"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
 </LinearLayout>

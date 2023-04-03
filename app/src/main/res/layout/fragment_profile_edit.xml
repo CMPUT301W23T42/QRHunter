@@ -31,6 +31,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rajdhani_bold"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
     </TextView>
@@ -55,6 +56,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rajdhani_bold"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
     </TextView>
@@ -64,6 +66,7 @@
         android:hint="@string/example_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rajdhani_bold"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:paddingStart="20dp"
@@ -80,6 +83,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rajdhani_bold"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
     </TextView>
@@ -90,6 +94,7 @@
         android:hint="@string/example_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rajdhani_bold"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:paddingStart="20dp"
@@ -106,6 +111,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/rajdhani_bold"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
     </TextView>
@@ -114,6 +120,7 @@
         android:id="@+id/phone_edit"
         android:inputType="phone"
         android:hint="@string/example_phone"
+        android:fontFamily="@font/rajdhani_bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"

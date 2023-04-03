@@ -19,14 +19,16 @@
                 android:layout_width="80sp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="@font/rajdhani_semibold"/>
 
             <TextView
                 android:id="@+id/comment_user_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="@font/rajdhani_semibold"/>
         </LinearLayout>
 
         <LinearLayout
