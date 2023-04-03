@@ -23,6 +23,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +67,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /** Class for the fragment that shows the Leaderboard and Search Player functionality **/
 public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener, OnMapsSdkInitializedCallback {
@@ -81,6 +83,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private static final float MIN_DISTANCE = 10;
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
+    String current_user_name;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -162,6 +165,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
 
+        final String ID = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        db.collection("Users").document(ID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            Map<String, Object> userinfo = document.getData();
+                            current_user_name = userinfo.get("UserName").toString();
+                        }
+                    }
+                });
         return view;
     }
 
@@ -308,7 +325,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Intent intent = new Intent(getActivity(), QRProfileActivity.class);
                         intent.putExtra("DOC_ID", documentSnapshot.getId());
-                        intent.putExtra("OWNER_NAME", (String) documentSnapshot.get("owner"));
+                        intent.putExtra("OWNER_NAME", current_user_name);
                         startActivity(intent);
                     }
                 });
