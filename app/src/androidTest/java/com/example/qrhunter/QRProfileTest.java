@@ -7,18 +7,25 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.qrhunter.qrProfile.QRProfileActivity;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class QRProfileTest {
     private Solo solo;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference collectionReference = db.collection("CodeList");
 
 
     @Rule
@@ -32,6 +39,16 @@ public class QRProfileTest {
     @Before
     public void setUp() throws Exception{
         solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
+        Map<String, Object> QRInfo = new HashMap<>();
+        QRInfo.put("name", "Fiery Massive Extremely Expensive GigaMulti-Dimensional Poly-Dodecahedron");
+        QRInfo.put("date", "2023-03-10 18:20");
+        QRInfo.put("hash", "test hash");
+        QRInfo.put("owner", "Roy");
+        QRInfo.put("location", null);
+        QRInfo.put("score", 36);
+        collectionReference
+                .document("test doc")
+                .set(QRInfo);
     }
     /**
      * Gets the Activity
@@ -82,5 +99,12 @@ public class QRProfileTest {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String time = simpleDateFormat.format(new Date()).toString();
         solo.waitForText(time,1,2000);
+    }
+
+    @After
+    public void tearDown() throws Exception{
+        db.collection("CodeList").document("test doc")
+                .delete();
+        solo.finishOpenedActivities();
     }
 }

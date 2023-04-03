@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +31,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
     private final String ID = Settings.Secure.ANDROID_ID;
     private final String TAG = "Edit Profile Fragment";
     private View view = null;
-    private EditText editUserName;
+    private TextView editUserName;
     private EditText editFullName;
     private EditText editEmail;
     private EditText editPhone;
@@ -76,7 +77,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
         final CollectionReference collectionReference = db.collection("Users");
 
         saveProfileEdit.setOnClickListener(v -> {
-            String userName = editUserName.getText().toString();
+            String userName = profile.getUserName();
             String name = editFullName.getText().toString();
             String email = editEmail.getText().toString();
             String phone = editPhone.getText().toString();
@@ -96,6 +97,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
                         .addOnSuccessListener(unused -> {
                             Log.d(TAG, "Data has been added successfully!");
                             onChange();
+                            listener.onComplete();
                         })
                         .addOnFailureListener(e -> {
                             Log.d(TAG, "Data could not be added!" + e);

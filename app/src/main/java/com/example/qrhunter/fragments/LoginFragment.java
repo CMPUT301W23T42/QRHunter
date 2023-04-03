@@ -90,6 +90,7 @@ public class LoginFragment extends Fragment {
         signUpButton.setOnClickListener(v -> {
             final String ID = Settings.Secure.getString(getContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
+            Log.d(TAG, ID);
 
             final String userName = usernameEdit.getText().toString();
             final String name = nameEdit.getText().toString();
@@ -99,40 +100,43 @@ public class LoginFragment extends Fragment {
             HashMap<String, String> data = new HashMap<>();
             if (users.containsKey(userName)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Username is already in use, ")
-                        .setTitle("The username is taken. Try another.");
+                builder.setMessage("Username is already in use. ")
+                        .setTitle("The username is taken.");
                 builder.create().show();
 
+            } else if (!userName.isEmpty() && !name.isEmpty()
+                        && !email.isEmpty() && !phone.isEmpty()) {
+                data.put("UserName", userName);
+                data.put("Name", name);
+                data.put("Email", email);
+                data.put("Phone", phone);
+                users.put(userName, "");
+
+                collectionReference
+                        .document("Usernames")
+                        .update(users)
+                        .addOnSuccessListener(unused -> {
+                            Log.d(TAG, "Users has been updated");
+                        });
+
+                collectionReference
+                        .document(ID)
+                        .set(data)
+                        .addOnSuccessListener(unused -> {
+                            Log.d(TAG, "Data has been added successfully!");
+                            //ViewPager2 viewPager = getActivity().
+                            //findViewById(R.id.view_pager);
+                            //viewPager.setCurrentItem(0);
+                            tabLayout.setVisibility(View.VISIBLE);
+
+                            ((MainActivity)getActivity()).signedUp();
+                        })
+                        .addOnFailureListener(e -> Log.d(TAG, "Data could not be added!" + e));
             } else {
-                if (!userName.isEmpty() && !name.isEmpty()
-                        && !email.isEmpty() && phone.length() > 9) {
-                    data.put("UserName", userName);
-                    data.put("Name", name);
-                    data.put("Email", email);
-                    data.put("Phone", phone);
-                    users.put(userName, "");
-
-                    collectionReference
-                            .document("Usernames")
-                            .update(users)
-                            .addOnSuccessListener(unused -> {
-                                Log.d(TAG, "Users has been updated");
-                            });
-
-                    collectionReference
-                            .document(ID)
-                            .set(data)
-                            .addOnSuccessListener(unused -> {
-                                Log.d(TAG, "Data has been added successfully!");
-                                //ViewPager2 viewPager = getActivity().
-                                //findViewById(R.id.view_pager);
-                                //viewPager.setCurrentItem(0);
-                                tabLayout.setVisibility(View.VISIBLE);
-
-                                ((MainActivity)getActivity()).signedUp();
-                            })
-                            .addOnFailureListener(e -> Log.d(TAG, "Data could not be added!" + e));
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("All fields must be filled.")
+                        .setTitle("Field not filled.");
+                builder.create().show();
             }
         });
 
