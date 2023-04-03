@@ -263,6 +263,9 @@ public class WalletFragment extends Fragment {
                                 });
                         deleteData(docID);
                         deleteImageFromStorage(docID);
+                  //      String folderName = MediaStore.Images.Media.RELATIVE_PATH + '/' +  "Pictures/" + getString(R.string.app_name) + '/' + docID;
+                  //      System.out.println("!!!!!! folderName = "+ folderName);
+                   //     File fileOrDirectory = new File(folderName);
                         deleteRecursive(docID);
                         deleteComments(docID);
                         radioGroup.clearCheck();
@@ -292,7 +295,6 @@ public class WalletFragment extends Fragment {
 
         return view;
     }
-
 
     private void deleteData(String id){
         db.collection("CodeList").document(id)
@@ -401,26 +403,22 @@ public class WalletFragment extends Fragment {
             context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse(file.getAbsolutePath())));
         }
     }
-
-
     /**
-     * Delete comments from database when deleting the qr code
+     * Deletes comment from database when deleting the qr code
      * @param docId
      * The id of the QR code.
      */
-    public void deleteComments(String docId){
-        db.collection("Comments").document(docId).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d(TAG,"Comments deleted successfully!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG,"Comments deleted failed."+e);
-                    }
-                });
+    public void deleteComments(String docId) {
+        db.collection("Comments").document(docId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG,"Comments deleted successfully");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG,"Comments deleted failed."+e);
+            }
+        });
     }
 }

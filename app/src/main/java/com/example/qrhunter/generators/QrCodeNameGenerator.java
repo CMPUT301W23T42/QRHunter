@@ -54,6 +54,13 @@ public class QrCodeNameGenerator implements QrCodeRepresentative{
         return bit_string;
     }
 
+    /**
+     * Returns whether a QRCode is "pure" or not.
+     * Its pure if in base 4, the first three digits are the same.
+     * Corresponds to the image being all one color
+     * @param bit_string
+     * @return
+     */
     public boolean isPure(String bit_string) {
         int first_val = bit_string.charAt(0) + 2*bit_string.charAt(1);
         if (bit_string.charAt(2) + 2*bit_string.charAt(3) == first_val && bit_string.charAt(4) + 2*bit_string.charAt(5) == first_val) {
