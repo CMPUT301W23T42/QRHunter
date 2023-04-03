@@ -83,7 +83,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:fontFamily="@font/rajdhani_bold"
                 android:textColor="@color/black"
                 android:text="0" />
 
@@ -92,8 +94,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="5dp"
+                android:textSize="20sp"
+                android:fontFamily="@font/rajdhani_bold"
                 android:layout_toRightOf="@id/user_rank_text"
                 android:textColor="@color/black"
                 android:text="Name" />
@@ -109,7 +113,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:fontFamily="@font/rajdhani_bold"
                 android:layout_toRightOf="@id/wallet_spacer"
                 android:textColor="@color/black"
                 android:text="High Score: " />
@@ -119,12 +125,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
+                android:textSize="20sp"
+                android:fontFamily="@font/rajdhani_bold"
                 android:layout_marginEnd="32dp"
                 android:layout_toRightOf="@id/textView10"
                 android:textColor="@color/black"
                 android:text="0" />
         </RelativeLayout>
+
     </LinearLayout>
 
 
