@@ -28,7 +28,7 @@ import java.util.HashMap;
 public class EditProfileFragment extends Fragment implements UserInfo {
     private onCompleteListener listener;
     private UserProfile profile;
-    private final String ID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
+    private String ID;
     private final String TAG = "Edit Profile Fragment";
     private View view = null;
     private TextView editUserName;
@@ -62,6 +62,7 @@ public class EditProfileFragment extends Fragment implements UserInfo {
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_profile_edit, container, false);
+        ID = Settings.Secure.getString(getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         editUserName = view.findViewById(R.id.user_name_edit);
         editFullName = view.findViewById(R.id.full_name_edit);
