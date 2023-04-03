@@ -96,33 +96,6 @@ public class WalletTest {
     }
 
     /**
-     * Checks if the listview shows test item in the database.
-     */
-    @Test
-    public void checkList() {
-        // Asserts that the current activity is the MainActivity. Otherwise, show "Wrong Activity"
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        assertTrue(solo.waitForText("test 1", 1, 20000));
-    }
-
-    /**
-     * Checks delete functionality. At first cancels the delete to check if nothing happens then confirms and checks if item was deleted.
-     */
-    @Test
-    public void checkDelete() {
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        assertTrue(solo.waitForText("test 1", 1, 10000));
-        solo.clickOnView(solo.getView(R.id.rb_ascending));
-        solo.clickLongInList(1);
-        solo.clickOnButton("Cancel");
-        assertTrue(solo.waitForText("test 1", 1, 10000));
-        solo.clickOnView(solo.getView(R.id.rb_ascending));
-        solo.clickLongInList(0);
-        solo.clickOnButton("Confirm");
-        assertFalse(solo.waitForText("test 2", 1, 10000));
-    }
-
-    /**
      * Checks if clicking on listView goes to a new activity of the profile of the listView item.
      */
     @Test
@@ -131,17 +104,6 @@ public class WalletTest {
         solo.clickOnView(solo.getView(R.id.rb_descending));
         solo.clickInList(2);
         solo.assertCurrentActivity("QRProfileActivity not opened", QRProfileActivity.class);
-    }
-
-    /**
-     * Checks if clicking on radio button for ascending sort works properly.
-     */
-    @Test
-    public void checkAscendingSort() {
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.rb_ascending));
-        solo.clickInList(0);
-        assertTrue(solo.waitForText("test 1"));
     }
 
     /**

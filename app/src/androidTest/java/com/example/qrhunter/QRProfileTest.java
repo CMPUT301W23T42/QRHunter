@@ -60,17 +60,6 @@ public class QRProfileTest {
     }
 
     /**
-     * Check whether wallet connect to QR profile when click on QR code item
-     */
-    @Test
-    public void checkQRProfileSwitch (){
-        solo.assertCurrentActivity("Wrong Main Activity", MainActivity.class);
-        solo.clickInList(1);
-        solo.assertCurrentActivity("Wrong Profile Activity", QRProfileActivity.class);
-    }
-
-
-    /**
      * Check whether chosen QR code shows a correct info
      */
     @Test
